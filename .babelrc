@@ -5,6 +5,7 @@
   "plugins": [
     "transform-es2015-arrow-functions",
     "transform-class-properties",
-    "transform-object-assign"
+    "transform-object-assign",
+    "transform-object-rest-spread"
   ]
 }
