@@ -7,37 +7,41 @@ import { Link } from "react-router-dom";
 
 import { Button } from "react-bootstrap";
 
-class IndexPage extends React.Component {
+class SearchPage extends React.Component {
   static propTypes = {
     searchQuery: PropTypes.string,
     updateSearchQuery: PropTypes.func,
     // router: routerShape.isRequired,
   };
+  constructor(props) {
+    super(props);
+  }
 
-  handleSearchChange = e => this.props.updateSearchQuery(e.target.value);
+  handleSearchChange = e => this.props.updateSearchQuery(e.target.value)
   // onSearch = () => router.push("/search");
 
   render = () => {
     return (
       <div>
-        <h1>YouMuse</h1>
+        <h1>YouMuse Search</h1>
         <input
           placeholder="Search YouTube..."
           value={ this.props.searchQuery }
           onChange={ this.handleSearchChange }
         />
         <Button>
-          <Link to={ `/search/${this.props.searchQuery}` }>Search</Link>
+          <Link to="/search">Search</Link>
         </Button>
-        <p>Subtitle</p>
+        <div className="searchResults">
+        </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
-    searchQuery: state.searchQuery,
+    searchQuery: ownProps.match.searchQuery,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -46,8 +50,8 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(IndexPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);
 // export default compose(
   // withRouter,
   // connect(mapStateToProps, mapDispatchToProps)
-// )(IndexPage);
+// )(SearchPage);
