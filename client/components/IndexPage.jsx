@@ -11,11 +11,9 @@ class IndexPage extends React.Component {
   static propTypes = {
     searchQuery: PropTypes.string,
     updateSearchQuery: PropTypes.func,
-    // router: routerShape.isRequired,
   };
 
   handleSearchChange = e => this.props.updateSearchQuery(e.target.value);
-  // onSearch = () => router.push("/search");
 
   render = () => {
     return (
@@ -47,7 +45,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(IndexPage);
-// export default compose(
-  // withRouter,
-  // connect(mapStateToProps, mapDispatchToProps)
-// )(IndexPage);

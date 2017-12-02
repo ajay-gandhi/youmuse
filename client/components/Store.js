@@ -6,7 +6,7 @@ const REPEAT_STATE = Object.freeze({
   one: 2,
 });
 
-const initialiState = {
+const initialState = {
   searchQuery: "",
   repeat: REPEAT_STATE.off,
   shuffle: false,
@@ -14,6 +14,7 @@ const initialiState = {
   queue: [],
 };
 
+/** Actions **/
 const setSearchQuery = (searchQuery) => {
   return {
     type: "SET_SEARCH",
@@ -26,28 +27,50 @@ const toggleRepeat = () => {
 const toggleShuffle = () => {
   return { type: "TOGGLE_SHUFFLE" };
 };
+
+const mergeState = (newState) => {
+  return {
+    type: "MERGE_STATE",
+    newState,
+  };
+};
 const actions = {
   setSearchQuery,
   toggleRepeat,
   toggleShuffle,
+  mergeState,
 };
 
-const reducer = (state = initialiState, action) => {
+/** Reducers **/
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case "SET_SEARCH":
-      return Object.assign({}, state, {
+      return {
+        ...state,
         searchQuery: action.searchQuery,
-      });
+      };
 
     case "TOGGLE_REPEAT": {
       let repeat = state.repeat === REPEAT_STATE.off
         ? REPEAT_STATE.all
         : (state.repeat === REPEAT_STATE.all ? REPEAT_STATE.one : REPEAT_STATE.off);
-      return Object.assign({}, state, { repeat });
+      return {
+        ...state,
+        repeat,
+      };
     }
 
     case "TOGGLE_SHUFFLE":
-      return Object.assign({}, state, { shuffle: !state.shuffle });
+      return {
+        ...state,
+        shuffle: !state.shuffle
+      };
+
+    case "MERGE_STATE":
+      return {
+        ...state,
+        ...action.newState,
+      };
 
     default:
       return state;

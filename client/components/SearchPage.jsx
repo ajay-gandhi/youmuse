@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { actions } from "./Store";
 import { Link } from "react-router-dom";
-// import { compose } from "recompose";
 
 import { Button } from "react-bootstrap";
 
@@ -11,14 +10,16 @@ class SearchPage extends React.Component {
   static propTypes = {
     searchQuery: PropTypes.string,
     updateSearchQuery: PropTypes.func,
-    // router: routerShape.isRequired,
+    getSearchResults: PropTypes.func,
   };
   constructor(props) {
     super(props);
+    if (props.searchQuery) {
+      props.getSearchResults();
+    }
   }
 
   handleSearchChange = e => this.props.updateSearchQuery(e.target.value)
-  // onSearch = () => router.push("/search");
 
   render = () => {
     return (
@@ -30,7 +31,7 @@ class SearchPage extends React.Component {
           onChange={ this.handleSearchChange }
         />
         <Button>
-          <Link to="/search">Search</Link>
+          <Link to={ `/search/${this.props.searchQuery}` }>Search</Link>
         </Button>
         <div className="searchResults">
         </div>
@@ -39,14 +40,16 @@ class SearchPage extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   return {
-    searchQuery: ownProps.match.searchQuery,
+    searchQuery: state.searchQuery,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     updateSearchQuery: searchQuery => dispatch(actions.setSearchQuery(searchQuery)),
+    getSearchResults: () => {},
+    // getSearchResults: () => dispatch(actions.getSearchResults()),
   };
 };
 
