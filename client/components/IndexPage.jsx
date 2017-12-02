@@ -2,27 +2,34 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { actions } from "./Store";
+import { Link } from "react-router-dom";
+// import { compose } from "recompose";
 
 import { Button } from "react-bootstrap";
 
-class SearchBar extends React.Component {
+class IndexPage extends React.Component {
   static propTypes = {
     searchQuery: PropTypes.string,
     updateSearchQuery: PropTypes.func,
+    // router: routerShape.isRequired,
   };
 
   handleSearchChange = e => this.props.updateSearchQuery(e.target.value);
-  onSearch = () => console.log("Going to search", this.props.searchQuery);
+  // onSearch = () => router.push("/search");
 
   render = () => {
     return (
       <div>
+        <h1>YouMuse</h1>
         <input
           placeholder="Search YouTube..."
           value={ this.props.searchQuery }
           onChange={ this.handleSearchChange }
         />
-        <Button onClick={ this.props.onSearch }>Search</Button>
+        <Button>
+          <Link to="/search">Search</Link>
+        </Button>
+        <p>Subtitle</p>
       </div>
     );
   }
@@ -39,5 +46,8 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const ConnectedSearchBar = connect(mapStateToProps, mapDispatchToProps)(SearchBar);
-export default ConnectedSearchBar;
+export default connect(mapStateToProps, mapDispatchToProps)(IndexPage);
+// export default compose(
+  // withRouter,
+  // connect(mapStateToProps, mapDispatchToProps)
+// )(IndexPage);

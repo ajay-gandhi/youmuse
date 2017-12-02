@@ -11,17 +11,23 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": ["./node_modules/eslint/bin/eslint.js"],
-    "*.jsx": ["./node_modules/eslint/bin/eslint.js"]
+    "*.js": [
+      "./node_modules/eslint/bin/eslint.js"
+    ],
+    "*.jsx": [
+      "./node_modules/eslint/bin/eslint.js"
+    ]
   },
   "dependencies": {
     "html-webpack-plugin": "^2.30.1",
     "path": "^0.12.7",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
+    "react-bootstrap": "^0.31.5",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
-    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "recompose": "^0.26.0",
     "redux": "^3.7.2",
     "webpack": "^3.9.1",
     "webpack-dev-server": "^2.9.5"
