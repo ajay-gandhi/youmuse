@@ -26,6 +26,8 @@
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "no-console": 1,
+        "react/jsx-uses-vars": 1
     }
 }
