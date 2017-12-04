@@ -7,11 +7,16 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { store, actions } from "./store/Store";
 
 import IndexPage from "./IndexPage";
-import SearchPage from "./SearchPage";
+import PlayerPage from "./PlayerPage";
 
+const pathRegex = /^\/[^\/]*/;
 const withMatchInState = (Component) => {
   return (props) => {
-    store.dispatch(actions.mergeState(props.match.params));
+    const activeTabIndex = props.location.pathname.match(pathRegex)[0] === "/search" ? 1 : 2;
+    store.dispatch(actions.mergeState({
+      activeTabIndex: activeTabIndex,
+      ...props.match.params,
+    }));
     return <Component />;
   };
 };
@@ -42,7 +47,7 @@ export default class YouMuseApp extends React.Component {
         <BrowserRouter>
           <Switch>
             <Route path="/" exact component={ IndexPage } />
-            <Route path="/search/:searchQuery?" exact component={ withMatchInState(SearchPage) } />
+            <Route path="/search/:searchQuery?" exact component={ withMatchInState(PlayerPage) } />
           </Switch>
         </BrowserRouter>
       </Provider>

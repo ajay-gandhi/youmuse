@@ -2,9 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { actions } from "./store/Store";
-import { Link } from "react-router-dom";
 
-import { Button } from "react-bootstrap";
 
 class SearchItem extends React.PureComponent {
   static propTypes = {
@@ -31,7 +29,6 @@ class SearchPage extends React.Component {
   static propTypes = {
     searchQuery: PropTypes.string,
     searchResults: PropTypes.arrayOf(PropTypes.object),
-    updateSearchQuery: PropTypes.func,
     getSearchResults: PropTypes.func,
     addItemToPlayList: PropTypes.func,
   };
@@ -55,19 +52,8 @@ class SearchPage extends React.Component {
     ));
 
     return (
-      <div>
-        <h1>YouMuse Search</h1>
-        <input
-          placeholder="Search YouTube..."
-          value={ this.props.searchQuery }
-          onChange={ this.handleSearchChange }
-        />
-        <Button>
-          <Link to={ `/search/${this.props.searchQuery}` }>Search</Link>
-        </Button>
-        <div className="searchResults">
-          { searchResults }
-        </div>
+      <div className="searchResults">
+        { searchResults }
       </div>
     );
   }
@@ -81,14 +67,9 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateSearchQuery: searchQuery => dispatch(actions.setSearchQuery(searchQuery)),
     getSearchResults: () => dispatch(actions.getSearchResults()),
     addItemToPlayList: (index) => dispatch(actions.moveItemToPlaylist(index)),
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);
-// export default compose(
-  // withRouter,
-  // connect(mapStateToProps, mapDispatchToProps)
-// )(SearchPage);
