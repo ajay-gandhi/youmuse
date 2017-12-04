@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { actions } from "./Store";
+import { actions } from "./store/Store";
 import { Link } from "react-router-dom";
 
 import { Button } from "react-bootstrap";
@@ -48,8 +48,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     updateSearchQuery: searchQuery => dispatch(actions.setSearchQuery(searchQuery)),
-    getSearchResults: () => {},
-    // getSearchResults: () => dispatch(actions.getSearchResults()),
+    getSearchResults: () => dispatch(actions.getSearchResults()),
   };
 };
 

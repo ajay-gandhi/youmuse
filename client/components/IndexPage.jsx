@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { actions } from "./Store";
+import { actions } from "./store/Store";
 import { Link } from "react-router-dom";
 // import { compose } from "recompose";
 
