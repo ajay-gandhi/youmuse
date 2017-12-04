@@ -41,13 +41,15 @@ export default class YouMuseApp extends React.Component {
   }
 
   render = () => {
+    const playerPage = withMatchInState(PlayerPage);
     if (!this.state.gapiLoaded) return <div />;
     return (
       <Provider store={ store }>
         <BrowserRouter>
           <Switch>
             <Route path="/" exact component={ IndexPage } />
-            <Route path="/search/:searchQuery?" exact component={ withMatchInState(PlayerPage) } />
+            <Route path="/search/:searchQuery?" exact component={ playerPage } />
+            <Route path="/playlist" exact component={ playerPage } />
           </Switch>
         </BrowserRouter>
       </Provider>

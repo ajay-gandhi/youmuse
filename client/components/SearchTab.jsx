@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { actions } from "./store/Store";
 
-
 class SearchItem extends React.PureComponent {
   static propTypes = {
     index: PropTypes.number,
@@ -25,21 +24,19 @@ class SearchItem extends React.PureComponent {
   }
 }
 
-class SearchPage extends React.Component {
+class SearchTab extends React.Component {
   static propTypes = {
     searchQuery: PropTypes.string,
     searchResults: PropTypes.arrayOf(PropTypes.object),
     getSearchResults: PropTypes.func,
     addItemToPlayList: PropTypes.func,
   };
-  constructor(props) {
-    super(props);
-    if (props.searchQuery) {
-      props.getSearchResults();
+
+  componentWillMount = () => {
+    if (this.props.searchQuery) {
+      this.props.getSearchResults();
     }
   }
-
-  handleSearchChange = e => this.props.updateSearchQuery(e.target.value)
 
   render = () => {
     const searchResults = this.props.searchResults.map((result, index) => (
@@ -72,4 +69,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchTab);

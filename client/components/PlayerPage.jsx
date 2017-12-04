@@ -1,24 +1,34 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { compose } from "recompose";
 import { connect } from "react-redux";
 import { actions } from "./store/Store";
-import { Link } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 
 import SearchTab from "./SearchTab";
+import PlaylistTab from "./PlaylistTab";
 import { Button, Nav, NavItem } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
 
 class PlayerPage extends React.Component {
   static propTypes = {
     activeTabIndex: PropTypes.number,
     searchQuery: PropTypes.string,
     updateSearchQuery: PropTypes.func,
+    history: PropTypes.object,
   };
 
   handleSearchChange = e => this.props.updateSearchQuery(e.target.value)
+  handleTabClick = (tab) => {
+    if (tab === 1) {
+      this.props.history.push(`/search/${this.props.searchQuery}`);
+    } else {
+      this.props.history.push("/playlist");
+    }
+  }
+
 
   render = () => {
-    const currentTab = this.props.activeTabIndex === 1 ? <SearchTab /> : <div />;
+    const currentTab = this.props.activeTabIndex === 1 ? <SearchTab /> : <PlaylistTab />;
     return (
       <div>
         <h1>YouMuse Search</h1>
@@ -30,13 +40,9 @@ class PlayerPage extends React.Component {
         <Button>
           <Link to={ `/search/${this.props.searchQuery}` }>Search</Link>
         </Button>
-        <Nav bsStyle="tabs" activeKey={ this.props.activeTabIndex }>
-          <LinkContainer to={ `/search/${this.props.searchQuery}` }>
-            <NavItem eventKey={ 1 }>Search</NavItem>
-          </LinkContainer>
-          <LinkContainer to="/playlist">
-            <NavItem eventKey={ 2 }>Playlist</NavItem>
-          </LinkContainer>
+        <Nav bsStyle="tabs" activeKey={ this.props.activeTabIndex } onSelect={ this.handleTabClick }>
+          <NavItem eventKey={ 1 }>Search</NavItem>
+          <NavItem eventKey={ 2 }>Playlist</NavItem>
         </Nav>
         { currentTab }
       </div>
@@ -56,4 +62,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PlayerPage);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(PlayerPage);
