@@ -24,6 +24,21 @@ const reducer = (state = INITIAL_STATE, action) => {
         shuffle: !state.shuffle
       };
 
+    case ACTION_TYPES.moveToPlaylist: {
+      const newItem = state.searchResults.results[action.index];
+      const newSearchResults = state.searchResults.results.slice();
+      newSearchResults.splice(action.index, 1);
+
+      return {
+        ...state,
+        playlist: state.playlist.slice().concat(newItem),
+        searchResults: {
+          isFetching: false,
+          results: newSearchResults,
+        },
+      };
+    }
+
     case ACTION_TYPES.mergeState:
       return {
         ...state,

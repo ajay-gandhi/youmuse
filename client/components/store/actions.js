@@ -14,6 +14,13 @@ const toggleRepeat = () => {
 const toggleShuffle = () => {
   return { type: ACTION_TYPES.toggleShuffle };
 };
+const moveItemToPlaylist = (index) => {
+  return {
+    type: ACTION_TYPES.moveToPlaylist,
+    index,
+  };
+};
+
 const mergeState = (newState) => {
   return {
     type: ACTION_TYPES.mergeState,
@@ -53,6 +60,7 @@ const getSearchResults = () => {
         "type": "vide",
       },
     }).then((response) => {
+      // Convert object to array
       dispatch(updateSearchResults(response.result.items));
     }, (reason) => {
       console.error(reason);
@@ -66,6 +74,7 @@ const actions = {
   toggleRepeat,
   toggleShuffle,
   mergeState,
+  moveItemToPlaylist,
 
   // Async
   getSearchResults,

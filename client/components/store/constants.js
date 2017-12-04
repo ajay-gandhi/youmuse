@@ -10,13 +10,14 @@ export const ACTION_TYPES = Object.freeze({
   toggleRepeat: "TOGGLE_REPEAT",
   toggleShuffle: "TOGGLE_SHUFFLE",
   mergeState: "MERGE_STATE",
+  moveToPlaylist: "MOVE_TO_PLAYLIST",
 });
 
 export const INITIAL_STATE = Object.freeze({
   searchQuery: "",
   repeat: REPEAT_STATE.off,
   shuffle: false,
-  rawList: [],
+  playlist: [],
   queue: [],
   searchResults: {
     isFetching: false,
