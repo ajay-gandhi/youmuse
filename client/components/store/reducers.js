@@ -39,6 +39,15 @@ const reducer = (state = INITIAL_STATE, action) => {
       };
     }
 
+    case ACTION_TYPES.removeItemFromPlaylist: {
+      const newPlaylist = state.playlist.slice();
+      newPlaylist.splice(action.index, 1);
+      return {
+        ...state,
+        playlist: newPlaylist,
+      };
+    }
+
     case ACTION_TYPES.mergeState:
       return {
         ...state,

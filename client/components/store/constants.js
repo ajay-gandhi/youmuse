@@ -11,6 +11,7 @@ export const ACTION_TYPES = Object.freeze({
   toggleShuffle: "TOGGLE_SHUFFLE",
   mergeState: "MERGE_STATE",
   moveToPlaylist: "MOVE_TO_PLAYLIST",
+  removeItemFromPlaylist: "REMOVE_ITEM_FROM_PLAYLIST",
 });
 
 export const INITIAL_STATE = Object.freeze({

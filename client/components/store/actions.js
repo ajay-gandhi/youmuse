@@ -20,6 +20,12 @@ const moveItemToPlaylist = (index) => {
     index,
   };
 };
+const removeItemFromPlaylist = (index) => {
+  return {
+    type: ACTION_TYPES.removeItemFromPlaylist,
+    index,
+  };
+};
 
 const mergeState = (newState) => {
   return {
@@ -60,7 +66,6 @@ const getSearchResults = () => {
         "type": "vide",
       },
     }).then((response) => {
-      // Convert object to array
       dispatch(updateSearchResults(response.result.items));
     }, (reason) => {
       console.error(reason);
@@ -75,6 +80,7 @@ const actions = {
   toggleShuffle,
   mergeState,
   moveItemToPlaylist,
+  removeItemFromPlaylist,
 
   // Async
   getSearchResults,
