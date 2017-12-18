@@ -11,7 +11,7 @@ import { Button, Tabs, Tab} from "react-bootstrap";
 
 class PlayerPage extends React.Component {
   static propTypes = {
-    activeTabIndex: PropTypes.number,
+    playlist: PropTypes.arrayOf(PropTypes.object),
     searchQuery: PropTypes.string,
     updateSearchQuery: PropTypes.func,
     history: PropTypes.object,
@@ -24,7 +24,7 @@ class PlayerPage extends React.Component {
     }
   }
   handleTabClick = (tab) => {
-    const request = tab === "search" ? this.props.searchQuery : "";
+    const request = tab === "search" ? this.props.searchQuery : this.props.playlist.map(item => item.id.videoId).join(",");
     const route = `/${tab}/${request}`;
     this.props.history.push(route);
   }
@@ -57,7 +57,7 @@ class PlayerPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    // activeTabIndex: state.activeTabIndex,
+    playlist: state.playlist,
     searchQuery: state.searchQuery || "",
   };
 };

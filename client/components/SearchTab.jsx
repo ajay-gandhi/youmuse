@@ -15,10 +15,12 @@ class SearchItem extends React.PureComponent {
   }
 
   render = () => {
+    const item = this.props.searchResult.snippet;
     return (
       <div onClick={ this.handleClick } style={ { border: "1px solid blue" } }>
-        <h2>{ this.props.searchResult.snippet.title }</h2>
-        <h3>{ this.props.searchResult.snippet.channelTitle }</h3>
+        <img src={ item.thumbnails.default.url } />
+        <h2>{ item.title }</h2>
+        <h3>{ item.channelTitle }</h3>
       </div>
     );
   }
@@ -34,6 +36,11 @@ class SearchTab extends React.Component {
 
   componentWillMount = () => {
     if (this.props.searchQuery) {
+      this.props.getSearchResults();
+    }
+  }
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.searchQuery !== this.props.searchQuery) {
       this.props.getSearchResults();
     }
   }
