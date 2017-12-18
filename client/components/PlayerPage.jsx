@@ -7,7 +7,7 @@ import { withRouter, Link } from "react-router-dom";
 
 import SearchTab from "./SearchTab";
 import PlaylistTab from "./PlaylistTab";
-import { Button, Nav, NavItem } from "react-bootstrap";
+import { Button, Tabs, Tab} from "react-bootstrap";
 
 class PlayerPage extends React.Component {
   static propTypes = {
@@ -18,17 +18,18 @@ class PlayerPage extends React.Component {
   };
 
   handleSearchChange = e => this.props.updateSearchQuery(e.target.value)
-  handleTabClick = (tab) => {
-    if (tab === 1) {
+  handleKeyPress = (e) => {
+    if (e.key === "Enter") {
       this.props.history.push(`/search/${this.props.searchQuery}`);
-    } else {
-      this.props.history.push("/playlist");
     }
+  }
+  handleTabClick = (tab) => {
+    // const route = tab === 1 ? `/search/${this.props.searchQuery}` : "/playlist";
+    // this.props.history.push(route);
   }
 
 
   render = () => {
-    const currentTab = this.props.activeTabIndex === 1 ? <SearchTab /> : <PlaylistTab />;
     return (
       <div>
         <h1>YouMuse Search</h1>
@@ -36,15 +37,19 @@ class PlayerPage extends React.Component {
           placeholder="Search YouTube..."
           value={ this.props.searchQuery }
           onChange={ this.handleSearchChange }
+          onKeyPress={ this.handleKeyPress }
         />
         <Button>
           <Link to={ `/search/${this.props.searchQuery}` }>Search</Link>
         </Button>
-        <Nav bsStyle="tabs" activeKey={ this.props.activeTabIndex } onSelect={ this.handleTabClick }>
-          <NavItem eventKey={ 1 }>Search</NavItem>
-          <NavItem eventKey={ 2 }>Playlist</NavItem>
-        </Nav>
-        { currentTab }
+        <Tabs activeKey={ this.props.page } onSelect={ this.handleTabClick } id="PlayerNavigation">
+          <Tab eventKey="search" title="Search">
+            <SearchTab />
+          </Tab>
+          <Tab eventKey="playlist" title="Playlist">
+            <PlaylistTab />
+          </Tab>
+        </Tabs>
       </div>
     );
   }
@@ -52,7 +57,7 @@ class PlayerPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    activeTabIndex: state.activeTabIndex,
+    // activeTabIndex: state.activeTabIndex,
     searchQuery: state.searchQuery || "",
   };
 };

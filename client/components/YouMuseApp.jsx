@@ -9,14 +9,9 @@ import { store, actions } from "./store/Store";
 import IndexPage from "./IndexPage";
 import PlayerPage from "./PlayerPage";
 
-const pathRegex = /^\/[^\/]*/;
 const withMatchInState = (Component) => {
   return (props) => {
-    const activeTabIndex = props.location.pathname.match(pathRegex)[0] === "/search" ? 1 : 2;
-    store.dispatch(actions.mergeState({
-      activeTabIndex: activeTabIndex,
-      ...props.match.params,
-    }));
+    store.dispatch(actions.mergeState(props.match.params));
     return <Component />;
   };
 };
