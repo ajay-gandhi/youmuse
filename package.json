@@ -10,6 +10,9 @@
     "start": "webpack-dev-server",
     "precommit": "lint-staged"
   },
+  "engine": {
+    "node": "9.2.0"
+  },
   "lint-staged": {
     "*.js": [
       "./node_modules/eslint/bin/eslint.js"
@@ -19,6 +22,7 @@
     ]
   },
   "dependencies": {
+    "express": "^4.16.2",
     "html-webpack-plugin": "^2.30.1",
     "path": "^0.12.7",
     "prop-types": "^15.6.0",
@@ -33,7 +37,8 @@
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "webpack": "^3.9.1",
-    "webpack-dev-server": "^2.9.5"
+    "webpack-dev-server": "^2.9.5",
+    "ytdl-core": "^0.18.4"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
