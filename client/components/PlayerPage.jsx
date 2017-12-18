@@ -24,10 +24,10 @@ class PlayerPage extends React.Component {
     }
   }
   handleTabClick = (tab) => {
-    // const route = tab === 1 ? `/search/${this.props.searchQuery}` : "/playlist";
-    // this.props.history.push(route);
+    const request = tab === "search" ? this.props.searchQuery : "";
+    const route = `/${tab}/${request}`;
+    this.props.history.push(route);
   }
-
 
   render = () => {
     return (
