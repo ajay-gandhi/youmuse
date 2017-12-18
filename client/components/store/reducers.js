@@ -1,5 +1,29 @@
 import { ACTION_TYPES, INITIAL_STATE, REPEAT_STATE } from "./constants";
 
+/*
+const MAX_QUEUE_SIZE = 20;
+const buildQueue = (playlist, currentSong, shuffle, repeat) => {
+  if (repeat === REPEAT_STATE.one) return Array(MAX_QUEUE_SIZE).fill(currentSong);
+
+  let queue = playlist.slice(0, MAX_QUEUE_SIZE);
+  if (repeat === REPEAT_STATE.all && queue.length < MAX_QUEUE_SIZE) {
+    const numExtraItems = queue.length - MAX_QUEUE_SIZE;
+    queue = queue.concat(playlist.slice(0, numExtraItems));
+  }
+
+  if (shuffle) {
+    for (let i = queue.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = queue[i];
+      queue[i] = queue[j];
+      queue[j] = temp;
+    }
+  }
+
+  return queue;
+};
+*/
+
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ACTION_TYPES.setSearchQuery:
@@ -24,27 +48,19 @@ const reducer = (state = INITIAL_STATE, action) => {
         shuffle: !state.shuffle
       };
 
-    case ACTION_TYPES.moveToPlaylist: {
-      const newItem = state.searchResults.results[action.index];
-      const newSearchResults = state.searchResults.results.slice();
-      newSearchResults.splice(action.index, 1);
-
+    case ACTION_TYPES.updatePlaylist: {
       return {
         ...state,
-        playlist: state.playlist.slice().concat(newItem),
-        searchResults: {
-          isFetching: false,
-          results: newSearchResults,
-        },
+        playlist: action.playlist,
       };
     }
 
     case ACTION_TYPES.removeItemFromPlaylist: {
-      const newPlaylist = state.playlist.slice();
-      newPlaylist.splice(action.index, 1);
+      const playlist = state.playlist.slice();
+      playlist.splice(action.index, 1);
       return {
         ...state,
-        playlist: newPlaylist,
+        playlist,
       };
     }
 

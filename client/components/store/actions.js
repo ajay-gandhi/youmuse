@@ -1,4 +1,5 @@
 /* global gapi */
+import fetch from "cross-fetch";
 import { ACTION_TYPES } from "./constants";
 
 /** Sync actions **/
@@ -14,10 +15,10 @@ const toggleRepeat = () => {
 const toggleShuffle = () => {
   return { type: ACTION_TYPES.toggleShuffle };
 };
-const moveItemToPlaylist = (index) => {
+const updatePlaylist = (playlist) => {
   return {
-    type: ACTION_TYPES.moveToPlaylist,
-    index,
+    type: ACTION_TYPES.updatePlaylist,
+    playlist,
   };
 };
 const removeItemFromPlaylist = (index) => {
@@ -56,7 +57,6 @@ const updateSearchResults = (data) => {
 const getSearchResults = () => {
   return (dispatch, getState) => {
     dispatch(requestSearchResults());
-    // const searchQuery = getState().searchQuery;
     return gapi.client.request({
       "path": "https://www.googleapis.com/youtube/v3/search",
       "params": {
@@ -69,6 +69,25 @@ const getSearchResults = () => {
       dispatch(updateSearchResults(response.result.items));
     }, (reason) => {
       console.error(reason);
+    });
+  };
+};
+const moveItemToPlaylist = (index) => {
+  return (dispatch, getState) => {
+    const newItem = getState().searchResults.results[index];
+    const newSearchResults = getState().searchResults.results.slice();
+    newSearchResults.splice(index, 1);
+    dispatch(updateSearchResults(newSearchResults));
+
+    return fetch(`http://localhost:8000/getAudioUrl?videoId=${newItem.id.videoId}`).then(
+      response => response.json(),
+      error => console.log("Error fetching audio", error)
+    ).then((json) => {
+      newItem.audio = {
+        duration: json.duration,
+        url: json.url,
+      };
+      dispatch(updatePlaylist(getState().playlist.concat(newItem)));
     });
   };
 };

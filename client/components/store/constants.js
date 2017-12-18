@@ -10,7 +10,7 @@ export const ACTION_TYPES = Object.freeze({
   toggleRepeat: "TOGGLE_REPEAT",
   toggleShuffle: "TOGGLE_SHUFFLE",
   mergeState: "MERGE_STATE",
-  moveToPlaylist: "MOVE_TO_PLAYLIST",
+  updatePlaylist: "UPDATE_PLAYLIST",
   removeItemFromPlaylist: "REMOVE_ITEM_FROM_PLAYLIST",
 });
 
