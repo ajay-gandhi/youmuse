@@ -48,19 +48,15 @@ const reducer = (state = INITIAL_STATE, action) => {
         shuffle: !state.shuffle
       };
 
-    case ACTION_TYPES.updatePlaylist: {
-      return {
-        ...state,
-        playlist: action.playlist,
-      };
-    }
-
     case ACTION_TYPES.removeItemFromPlaylist: {
-      const playlist = state.playlist.slice();
-      playlist.splice(action.index, 1);
+      const items = state.playlist.items.slice();
+      items.splice(action.index, 1);
       return {
         ...state,
-        playlist,
+        playlist: {
+          isFetching: state.playlist.isFetching,
+          items,
+        },
       };
     }
 

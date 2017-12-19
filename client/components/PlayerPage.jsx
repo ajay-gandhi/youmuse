@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { connect } from "react-redux";
 import { actions } from "./store/Store";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import SearchTab from "./SearchTab";
 import PlaylistTab from "./PlaylistTab";
@@ -13,20 +13,58 @@ class PlayerPage extends React.Component {
   static propTypes = {
     playlist: PropTypes.arrayOf(PropTypes.object),
     searchQuery: PropTypes.string,
+    shuffle: PropTypes.bool,
+    repeat: PropTypes.number,
     updateSearchQuery: PropTypes.func,
+    mergeState: PropTypes.func,
+    fetchSearchResults: PropTypes.func,
+    fetchPlaylist: PropTypes.func,
     history: PropTypes.object,
+    match: PropTypes.object,
   };
+  state = {
+    currentPage: "search",
+  };
+
+  componentWillMount = () => {
+    if (this.props.match.params.searchQuery) {
+      this.props.updateSearchQuery(this.props.match.params.searchQuery);
+      this.props.fetchSearchResults();
+    }
+    if (this.props.match.params.encodedPlaylist) {
+      this.setState({ currentPage: "playlist" });
+      const parts = this.props.match.params.encodedPlaylist.split("&");
+      const playlistState = {
+        shuffle: parts[1] === 1,
+        repeat: Number(parts[2]),
+      };
+      this.props.mergeState(playlistState);
+      if (parts[0]) this.props.fetchPlaylist(parts[0].split(","));
+    }
+  }
+
+  encodePlaylist = () => {
+    if (this.props.playlist.length > 0) {
+      const videoIds = this.props.playlist.map(video => video.id);
+      return `${videoIds.join(",")}&${Number(this.props.shuffle)}&${this.props.repeat}`;
+    } else {
+      return "";
+    }
+  }
 
   handleSearchChange = e => this.props.updateSearchQuery(e.target.value)
   handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      this.props.history.push(`/search/${this.props.searchQuery}`);
-    }
+    if (e.key === "Enter") this.handleSearchClick();
+  }
+  handleSearchClick = () => {
+    this.props.history.push(`/search/${this.props.searchQuery}`);
+    this.props.fetchSearchResults();
   }
   handleTabClick = (tab) => {
-    const request = tab === "search" ? this.props.searchQuery : this.props.playlist.map(item => item.id.videoId).join(",");
+    const request = tab === "search" ? this.props.searchQuery : this.encodePlaylist();
     const route = `/${tab}/${request}`;
     this.props.history.push(route);
+    this.setState({ currentPage: tab });
   }
 
   render = () => {
@@ -39,10 +77,8 @@ class PlayerPage extends React.Component {
           onChange={ this.handleSearchChange }
           onKeyPress={ this.handleKeyPress }
         />
-        <Button>
-          <Link to={ `/search/${this.props.searchQuery}` }>Search</Link>
-        </Button>
-        <Tabs activeKey={ this.props.page } onSelect={ this.handleTabClick } id="PlayerNavigation">
+        <Button onClick={ this.handleSearchClick }>Search</Button>
+        <Tabs activeKey={ this.state.currentPage } onSelect={ this.handleTabClick } id="PlayerNavigation">
           <Tab eventKey="search" title="Search">
             <SearchTab />
           </Tab>
@@ -57,13 +93,18 @@ class PlayerPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    playlist: state.playlist,
+    playlist: state.playlist.items,
     searchQuery: state.searchQuery || "",
+    shuffle: state.shuffle,
+    repeat: state.repeat,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     updateSearchQuery: searchQuery => dispatch(actions.setSearchQuery(searchQuery)),
+    mergeState: newState => dispatch(actions.mergeState(newState)),
+    fetchSearchResults: () => dispatch(actions.fetchSearchResults()),
+    fetchPlaylist: videoIds => dispatch(actions.fetchPlaylist(videoIds)),
   };
 };
 

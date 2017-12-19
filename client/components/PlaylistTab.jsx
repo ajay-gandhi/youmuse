@@ -34,7 +34,7 @@ class PlaylistTab extends React.Component {
   render = () => {
     const playlistItems = this.props.playlist.map((item, index) => (
       <PlaylistItem
-        key={ item.id.videoId }
+        key={ item.id }
         item={ item }
         index={ index }
         removeItemFromPlaylist={ this.props.removeItemFromPlaylist }
@@ -51,7 +51,7 @@ class PlaylistTab extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    playlist: state.playlist,
+    playlist: state.playlist.items,
   };
 };
 const mapDispatchToProps = (dispatch) => {

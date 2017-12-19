@@ -4,17 +4,10 @@ import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import { store, actions } from "./store/Store";
+import { store } from "./store/Store";
 
 import IndexPage from "./IndexPage";
 import PlayerPage from "./PlayerPage";
-
-const withMatchInState = (Component) => {
-  return (props) => {
-    store.dispatch(actions.mergeState(props.match.params));
-    return <Component />;
-  };
-};
 
 export default class YouMuseApp extends React.Component {
   state = {
@@ -36,15 +29,14 @@ export default class YouMuseApp extends React.Component {
   }
 
   render = () => {
-    const playerPage = withMatchInState(PlayerPage);
     if (!this.state.gapiLoaded) return <div />;
     return (
       <Provider store={ store }>
         <BrowserRouter>
           <Switch>
             <Route path="/" exact component={ IndexPage } />
-            <Route path="/search/:searchQuery?" exact component={ playerPage } />
-            <Route path="/playlist" exact component={ playerPage } />
+            <Route path="/search/:searchQuery?" exact component={ PlayerPage } />
+            <Route path="/playlist/:encodedPlaylist?" exact component={ PlayerPage } />
           </Switch>
         </BrowserRouter>
       </Provider>

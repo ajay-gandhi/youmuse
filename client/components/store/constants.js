@@ -18,8 +18,11 @@ export const INITIAL_STATE = Object.freeze({
   searchQuery: "",
   repeat: REPEAT_STATE.off,
   shuffle: false,
-  playlist: [],
   queue: [],
+  playlist: {
+    isFetching: false,
+    items: [],
+  },
   searchResults: {
     isFetching: false,
     results: [],

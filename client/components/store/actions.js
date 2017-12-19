@@ -15,12 +15,6 @@ const toggleRepeat = () => {
 const toggleShuffle = () => {
   return { type: ACTION_TYPES.toggleShuffle };
 };
-const updatePlaylist = (playlist) => {
-  return {
-    type: ACTION_TYPES.updatePlaylist,
-    playlist,
-  };
-};
 const removeItemFromPlaylist = (index) => {
   return {
     type: ACTION_TYPES.removeItemFromPlaylist,
@@ -53,8 +47,25 @@ const updateSearchResults = (data) => {
   });
 };
 
+const requestPlaylist = () => {
+  return mergeState({
+    playlist: {
+      isFetching: true,
+      items: [],
+    },
+  });
+};
+const updatePlaylist = (data) => {
+  return mergeState({
+    playlist: {
+      isFetching: false,
+      items: data,
+    },
+  });
+};
+
 /** Async actions **/
-const getSearchResults = () => {
+const fetchSearchResults = () => {
   return (dispatch, getState) => {
     dispatch(requestSearchResults());
     return gapi.client.request({
@@ -63,23 +74,55 @@ const getSearchResults = () => {
         "part": "snippet",
         "q": getState().searchQuery,
         "maxResults": 10,
-        "type": "vide",
+        "type": "video",
       },
     }).then((response) => {
-      dispatch(updateSearchResults(response.result.items));
+      const mapped = response.result.items.map((item) => {
+        return {
+          ...item,
+          id: item.id.videoId,
+        };
+      });
+      dispatch(updateSearchResults(mapped));
     }, (reason) => {
-      console.error(reason);
+      console.log(reason);
+    });
+  };
+};
+const fetchPlaylist = (videoIds) => {
+  return (dispatch) => {
+    dispatch(requestPlaylist());
+    gapi.client.request({
+      "path": "https://www.googleapis.com/youtube/v3/videos",
+      "params": {
+        "part": "snippet",
+        "id": videoIds.join(","),
+      },
+    }).then((response) => {
+      // Get audio URLs for items
+      return Promise.all(response.result.items.map((item) => {
+        return fetch(`http://localhost:8000/getAudioUrl?videoId=${item.id}`).then(
+          response => response.json(),
+          error => console.log("Error fetching audio", error)
+        ).then(audio => ({ ...item, audio }));
+      }));
+    }, (error) => {
+      console.log(error);
+    }).then((items) => {
+      dispatch(updatePlaylist(items));
     });
   };
 };
 const moveItemToPlaylist = (index) => {
   return (dispatch, getState) => {
+    dispatch(requestPlaylist());
+
     const newItem = getState().searchResults.results[index];
     const newSearchResults = getState().searchResults.results.slice();
     newSearchResults.splice(index, 1);
     dispatch(updateSearchResults(newSearchResults));
 
-    return fetch(`http://localhost:8000/getAudioUrl?videoId=${newItem.id.videoId}`).then(
+    return fetch(`http://localhost:8000/getAudioUrl?videoId=${newItem.id}`).then(
       response => response.json(),
       error => console.log("Error fetching audio", error)
     ).then((json) => {
@@ -87,7 +130,7 @@ const moveItemToPlaylist = (index) => {
         duration: json.duration,
         url: json.url,
       };
-      dispatch(updatePlaylist(getState().playlist.concat(newItem)));
+      dispatch(updatePlaylist(getState().playlist.items.concat(newItem)));
     });
   };
 };
@@ -98,10 +141,11 @@ const actions = {
   toggleRepeat,
   toggleShuffle,
   mergeState,
-  moveItemToPlaylist,
   removeItemFromPlaylist,
 
   // Async
-  getSearchResults,
+  fetchSearchResults,
+  fetchPlaylist,
+  moveItemToPlaylist,
 };
 export default actions;

@@ -30,25 +30,14 @@ class SearchTab extends React.Component {
   static propTypes = {
     searchQuery: PropTypes.string,
     searchResults: PropTypes.arrayOf(PropTypes.object),
-    getSearchResults: PropTypes.func,
+    fetchSearchResults: PropTypes.func,
     addItemToPlayList: PropTypes.func,
   };
-
-  componentWillMount = () => {
-    if (this.props.searchQuery) {
-      this.props.getSearchResults();
-    }
-  }
-  componentWillReceiveProps = (nextProps) => {
-    if (nextProps.searchQuery !== this.props.searchQuery) {
-      this.props.getSearchResults();
-    }
-  }
 
   render = () => {
     const searchResults = this.props.searchResults.map((result, index) => (
       <SearchItem
-        key={ result.id.videoId }
+        key={ result.id }
         searchResult={ result }
         index={ index }
         addToPlayList={ this.props.addItemToPlayList }
@@ -71,7 +60,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    getSearchResults: () => dispatch(actions.getSearchResults()),
+    fetchSearchResults: () => dispatch(actions.fetchSearchResults()),
     addItemToPlayList: (index) => dispatch(actions.moveItemToPlaylist(index)),
   };
 };
