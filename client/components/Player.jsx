@@ -11,6 +11,7 @@ class AudioElement extends React.Component {
     src: PropTypes.string,
     isPlaying: PropTypes.bool,
     setIsPlaying: PropTypes.func,
+    nextSong: PropTypes.func,
   };
 
   componentWillReceiveProps = (nextProps) => {
@@ -28,22 +29,26 @@ class AudioElement extends React.Component {
   setAudioElement = (ref) => { this.audioElement = ref.audioEl; }
 
   render = () => {
-    return <ReactAudioPlayer ref={ this.setAudioElement } { ...this.props } />;
+    return (
+      <ReactAudioPlayer
+        ref={ this.setAudioElement }
+        onEnded={ this.props.nextSong }
+        src={ this.props.src || "" }
+        controls={ true }
+      />
+    );
   }
 }
 const mapStateToAudioElementProps = (state) => {
-  const props = {
-    controls: true,
+  return {
     isPlaying: state.isPlaying,
+    src: state.currentSong ? state.currentSong.audio.url : null,
   };
-  if (state.currentSong) {
-    props.src = state.currentSong.audio.url;
-  }
-  return props;
 };
 const mapDispatchToAudioElementProps = (dispatch) => {
   return {
     setIsPlaying: isPlaying => dispatch(actions.setIsPlaying(isPlaying)),
+    nextSong: () => dispatch(actions.nextSong()),
   };
 };
 const ConnectedAudioElement = connect(mapStateToAudioElementProps, mapDispatchToAudioElementProps)(AudioElement);
@@ -51,9 +56,14 @@ const ConnectedAudioElement = connect(mapStateToAudioElementProps, mapDispatchTo
 class Player extends React.Component {
   static propTypes = {
     isPlaying: PropTypes.bool,
+    shuffle: PropTypes.bool,
+    repeat: PropTypes.number,
+
     handleTogglePlay: PropTypes.func,
     handleNextClick: PropTypes.func,
     handlePreviousClick: PropTypes.func,
+    toggleShuffle: PropTypes.func,
+    toggleRepeat: PropTypes.func,
   };
 
   render = () => {
@@ -62,6 +72,8 @@ class Player extends React.Component {
         <Button onClick={ this.props.handlePreviousClick }>Previous</Button>
         <Button onClick={ this.props.handleTogglePlay }>{ this.props.isPlaying ? "Pause" : "Play" }</Button>
         <Button onClick={ this.props.handleNextClick }>Next</Button>
+        <Button onClick={ this.props.toggleShuffle }>Shuffle is { this.props.shuffle ? "on" : "off" }</Button>
+        <Button onClick={ this.props.toggleRepeat }>Repeat is { this.props.repeat }</Button>
         <ConnectedAudioElement />
       </div>
     );
@@ -71,6 +83,8 @@ class Player extends React.Component {
 const mapStateToPlayerProps = (state) => {
   return {
     isPlaying: state.isPlaying,
+    shuffle: state.shuffle,
+    repeat: state.repeat,
   };
 };
 const mapDispatchToPlayerProps = (dispatch) => {
@@ -78,6 +92,8 @@ const mapDispatchToPlayerProps = (dispatch) => {
     handleTogglePlay: () => dispatch(actions.setIsPlaying()),
     handleNextClick: () => dispatch(actions.nextSong()),
     handlePreviousClick: () => dispatch(actions.previousSong()),
+    toggleShuffle: () => dispatch(actions.toggleShuffle()),
+    toggleRepeat: () => dispatch(actions.toggleRepeat()),
   };
 };
 

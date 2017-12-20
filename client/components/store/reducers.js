@@ -1,123 +1,11 @@
 import { ACTION_TYPES, INITIAL_STATE, REPEAT_STATE } from "./constants";
-
-// Queue utilities
-const MAX_QUEUE_SIZE = 20;
-const copyArray = arr => arr.map(item => ({ ...item }));
-const shuffleArray = (arr) => {
-  // Assumes array contains objects
-  const newArr = copyArray(arr);
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
-  }
-  return newArr;
-};
-const buildQueueItems = (playlist, numQueueItems, currentSong, shuffle, repeat) => {
-  switch (repeat) {
-    case REPEAT_STATE.one:
-      return {
-        playlist: {
-          isFetching: playlist.isFetching,
-          round: 0,
-          items: playlist.items.map(item => ({ ...item, playCount: 0 })),
-        },
-        queue: Array(numQueueItems).fill(currentSong),
-      };
-
-    case REPEAT_STATE.all: {
-      let result = {
-        playlist: {
-          ...playlist,
-          round: playlist.round - 1,
-        },
-        queue: [],
-      };
-
-      // Continue filling queue until reaches max
-      while (result.queue.length < numQueueItems) {
-        result.playlist.round++;
-        const playlistItems  = shuffle ? shuffleArray(result.playlist.items) : copyArray(result.playlist.items);
-        result = playlistItems.reduce((memo, item, index) => {
-          // Only select item if it has not been played this round
-          // And queue has space
-          if (item.playCount <= memo.playlist.round && memo.queue.length < 20) {
-            const newItem = {
-              ...item,
-              playCount: item.playCount + 1,
-            };
-            const newItems = memo.playlist.items.slice();
-            newItems[index] = newItem;
-            return {
-              playlist: {
-                ...memo.playlist,
-                items: newItems,
-              },
-              queue: memo.queue.concat(newItem),
-            };
-          } else {
-            const newItems = memo.playlist.items.slice();
-            newItems[index] = item;
-            return {
-              ...memo,
-              playlist: {
-                ...memo.playlist,
-                items: newItems,
-              },
-            };
-          }
-        }, result);
-      }
-      return result;
-    }
-
-    case REPEAT_STATE.off:
-    default: {
-      const playlistItems  = shuffle ? shuffleArray(playlist.items) : copyArray(playlist.items);
-      return playlistItems.reduce((memo, item) => {
-        // Only select item if it has not been played this round
-        // And queue has space
-        if (item.playCount <= memo.playlist.round && memo.queue.length < numQueueItems) {
-          const newItem = {
-            ...item,
-            playCount: item.playCount + 1,
-          };
-          return {
-            playlist: {
-              ...memo.playlist,
-              items: memo.playlist.items.concat(newItem),
-            },
-            queue: memo.queue.concat(newItem),
-          };
-        } else {
-          return {
-            ...memo,
-            playlist: {
-              ...memo.playlist,
-              items: memo.playlist.items.concat(item),
-            },
-          };
-        }
-      }, {
-        playlist: {
-          isFetching: playlist.isFetching,
-          round: playlist.round,
-          items: [],
-        },
-        queue: [],
-      });
-    }
-  }
-};
-const createQueue = (playlist, currentSong, shuffle, repeat) => {
-  return buildQueueItems(playlist, MAX_QUEUE_SIZE, currentSong, shuffle, repeat);
-};
-const refillQueue = (playlist, queue, currentSong, shuffle, repeat) => {
-  const result = buildQueueItems(playlist, MAX_QUEUE_SIZE - queue.length, currentSong, shuffle, repeat);
-  return {
-    playlist: result.playlist,
-    queue: queue.concat(result.queue),
-  };
-};
+import {
+  MAX_QUEUE_SIZE,
+  createQueue,
+  refillQueue,
+  removeFromQueue,
+  copyArray
+} from "./queueUtils";
 
 // Reducer
 const reducer = (state = INITIAL_STATE, action) => {
@@ -135,7 +23,7 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         repeat,
-        ...createQueue(state.playlist, state.currentSong, state.shuffle, repeat),
+        ...createQueue(state.playlist, state.currentSong, state.shuffle, repeat, state.queue),
       };
     }
 
@@ -143,7 +31,7 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         shuffle: !state.shuffle,
-        ...createQueue(state.playlist, state.currentSong, state.shuffle, state.repeat),
+        ...createQueue(state.playlist, state.currentSong, state.shuffle, state.repeat, state.queue),
       };
 
     case ACTION_TYPES.setIsPlaying:
@@ -155,10 +43,13 @@ const reducer = (state = INITIAL_STATE, action) => {
     case ACTION_TYPES.previousSong: {
       const previousSong = state.playHistory[state.playHistory.length - 1];
       if (previousSong) {
-        const queue = copyArray(state.queue);
+        let playlist = state.playlist;
+        let queue = copyArray(state.queue);
         if (state.currentSong) {
           queue.unshift(state.currentSong);
-          if (queue.length > MAX_QUEUE_SIZE) queue.pop();
+          if (queue.length > MAX_QUEUE_SIZE) {
+            ({ playlist, queue } = removeFromQueue(playlist, queue, queue.length - 1));
+          }
         }
         const currentSong = { ...previousSong };
         const playHistory = state.playHistory.slice(0, state.playHistory.length - 1);
@@ -169,8 +60,22 @@ const reducer = (state = INITIAL_STATE, action) => {
           currentSong,
           ...refillQueue(state.playlist, queue, currentSong, state.shuffle, state.repeat),
         };
+      } else if (state.currentSong) {
+        let playlist = state.playlist;
+        let queue = copyArray(state.playHistory);
+        queue.unshift(state.currentSong);
+        if (queue.length > MAX_QUEUE_SIZE) {
+          ({ playlist, queue } = removeFromQueue(playlist, queue, queue.length - 1));
+        }
+        const currentSong = null;
+
+        return {
+          ...state,
+          isPlaying: false,
+          queue,
+          currentSong,
+        };
       } else {
-        console.log("fail, no previous song");
         return state;
       }
     }
@@ -181,7 +86,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         const playHistory = copyArray(state.playHistory);
         if (state.currentSong) playHistory.push(state.currentSong);
         const currentSong = { ...nextSong };
-        const queue = state.queue.slice(1);
+        const queue = copyArray(state.queue).slice(1);
 
         return {
           ...state,
@@ -189,8 +94,18 @@ const reducer = (state = INITIAL_STATE, action) => {
           currentSong,
           ...refillQueue(state.playlist, queue, currentSong, state.shuffle, state.repeat),
         };
+      } else if (state.currentSong) {
+        const playHistory = copyArray(state.playHistory);
+        playHistory.push(state.currentSong);
+        const currentSong = null;
+
+        return {
+          ...state,
+          isPlaying: false,
+          playHistory,
+          currentSong,
+        };
       } else {
-        console.log("fail, no next song");
         return state;
       }
     }
