@@ -9,7 +9,9 @@ export const ACTION_TYPES = Object.freeze({
   setSearchQuery: "SET_SEARCH_QUERY",
   toggleRepeat: "TOGGLE_REPEAT",
   toggleShuffle: "TOGGLE_SHUFFLE",
+  nextSong: "NEXT_SONG",
   mergeState: "MERGE_STATE",
+  requestPlaylist: "REQUEST_PLAYLIST",
   updatePlaylist: "UPDATE_PLAYLIST",
   removeItemFromPlaylist: "REMOVE_ITEM_FROM_PLAYLIST",
 });
@@ -19,8 +21,10 @@ export const INITIAL_STATE = Object.freeze({
   repeat: REPEAT_STATE.off,
   shuffle: false,
   queue: [],
+  playHistory: [],
   playlist: {
     isFetching: false,
+    round: 0,
     items: [],
   },
   searchResults: {

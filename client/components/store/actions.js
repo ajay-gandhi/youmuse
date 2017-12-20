@@ -21,6 +21,11 @@ const removeItemFromPlaylist = (index) => {
     index,
   };
 };
+const nextSong = () => {
+  return {
+    type: ACTION_TYPES.nextSong,
+  };
+};
 
 const mergeState = (newState) => {
   return {
@@ -48,20 +53,15 @@ const updateSearchResults = (data) => {
 };
 
 const requestPlaylist = () => {
-  return mergeState({
-    playlist: {
-      isFetching: true,
-      items: [],
-    },
-  });
+  return {
+    type: ACTION_TYPES.requestPlaylist,
+  };
 };
-const updatePlaylist = (data) => {
-  return mergeState({
-    playlist: {
-      isFetching: false,
-      items: data,
-    },
-  });
+const updatePlaylist = (items) => {
+  return {
+    type: ACTION_TYPES.updatePlaylist,
+    items,
+  };
 };
 
 /** Async actions **/
@@ -104,7 +104,13 @@ const fetchPlaylist = (videoIds) => {
         return fetch(`http://localhost:8000/getAudioUrl?videoId=${item.id}`).then(
           response => response.json(),
           error => console.log("Error fetching audio", error)
-        ).then(audio => ({ ...item, audio }));
+        ).then((audio) => {
+          return {
+            ...item,
+            playCount: 0,
+            audio
+          };
+        });
       }));
     }, (error) => {
       console.log(error);
@@ -126,11 +132,15 @@ const moveItemToPlaylist = (index) => {
       response => response.json(),
       error => console.log("Error fetching audio", error)
     ).then((json) => {
-      newItem.audio = {
-        duration: json.duration,
-        url: json.url,
+      const playlistItem = {
+        ...newItem,
+        playCount: 0,
+        audio: {
+          duration: json.duration,
+          url: json.url,
+        },
       };
-      dispatch(updatePlaylist(getState().playlist.items.concat(newItem)));
+      dispatch(updatePlaylist(getState().playlist.items.concat(playlistItem)));
     });
   };
 };
@@ -142,6 +152,9 @@ const actions = {
   toggleShuffle,
   mergeState,
   removeItemFromPlaylist,
+
+  // Player
+  nextSong,
 
   // Async
   fetchSearchResults,

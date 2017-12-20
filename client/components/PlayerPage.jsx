@@ -7,7 +7,8 @@ import { withRouter } from "react-router-dom";
 
 import SearchTab from "./SearchTab";
 import PlaylistTab from "./PlaylistTab";
-import { Button, Tabs, Tab} from "react-bootstrap";
+import Player from "./Player";
+import { Button, Tabs, Tab } from "react-bootstrap";
 
 class PlayerPage extends React.Component {
   static propTypes = {
@@ -42,10 +43,15 @@ class PlayerPage extends React.Component {
       if (parts[0]) this.props.fetchPlaylist(parts[0].split(","));
     }
   }
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.playlist.length !== this.props.playlist.length && this.state.currentPage === "playlist") {
+      this.props.history.push(`/playlist/${this.encodePlaylist(nextProps.playlist)}`);
+    }
+  }
 
-  encodePlaylist = () => {
-    if (this.props.playlist.length > 0) {
-      const videoIds = this.props.playlist.map(video => video.id);
+  encodePlaylist = (playlist = this.props.playlist) => {
+    if (playlist.length > 0) {
+      const videoIds = playlist.map(video => video.id);
       return `${videoIds.join(",")}&${Number(this.props.shuffle)}&${this.props.repeat}`;
     } else {
       return "";
@@ -78,6 +84,7 @@ class PlayerPage extends React.Component {
           onKeyPress={ this.handleKeyPress }
         />
         <Button onClick={ this.handleSearchClick }>Search</Button>
+        <Player />
         <Tabs activeKey={ this.state.currentPage } onSelect={ this.handleTabClick } id="PlayerNavigation">
           <Tab eventKey="search" title="Search">
             <SearchTab />

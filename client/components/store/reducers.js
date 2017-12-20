@@ -1,29 +1,108 @@
 import { ACTION_TYPES, INITIAL_STATE, REPEAT_STATE } from "./constants";
 
-/*
+// Queue utilities
 const MAX_QUEUE_SIZE = 20;
-const buildQueue = (playlist, currentSong, shuffle, repeat) => {
-  if (repeat === REPEAT_STATE.one) return Array(MAX_QUEUE_SIZE).fill(currentSong);
-
-  let queue = playlist.slice(0, MAX_QUEUE_SIZE);
-  if (repeat === REPEAT_STATE.all && queue.length < MAX_QUEUE_SIZE) {
-    const numExtraItems = queue.length - MAX_QUEUE_SIZE;
-    queue = queue.concat(playlist.slice(0, numExtraItems));
+const shuffleArray = (arr) => {
+  // Assumes array contains objects
+  const newArr = arr.map(item => ({ ...item }));
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
   }
+  return newArr;
+};
+const buildQueueItems = (playlist, numQueueItems, currentSong, shuffle, repeat) => {
+  switch (repeat) {
+    case REPEAT_STATE.one:
+      return {
+        playlist: {
+          isFetching: playlist.isFetching,
+          round: 0,
+          items: playlist.items.map(item => ({ ...item, playCount: 0 })),
+        },
+        queue: Array(numQueueItems).fill(currentSong),
+      };
 
-  if (shuffle) {
-    for (let i = queue.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      const temp = queue[i];
-      queue[i] = queue[j];
-      queue[j] = temp;
+    case REPEAT_STATE.all: {
+      let result = {
+        playlist: {
+          ...playlist,
+          round: playlist.round - 1,
+        },
+        queue: [],
+      };
+
+      // Continue filling queue until reaches max
+      while (result.queue.length < numQueueItems) {
+        result.playlist.round++;
+        const playlistItems  = shuffle ? shuffleArray(result.playlist.items) : result.playlist.items;
+        result = playlistItems .reduce((memo, item) => {
+          // Only select item if it has not been played this round
+          // And queue has space
+          if (item.playCount <= memo.playlist.round && memo.queue.length < 20) {
+            const newItem = {
+              ...item,
+              playCount: item.playCount + 1,
+            };
+            return {
+              playlist: {
+                ...memo.playlist,
+                items: memo.playlist.items.concat(newItem),
+              },
+              queue: memo.queue.concat(newItem),
+            };
+          }
+
+          return memo;
+        }, result);
+      }
+      return result;
+    }
+
+    case REPEAT_STATE.off:
+    default: {
+      const playlistItems  = shuffle ? shuffleArray(playlist.items) : playlist.items;
+      return playlistItems .reduce((memo, item) => {
+        // Only select item if it has not been played this round
+        // And queue has space
+        if (item.playCount <= memo.playlist.round && memo.queue.length < numQueueItems) {
+          const newItem = {
+            ...item,
+            playCount: item.playCount + 1,
+          };
+          return {
+            playlist: {
+              ...memo.playlist,
+              items: memo.playlist.items.concat(newItem),
+            },
+            queue: memo.queue.concat(newItem),
+          };
+        }
+
+        return memo;
+      }, {
+        playlist: {
+          isFetching: playlist.isFetching,
+          round: playlist.round,
+          items: [],
+        },
+        queue: [],
+      });
     }
   }
-
-  return queue;
 };
-*/
+const createQueue = (playlist, currentSong, shuffle, repeat) => {
+  return buildQueueItems(playlist, MAX_QUEUE_SIZE, currentSong, shuffle, repeat);
+};
+const refillQueue = (playlist, queue, currentSong, shuffle, repeat) => {
+  const result = buildQueueItems(playlist, MAX_QUEUE_SIZE - queue.length, currentSong, shuffle, repeat);
+  return {
+    playlist: result.playlist,
+    queue: queue.concat(result.queue),
+  };
+};
 
+// Reducer
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ACTION_TYPES.setSearchQuery:
@@ -39,24 +118,71 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         repeat,
+        ...createQueue(state.playlist, state.currentSong, state.shuffle, repeat),
       };
     }
 
     case ACTION_TYPES.toggleShuffle:
       return {
         ...state,
-        shuffle: !state.shuffle
+        shuffle: !state.shuffle,
+        ...createQueue(state.playlist, state.currentSong, state.shuffle, state.repeat),
       };
 
+    case ACTION_TYPES.nextSong: {
+      const nextSong = state.queue[0];
+      if (nextSong) {
+        const playHistory = state.playHistory.map(item => ({ ...item }));
+        if (state.currentSong) playHistory.push(state.currentSong);
+        const currentSong = { ...nextSong };
+        const queue = state.queue.slice(1);
+
+        return {
+          ...state,
+          playHistory,
+          currentSong,
+          ...refillQueue(state.playlist, queue, currentSong, state.shuffle, state.repeat),
+        };
+      } else {
+        console.log("fail, no next song");
+        return;
+      }
+    }
+
     case ACTION_TYPES.removeItemFromPlaylist: {
-      const items = state.playlist.items.slice();
-      items.splice(action.index, 1);
+      // Deep copy
+      const items = state.playlist.items.map(item => ({ ...item }));
+      const removed = items.splice(action.index, 1)[0];
+      const queue = state.queue.filter(item => item.id === removed.id);
+      const refilled = refillQueue(items, queue, state.currentSong, state.shuffle, state.repeat);
+
+      return {
+        ...state,
+        ...refilled,
+      };
+    }
+
+    case ACTION_TYPES.requestPlaylist:
       return {
         ...state,
         playlist: {
-          isFetching: state.playlist.isFetching,
-          items,
+          isFetching: true,
+          round: state.playlist.round,
+          items: state.playlist.items,
         },
+      };
+
+    case ACTION_TYPES.updatePlaylist: {
+      const playlist = {
+        isFetching: false,
+        round: state.playlist.round,
+        items: action.items,
+      };
+      const refilled = refillQueue(playlist, state.queue, state.currentSong, state.shuffle, state.repeat);
+
+      return {
+        ...state,
+        ...refilled,
       };
     }
 
