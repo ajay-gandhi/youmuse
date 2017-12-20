@@ -41,6 +41,8 @@ class PlayerPage extends React.Component {
       };
       this.props.mergeState(playlistState);
       if (parts[0]) this.props.fetchPlaylist(parts[0].split(","));
+    } else if (this.props.match.path.indexOf("playlist") === 1) {
+      this.setState({ currentPage: "playlist" });
     }
   }
   componentWillReceiveProps = (nextProps) => {
@@ -65,6 +67,7 @@ class PlayerPage extends React.Component {
   handleSearchClick = () => {
     this.props.history.push(`/search/${this.props.searchQuery}`);
     this.props.fetchSearchResults();
+    this.setState({ currentPage: "search" });
   }
   handleTabClick = (tab) => {
     const request = tab === "search" ? this.props.searchQuery : this.encodePlaylist();

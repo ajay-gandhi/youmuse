@@ -21,6 +21,18 @@ const removeItemFromPlaylist = (index) => {
     index,
   };
 };
+
+const setIsPlaying = (isPlaying) => {
+  return {
+    type: ACTION_TYPES.setIsPlaying,
+    isPlaying,
+  };
+};
+const previousSong = () => {
+  return {
+    type: ACTION_TYPES.previousSong,
+  };
+};
 const nextSong = () => {
   return {
     type: ACTION_TYPES.nextSong,
@@ -154,6 +166,8 @@ const actions = {
   removeItemFromPlaylist,
 
   // Player
+  setIsPlaying,
+  previousSong,
   nextSong,
 
   // Async
