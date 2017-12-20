@@ -1,11 +1,11 @@
-import { ACTION_TYPES, INITIAL_STATE, REPEAT_STATE } from "./constants";
+import { ACTION_TYPES, INITIAL_STATE, REPEAT_STATE } from "./Constants";
 import {
   MAX_QUEUE_SIZE,
   createQueue,
   refillQueue,
   removeFromQueue,
   copyArray
-} from "./queueUtils";
+} from "./QueueUtils";
 
 // Reducer
 const reducer = (state = INITIAL_STATE, action) => {
