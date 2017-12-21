@@ -21,9 +21,10 @@ module.exports = {
     historyApiFallback: true,
   },
   module: {
-    loaders: [
-      { test: /\.js$/, loader: "babel-loader", exclude: /node_modules/ },
-      { test: /\.jsx$/, loader: "babel-loader", exclude: /node_modules/ },
+    rules: [
+      { test: /\.jsx?$/, use: "babel-loader", exclude: /node_modules/ },
+      // { test: /\.jsx$/, use: "babel-loader", exclude: /node_modules/ },
+      { test: /\.s?css$/, use: ["style-loader", "css-loader", "sass-loader"] },
     ],
   },
   plugins: [HtmlWebpackPluginConfig],

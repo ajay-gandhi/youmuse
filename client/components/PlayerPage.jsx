@@ -30,7 +30,7 @@ class PlayerPage extends React.Component {
   componentWillMount = () => {
     if (this.props.match.params.searchQuery) {
       this.props.updateSearchQuery(this.props.match.params.searchQuery);
-      this.props.fetchSearchResults();
+      // this.props.fetchSearchResults();
     }
     if (this.props.match.params.encodedPlaylist) {
       this.setState({ currentPage: "playlist" });

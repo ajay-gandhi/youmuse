@@ -33,6 +33,7 @@ const buildQueueItems = (playlist, numQueueItems, currentSong, shuffle, repeat) 
         queue: [],
         currentSong,
       };
+      if (playlist.items.length === 0) return result;
 
       // Fill queue until reaches max
       while (result.queue.length < numQueueItems) {
@@ -143,9 +144,7 @@ export const createQueue = (playlist, currentSong, shuffle, repeat, currentQueue
       // Find corresponding item in playlistItems
       for (let i = 0; i < playlistItems.length; i++) {
         if (playlistItems[i].id === item.id) {
-          playlistItems[i].playCount--;
-          // if (playlistItems[i].playCount < lowestPlayCount) lowestPlayCount = playlistItems[i].playCount;
-          return;
+          return playlistItems[i].playCount--;
         }
       }
     });

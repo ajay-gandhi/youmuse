@@ -1,9 +1,13 @@
+import "./scss/Player.scss";
+
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { actions } from "./store/Store";
+import { REPEAT_STATE } from "./store/Constants";
 
 import ReactAudioPlayer from "react-audio-player";
+import Icon from "./Icon";
 import { Button } from "react-bootstrap";
 
 class AudioElement extends React.Component {
@@ -52,7 +56,6 @@ class AudioElement extends React.Component {
         ref={ this.setAudioElement }
         onEnded={ this.props.nextSong }
         src={ this.props.src || "" }
-        controls={ true }
       />
     );
   }
@@ -101,14 +104,9 @@ class Player extends React.Component {
 
   render = () => {
     return (
-      <div>
-        <Button onClick={ this.props.handlePreviousClick }>Previous</Button>
-        <Button onClick={ this.props.handleTogglePlay }>{ this.props.isPlaying ? "Pause" : "Play" }</Button>
-        <Button onClick={ this.props.handleNextClick }>Next</Button>
-        <Button onClick={ this.props.toggleShuffle }>Shuffle is { this.props.shuffle ? "on" : "off" }</Button>
-        <Button onClick={ this.props.toggleRepeat }>Repeat is { this.props.repeat }</Button>
-        <ConnectedAudioElement />
+      <div className="Player">
         <input
+          className="Player__volumeControl"
           type="range"
           min="0"
           max="1"
@@ -116,16 +114,50 @@ class Player extends React.Component {
           value={ this.props.volume }
           onChange={ this.handleVolumeChange }
         />
-        <input
-          type="range"
-          min="0"
-          max={ this.props.duration }
-          step="1"
-          value={ this.props.currentTime }
-          onChange={ this.handleTimeChange }
-        />
+        <div className="Player__playbackControl">
+          <Button className="Player__playbackControl__button Player__playbackControl__button--skip"
+            onClick={ this.props.handlePreviousClick }
+          >
+            <Icon glyph="skip_previous" />
+          </Button>
+          <Button
+            className="Player__playbackControl__button Player__playbackControl__button--togglePlayback"
+            onClick={ this.props.handleTogglePlay }
+          >
+            <Icon glyph={ this.props.isPlaying ? "pause" : "play_arrow" } />
+          </Button>
+          <Button
+            className="Player__playbackControl__button Player__playbackControl__button--skip"
+            onClick={ this.props.handleNextClick }
+          >
+            <Icon glyph="skip_next" />
+          </Button>
+        </div>
+        <div className="Player__orderControl">
+          <Button
+          className="Player__orderControl__button"
+          onClick={ this.props.toggleShuffle }
+        >
+          <Icon glyph="shuffle" />
+          </Button>
+          <Button
+            className="Player__orderControl__button"
+            onClick={ this.props.toggleRepeat }
+          >
+            <Icon glyph={ this.props.repeat === REPEAT_STATE.one ? "repeat_one" : "repeat" } />
+          </Button>
+        </div>
+        <ConnectedAudioElement />
       </div>
     );
+        // <input
+          // type="range"
+          // min="0"
+          // max={ this.props.duration }
+          // step="1"
+          // value={ this.props.currentTime }
+          // onChange={ this.handleTimeChange }
+        // />
   }
 }
 
