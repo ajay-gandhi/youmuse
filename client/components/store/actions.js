@@ -133,10 +133,11 @@ const fetchPlaylist = (videoIds) => {
 };
 const moveItemToPlaylist = (index) => {
   return (dispatch, getState) => {
+    const state = getState();
     dispatch(requestPlaylist());
 
-    const newItem = getState().searchResults.results[index];
-    const newSearchResults = getState().searchResults.results.slice();
+    const newItem = state.searchResults.results[index];
+    const newSearchResults = state.searchResults.results.slice();
     newSearchResults.splice(index, 1);
     dispatch(updateSearchResults(newSearchResults));
 
@@ -152,7 +153,7 @@ const moveItemToPlaylist = (index) => {
           url: json.url,
         },
       };
-      dispatch(updatePlaylist(getState().playlist.items.concat(playlistItem)));
+      dispatch(updatePlaylist(state.playlist.items.concat(playlistItem)));
     });
   };
 };

@@ -23,6 +23,7 @@ const buildQueueItems = (playlist, numQueueItems, currentSong, shuffle, repeat) 
           items: playlist.items.map(item => ({ ...item, playCount: 0 })),
         },
         queue: Array(numQueueItems).fill(repeatSong),
+        currentSong: repeatSong,
       };
     }
 
@@ -30,6 +31,7 @@ const buildQueueItems = (playlist, numQueueItems, currentSong, shuffle, repeat) 
       let result = {
         playlist,
         queue: [],
+        currentSong,
       };
 
       // Fill queue until reaches max
@@ -43,17 +45,29 @@ const buildQueueItems = (playlist, numQueueItems, currentSong, shuffle, repeat) 
               ...item,
               playCount: item.playCount + 1,
             };
-            const newItems = copyArray(memo.playlist.items).slice();
+            const newItems = copyArray(memo.playlist.items);
             newItems[index] = newItem;
-            return {
-              playlist: {
-                ...memo.playlist,
-                items: newItems,
-              },
-              queue: memo.queue.concat(newItem),
-            };
+            if (memo.currentSong) {
+              return {
+                playlist: {
+                  ...memo.playlist,
+                  items: newItems,
+                },
+                queue: memo.queue.concat(newItem),
+                currentSong: memo.currentSong,
+              };
+            } else {
+              return {
+                playlist: {
+                  ...memo.playlist,
+                  items: newItems,
+                },
+                queue: memo.queue,
+                currentSong: newItem,
+              };
+            }
           } else {
-            const newItems = copyArray(memo.playlist.items).slice();
+            const newItems = copyArray(memo.playlist.items);
             newItems[index] = item;
             return {
               ...memo,
@@ -80,13 +94,25 @@ const buildQueueItems = (playlist, numQueueItems, currentSong, shuffle, repeat) 
             ...item,
             playCount: item.playCount + 1,
           };
-          return {
-            playlist: {
-              ...memo.playlist,
-              items: memo.playlist.items.concat(newItem),
-            },
-            queue: memo.queue.concat(newItem),
-          };
+          if (memo.currentSong) {
+            return {
+              playlist: {
+                ...memo.playlist,
+                items: memo.playlist.items.concat(newItem),
+              },
+              queue: memo.queue.concat(newItem),
+              currentSong: memo.currentSong,
+            };
+          } else {
+            return {
+              playlist: {
+                ...memo.playlist,
+                items: memo.playlist.items.concat(newItem),
+              },
+              queue: memo.queue,
+              currentSong: newItem,
+            };
+          }
         } else {
           return {
             ...memo,
@@ -103,6 +129,7 @@ const buildQueueItems = (playlist, numQueueItems, currentSong, shuffle, repeat) 
           items: [],
         },
         queue: [],
+        currentSong,
       });
     }
   }
@@ -136,6 +163,7 @@ export const refillQueue = (playlist, queue, currentSong, shuffle, repeat) => {
   return {
     playlist: result.playlist,
     queue: queue.concat(result.queue),
+    currentSong: result.currentSong,
   };
 };
 export const removeFromQueue = (playlist, queue, index) => {
