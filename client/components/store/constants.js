@@ -8,6 +8,8 @@ export const ACTION_TYPES = Object.freeze({
   setSearchQuery: "SET_SEARCH_QUERY",
   toggleRepeat: "TOGGLE_REPEAT",
   toggleShuffle: "TOGGLE_SHUFFLE",
+  updateVolume: "UPDATE_VOLUME",
+  updateCurrentTime: "UPDATE_CURRENT_TIME",
   mergeState: "MERGE_STATE",
 
   setIsPlaying: "SET_IS_PLAYING",
@@ -23,6 +25,8 @@ export const INITIAL_STATE = Object.freeze({
   searchQuery: "",
   repeat: REPEAT_STATE.off,
   shuffle: false,
+  volume: 1.0,
+  currentTime: 0.0,
   isPlaying: false,
   queue: [],
   playHistory: [],

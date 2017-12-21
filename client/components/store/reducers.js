@@ -34,6 +34,18 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...createQueue(state.playlist, state.currentSong, state.shuffle, state.repeat, state.queue),
       };
 
+    case ACTION_TYPES.updateVolume:
+      return {
+        ...state,
+        volume: action.volume,
+      };
+
+    case ACTION_TYPES.updateCurrentTime:
+      return {
+        ...state,
+        currentTime: action.currentTime,
+      };
+
     case ACTION_TYPES.setIsPlaying:
       return {
         ...state,

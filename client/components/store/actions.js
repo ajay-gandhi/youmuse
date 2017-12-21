@@ -15,6 +15,18 @@ const toggleRepeat = () => {
 const toggleShuffle = () => {
   return { type: ACTION_TYPES.toggleShuffle };
 };
+const updateVolume = (volume) => {
+  return {
+    type: ACTION_TYPES.updateVolume,
+    volume,
+  };
+};
+const updateCurrentTime = (currentTime) => {
+  return {
+    type: ACTION_TYPES.updateCurrentTime,
+    currentTime,
+  };
+};
 const removeItemFromPlaylist = (index) => {
   return {
     type: ACTION_TYPES.removeItemFromPlaylist,
@@ -120,7 +132,10 @@ const fetchPlaylist = (videoIds) => {
           return {
             ...item,
             playCount: 0,
-            audio
+            audio: {
+              url: audio.url,
+              duration: parseInt(audio.duration),
+            },
           };
         });
       }));
@@ -149,8 +164,8 @@ const moveItemToPlaylist = (index) => {
         ...newItem,
         playCount: 0,
         audio: {
-          duration: json.duration,
           url: json.url,
+          duration: parseInt(json.duration),
         },
       };
       dispatch(updatePlaylist(state.playlist.items.concat(playlistItem)));
@@ -163,6 +178,8 @@ const actions = {
   setSearchQuery,
   toggleRepeat,
   toggleShuffle,
+  updateVolume,
+  updateCurrentTime,
   mergeState,
   removeItemFromPlaylist,
 
