@@ -53,6 +53,14 @@ const reducer = (state = INITIAL_STATE, action) => {
       };
 
     case ACTION_TYPES.previousSong: {
+      if (state.currentTime > 3) {
+        // Replay current song
+        return {
+          ...state,
+          currentTime: 0,
+        };
+      }
+
       const previousSong = state.playHistory[state.playHistory.length - 1];
       if (previousSong) {
         let playlist = state.playlist;
