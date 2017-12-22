@@ -31,9 +31,11 @@ class Queue extends React.Component {
   };
 
   render = () => {
+    if (this.props.queue.length === 0) return null;
+
     const queue = this.props.queue.map((item, index) => (
       <QueueItem
-        key={ item.id.videoId }
+        key={ item.id }
         searchResult={ item }
         index={ index }
       />

@@ -2,28 +2,49 @@
 
 .PlayerPage {
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row wrap;
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 920px;
   margin: 0 auto;
-  padding: 0px 10px 110px 10px;
+  padding: 0px 10px 20px 10px;
+}
+.PlayerPage--withSong {
+  padding-bottom: 130px;
 }
 
 .PlayerPage__title {
   font-size: 28px;
-  flex: 0 1 100%;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 15px;
+}
+.PlayerPage__content {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: start;
+  width: 100%;
 }
 
-.PlayerPage__SearchContainer {
+.PlayerPage__content__LeftSection {
+  flex: 5 1 420px;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  min-width: 0;
+  padding-right: 20px;
+}
+.LeftSection__SearchContainer {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  width: 100%;
   position: relative;
-  margin-bottom: 10px;
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 15px;
 }
+
 .SearchContainer__input {
   flex: 1 1 80%;
   padding: 5px;
@@ -42,19 +63,16 @@
   padding: 0px;
   box-shadow: -10px 0px 10px -2px $backgroundColor;
 }
-
-.PlayerPage__content {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: start;
-}
-.PlayerPage__content__TabContainer {
-  flex: 1 1 70%;
+.LeftSection__TabContainer {
+  width: 100%;
   max-width: 900px;
-  min-width: 400px;
 }
 .TabContainer__TabContent {
   border: 1px solid $borderColor;
   border-top: none;
+}
+
+.PlayerPage__content__Queue {
+  flex: 1 1 320px;
+  padding-right: 1%;
 }

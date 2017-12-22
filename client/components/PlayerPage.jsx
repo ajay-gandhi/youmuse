@@ -20,6 +20,7 @@ class PlayerPage extends React.Component {
     searchQuery: PropTypes.string,
     shuffle: PropTypes.bool,
     repeat: PropTypes.number,
+    currentSong: PropTypes.object,
     updateSearchQuery: PropTypes.func,
     mergeState: PropTypes.func,
     fetchSearchResults: PropTypes.func,
@@ -82,37 +83,40 @@ class PlayerPage extends React.Component {
 
   render = () => {
     return (
-      <div className="PlayerPage">
+      <div className={ `PlayerPage ${this.props.currentSong ? "PlayerPage--withSong" : ""}` }>
         <h1 className="PlayerPage__title">YouMuse</h1>
-        <div className="PlayerPage__SearchContainer">
-          <input
-            className="SearchContainer__input"
-            placeholder="Search YouTube..."
-            value={ this.props.searchQuery }
-            onChange={ this.handleSearchChange }
-            onKeyPress={ this.handleKeyPress }
-          />
-          <Button className="SearchContainer__button" onClick={ this.handleSearchClick }>
-            <Icon glyph="search" />
-          </Button>
-        </div>
-        <Player />
         <div className="PlayerPage__content">
-          <Tabs
-            activeKey={ this.state.currentPage }
-            onSelect={ this.handleTabClick }
-            id="PlayerNavigation"
-            className="PlayerPage__content__TabContainer"
-          >
-            <Tab eventKey="search" title="Search">
-              <SearchTab className="TabContainer__TabContent" />
-            </Tab>
-            <Tab eventKey="playlist" title="Playlist">
-              <PlaylistTab className="TabContainer__TabContent" />
-            </Tab>
-          </Tabs>
+          <div className="PlayerPage__content__LeftSection">
+            <div className="LeftSection__SearchContainer">
+              <input
+                className="SearchContainer__input"
+                placeholder="Search YouTube..."
+                value={ this.props.searchQuery }
+                onChange={ this.handleSearchChange }
+                onKeyPress={ this.handleKeyPress }
+              />
+              <Button className="SearchContainer__button" onClick={ this.handleSearchClick }>
+                <Icon glyph="search" />
+              </Button>
+            </div>
+            <Tabs
+              activeKey={ this.state.currentPage }
+              onSelect={ this.handleTabClick }
+              id="PlayerNavigation"
+              className="LeftSection__TabContainer"
+            >
+              <Tab eventKey="spacer" title=" "></Tab>
+              <Tab eventKey="search" title="Search">
+                <SearchTab className="TabContainer__TabContent" />
+              </Tab>
+              <Tab eventKey="playlist" title="Playlist">
+                <PlaylistTab className="TabContainer__TabContent" />
+              </Tab>
+            </Tabs>
+          </div>
           <Queue className="PlayerPage__content__Queue" />
         </div>
+        <Player />
       </div>
     );
   }
@@ -124,6 +128,7 @@ const mapStateToProps = (state) => {
     searchQuery: state.searchQuery || "",
     shuffle: state.shuffle,
     repeat: state.repeat,
+    currentSong: state.currentSong,
   };
 };
 const mapDispatchToProps = (dispatch) => {
