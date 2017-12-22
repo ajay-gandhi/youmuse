@@ -48,12 +48,15 @@
 .SearchContainer__input {
   flex: 1 1 80%;
   padding: 5px;
+  font-size: 16px;
+  border: none;
+  border-bottom: 1px solid $borderColor;
 }
 .SearchContainer__button {
   position: absolute;
   right: 1px;
   top: 1px;
-  bottom: 1px;
+  bottom: 2px;
   width: 45px;
   border: none;
   border-radius: 0px;
