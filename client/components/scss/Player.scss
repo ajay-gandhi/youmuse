@@ -6,12 +6,16 @@
   bottom: 0px;
   left: 0px;
   right: 0px;
+  z-index: 10;
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid $borderColor;
   background-color: $backgroundColor;
+}
+.Player--collapsed {
+  bottom: -150px;
 }
 
 .Player__controls {
@@ -132,4 +136,33 @@ input.Player__controls__volumeControl {
   &::-webkit-slider-thumb:hover {
     background-color: $buttonDarkColor;
   }
+}
+
+.Player__togglePlayerButton {
+  width: 28px;
+  height: 28px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+
+  i {
+    font-size: 22px;
+    color: $buttonColor;
+  }
+}
+.Player__togglePlayerButton:hover i {
+  color: $buttonDarkColor;
+}
+.Player__togglePlayerButton--maximize {
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+  z-index: 9;
+}
+.Player__togglePlayerButton--minimize {
+  position: absolute;
+  top: 5px;
+  right: 5px;
 }

@@ -8,6 +8,7 @@ import { REPEAT_STATE } from "./store/Constants";
 
 import ReactAudioPlayer from "react-audio-player";
 import Icon from "./Icon";
+import Chevron from "./Chevron";
 import { Button } from "react-bootstrap";
 
 class AudioElement extends React.Component {
@@ -94,7 +95,13 @@ class Player extends React.Component {
     updateVolume: PropTypes.func,
     updateCurrentTime: PropTypes.func,
   };
+  state = {
+    collapsed: false,
+  };
 
+  handleTogglePlayer = () => {
+    this.setState({ collapsed: !this.state.collapsed });
+  }
   handleVolumeChange = (e) => {
     this.props.updateVolume(parseFloat(e.target.value));
   }
@@ -104,8 +111,18 @@ class Player extends React.Component {
 
   render = () => {
     if (!this.props.currentSong) return null;
+
+    let maximizeButton;
+    if (this.state.collapsed) {
+      maximizeButton = (
+        <Button className="Player__togglePlayerButton Player__togglePlayerButton--maximize" onClick={ this.handleTogglePlayer }>
+          <Chevron up />
+        </Button>
+      );
+    }
+
     return (
-      <div className="Player">
+      <div className={ `Player ${this.state.collapsed ? "Player--collapsed" : ""}` }>
         <div className="Player__controls">
           <input
             className="Player__controls__volumeControl"
@@ -155,6 +172,10 @@ class Player extends React.Component {
           <span className="Player__metadata__channelTitle">by { this.props.currentSong.snippet.channelTitle }</span>
         </div>
         <ConnectedAudioElement />
+        <Button className="Player__togglePlayerButton Player__togglePlayerButton--minimize" onClick={ this.handleTogglePlayer }>
+          <Chevron />
+        </Button>
+        { maximizeButton }
       </div>
     );
     // <input
