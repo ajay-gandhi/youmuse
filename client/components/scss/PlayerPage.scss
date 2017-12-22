@@ -1,0 +1,60 @@
+@import "./global.scss";
+
+.PlayerPage {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0px 10px 110px 10px;
+}
+
+.PlayerPage__title {
+  font-size: 28px;
+  flex: 0 1 100%;
+}
+
+.PlayerPage__SearchContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  margin-bottom: 10px;
+}
+.SearchContainer__input {
+  flex: 1 1 80%;
+  padding: 5px;
+}
+.SearchContainer__button {
+  position: absolute;
+  right: 1px;
+  top: 1px;
+  bottom: 1px;
+  width: 45px;
+  border: none;
+  border-radius: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  padding: 0px;
+  box-shadow: -10px 0px 10px -2px $backgroundColor;
+}
+
+.PlayerPage__content {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: start;
+}
+.PlayerPage__content__TabContainer {
+  flex: 1 1 70%;
+  max-width: 900px;
+  min-width: 400px;
+}
+.TabContainer__TabContent {
+  border: 1px solid $borderColor;
+  border-top: none;
+}

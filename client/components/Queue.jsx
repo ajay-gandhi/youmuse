@@ -5,6 +5,7 @@ import { actions } from "./store/Store";
 
 class QueueItem extends React.PureComponent {
   static propTypes = {
+    className: PropTypes.string,
     index: PropTypes.number,
     searchResult: PropTypes.object,
     removeFromQueue: PropTypes.func,
@@ -39,7 +40,7 @@ class Queue extends React.Component {
     ));
 
     return (
-      <div className="Queue">
+      <div className={ `Queue ${this.props.className}` }>
         { queue }
       </div>
     );

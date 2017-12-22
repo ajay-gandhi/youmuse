@@ -1,3 +1,5 @@
+import "./scss/SearchTab.scss";
+
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -17,10 +19,14 @@ class SearchItem extends React.PureComponent {
   render = () => {
     const item = this.props.searchResult.snippet;
     return (
-      <div onClick={ this.handleClick } style={ { border: "1px solid blue" } }>
-        <img src={ item.thumbnails.default.url } />
-        <h2>{ item.title }</h2>
-        <h3>{ item.channelTitle }</h3>
+      <div className="SearchItem" onClick={ this.handleClick }>
+        <div className="SearchItem__imageContainer">
+          <img className="SearchItem__imageContainer__image" src={ item.thumbnails.default.url } />
+        </div>
+        <div className="SearchItem__textContent">
+          <h3 className="SearchItem__textContent__heading">{ item.title }</h3>
+          <h4 className="SearchItem__textContent__heading SearchItem__textContent__heading--channel">{ item.channelTitle }</h4>
+        </div>
       </div>
     );
   }
@@ -28,6 +34,7 @@ class SearchItem extends React.PureComponent {
 
 class SearchTab extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     searchQuery: PropTypes.string,
     searchResults: PropTypes.arrayOf(PropTypes.object),
     fetchSearchResults: PropTypes.func,
@@ -36,16 +43,18 @@ class SearchTab extends React.Component {
 
   render = () => {
     const searchResults = this.props.searchResults.map((result, index) => (
-      <SearchItem
-        key={ result.id }
-        searchResult={ result }
-        index={ index }
-        addToPlayList={ this.props.addItemToPlayList }
-      />
+      <div key={ result.id } className="SearchTab__SearchItemContainer">
+        { index !== 0 && <hr className="SearchItemContainer__delimiter" /> }
+        <SearchItem
+          index={ index }
+          searchResult={ result }
+          addToPlayList={ this.props.addItemToPlayList }
+        />
+      </div>
     ));
 
     return (
-      <div className="searchResults">
+      <div className={ `SearchTab ${this.props.className}` }>
         { searchResults }
       </div>
     );

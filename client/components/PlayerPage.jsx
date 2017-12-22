@@ -1,3 +1,5 @@
+import "./scss/PlayerPage.scss";
+
 import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
@@ -7,7 +9,9 @@ import { withRouter } from "react-router-dom";
 
 import SearchTab from "./SearchTab";
 import PlaylistTab from "./PlaylistTab";
+import Queue from "./Queue";
 import Player from "./Player";
+import Icon from "./Icon";
 import { Button, Tabs, Tab } from "react-bootstrap";
 
 class PlayerPage extends React.Component {
@@ -30,7 +34,7 @@ class PlayerPage extends React.Component {
   componentWillMount = () => {
     if (this.props.match.params.searchQuery) {
       this.props.updateSearchQuery(this.props.match.params.searchQuery);
-      // this.props.fetchSearchResults();
+      this.props.fetchSearchResults();
     }
     if (this.props.match.params.encodedPlaylist) {
       this.setState({ currentPage: "playlist" });
@@ -78,24 +82,37 @@ class PlayerPage extends React.Component {
 
   render = () => {
     return (
-      <div>
-        <h1>YouMuse Search</h1>
-        <input
-          placeholder="Search YouTube..."
-          value={ this.props.searchQuery }
-          onChange={ this.handleSearchChange }
-          onKeyPress={ this.handleKeyPress }
-        />
-        <Button onClick={ this.handleSearchClick }>Search</Button>
+      <div className="PlayerPage">
+        <h1 className="PlayerPage__title">YouMuse</h1>
+        <div className="PlayerPage__SearchContainer">
+          <input
+            className="SearchContainer__input"
+            placeholder="Search YouTube..."
+            value={ this.props.searchQuery }
+            onChange={ this.handleSearchChange }
+            onKeyPress={ this.handleKeyPress }
+          />
+          <Button className="SearchContainer__button" onClick={ this.handleSearchClick }>
+            <Icon glyph="search" />
+          </Button>
+        </div>
         <Player />
-        <Tabs activeKey={ this.state.currentPage } onSelect={ this.handleTabClick } id="PlayerNavigation">
-          <Tab eventKey="search" title="Search">
-            <SearchTab />
-          </Tab>
-          <Tab eventKey="playlist" title="Playlist">
-            <PlaylistTab />
-          </Tab>
-        </Tabs>
+        <div className="PlayerPage__content">
+          <Tabs
+            activeKey={ this.state.currentPage }
+            onSelect={ this.handleTabClick }
+            id="PlayerNavigation"
+            className="PlayerPage__content__TabContainer"
+          >
+            <Tab eventKey="search" title="Search">
+              <SearchTab className="TabContainer__TabContent" />
+            </Tab>
+            <Tab eventKey="playlist" title="Playlist">
+              <PlaylistTab className="TabContainer__TabContent" />
+            </Tab>
+          </Tabs>
+          <Queue className="PlayerPage__content__Queue" />
+        </div>
       </div>
     );
   }

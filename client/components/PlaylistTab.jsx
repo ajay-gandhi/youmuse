@@ -27,6 +27,7 @@ class PlaylistItem extends React.PureComponent {
 
 class PlaylistTab extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     playlist: PropTypes.arrayOf(PropTypes.object),
     removeItemFromPlaylist: PropTypes.func,
   };
@@ -42,7 +43,7 @@ class PlaylistTab extends React.Component {
     ));
 
     return (
-      <div className="playlistItems">
+      <div className={ `playlistItems ${this.props.className}` }>
         { playlistItems }
       </div>
     );

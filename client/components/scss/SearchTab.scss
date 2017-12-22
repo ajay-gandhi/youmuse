@@ -1,0 +1,57 @@
+@import "./global.scss";
+
+.SearchTab {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: left;
+}
+
+.SearchTab__SearchItemContainer {
+  width: 100%;
+}
+.SearchItemContainer__delimiter {
+  margin: 0 20px;
+}
+
+.SearchItem {
+  display: flex;
+  flex-flow: row nowrap;
+  cursor: pointer;
+}
+.SearchItem:hover {
+  background-color: #f6f6f6;
+}
+
+.SearchItem__imageContainer {
+  flex: 0 1 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 15px 0px 10px 10px;
+  margin: 0px;
+}
+.SearchItem__imageContainer__image {
+  height: 100%;
+  width: auto;
+}
+
+.SearchItem__textContent {
+  flex: 1 1 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: left;
+  margin-left: 10px;
+  overflow-x: auto;
+}
+.SearchItem__textContent__heading {
+  white-space: nowrap;
+  width: 100%;
+  margin: 0px;
+}
+.SearchItem__textContent__heading--channel {
+  font-weight: normal;
+  margin: 10px 0px 20px;
+  color: $subtitleColor;
+}

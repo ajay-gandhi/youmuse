@@ -83,7 +83,7 @@ class Player extends React.Component {
     shuffle: PropTypes.bool,
     repeat: PropTypes.number,
     volume: PropTypes.number,
-    duration: PropTypes.number,
+    currentSong: PropTypes.object,
     currentTime: PropTypes.number,
 
     handleTogglePlay: PropTypes.func,
@@ -103,60 +103,67 @@ class Player extends React.Component {
   }
 
   render = () => {
+    if (!this.props.currentSong) return null;
     return (
       <div className="Player">
-        <input
-          className="Player__volumeControl"
-          type="range"
-          min="0"
-          max="1"
-          step="0.05"
-          value={ this.props.volume }
-          onChange={ this.handleVolumeChange }
-        />
-        <div className="Player__playbackControl">
-          <Button className="Player__playbackControl__button Player__playbackControl__button--skip"
-            onClick={ this.props.handlePreviousClick }
-          >
-            <Icon glyph="skip_previous" />
-          </Button>
-          <Button
-            className="Player__playbackControl__button Player__playbackControl__button--togglePlayback"
-            onClick={ this.props.handleTogglePlay }
-          >
-            <Icon glyph={ this.props.isPlaying ? "pause" : "play_arrow" } />
-          </Button>
-          <Button
-            className="Player__playbackControl__button Player__playbackControl__button--skip"
-            onClick={ this.props.handleNextClick }
-          >
-            <Icon glyph="skip_next" />
-          </Button>
+        <div className="Player__controls">
+          <input
+            className="Player__controls__volumeControl"
+            type="range"
+            min="0"
+            max="1"
+            step="0.05"
+            value={ this.props.volume }
+            onChange={ this.handleVolumeChange }
+          />
+          <div className="Player__controls__PlaybackControl">
+            <Button className="PlaybackControl__button PlaybackControl__button--skip"
+              onClick={ this.props.handlePreviousClick }
+            >
+              <Icon glyph="skip_previous" />
+            </Button>
+            <Button
+              className="PlaybackControl__button PlaybackControl__button--togglePlayback"
+              onClick={ this.props.handleTogglePlay }
+            >
+              <Icon glyph={ this.props.isPlaying ? "pause" : "play_arrow" } />
+            </Button>
+            <Button
+              className="PlaybackControl__button PlaybackControl__button--skip"
+              onClick={ this.props.handleNextClick }
+            >
+              <Icon glyph="skip_next" />
+            </Button>
+          </div>
+          <div className="Player__controls__OrderControl">
+            <Button
+              className="OrderControl__button"
+              onClick={ this.props.toggleShuffle }
+            >
+              <Icon glyph="shuffle" />
+            </Button>
+            <Button
+              className="OrderControl__button"
+              onClick={ this.props.toggleRepeat }
+            >
+              <Icon glyph={ this.props.repeat === REPEAT_STATE.one ? "repeat_one" : "repeat" } />
+            </Button>
+          </div>
         </div>
-        <div className="Player__orderControl">
-          <Button
-          className="Player__orderControl__button"
-          onClick={ this.props.toggleShuffle }
-        >
-          <Icon glyph="shuffle" />
-          </Button>
-          <Button
-            className="Player__orderControl__button"
-            onClick={ this.props.toggleRepeat }
-          >
-            <Icon glyph={ this.props.repeat === REPEAT_STATE.one ? "repeat_one" : "repeat" } />
-          </Button>
+        <div className="Player__metadata">
+          <span className="Player__metadata__songTitle">{ this.props.currentSong.snippet.title }</span>
+          <span className="Player__metadata__channelTitle">by { this.props.currentSong.snippet.channelTitle }</span>
         </div>
         <ConnectedAudioElement />
       </div>
     );
-        // <input
-          // type="range"
-          // min="0"
-          // max={ this.props.duration }
-          // step="1"
-          // value={ this.props.currentTime }
-          // onChange={ this.handleTimeChange }
+    // <input
+    // type="range"
+    // min="0"
+    // max={ this.props.currentSong.audio.duration }
+    // step="1"
+    // value={ this.props.currentTime }
+    // onChange={ this.handleTimeChange }
         // />
   }
 }
@@ -167,8 +174,8 @@ const mapStateToPlayerProps = (state) => {
     shuffle: state.shuffle,
     repeat: state.repeat,
     volume: state.volume,
-    duration: state.currentSong ? state.currentSong.audio.duration : 1,
     currentTime: state.currentTime,
+    currentSong: state.currentSong,
   };
 };
 const mapDispatchToPlayerProps = (dispatch) => {
