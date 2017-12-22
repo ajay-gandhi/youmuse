@@ -2,11 +2,6 @@
 
 ## Todo
 
-* Style queue
-  * Song title
-  * Channel title
-  * Thumbnail
-  * Duration
 * Style playlist
 * Add playlist button for remove
 * Add animations

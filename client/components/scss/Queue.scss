@@ -1,0 +1,71 @@
+@import "./global.scss";
+
+.Queue {
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 4px 1%;
+  border: 1px solid $borderColor;
+}
+
+.QueueItem {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  position: relative;
+  margin: 5px 0px;
+}
+
+.QueueItem__imageContainer {
+  flex: 0 0.5 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+.QueueItem__image {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.QueueItem__textContent {
+  flex: 1 1 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: left;
+  overflow-x: auto;
+  margin: 0px 45px 0px 10px;
+}
+.QueueItem__textContent__heading {
+  width: 100%;
+  white-space: nowrap;
+  margin: 0px 0px 4px 0px;
+  font-weight: normal;
+}
+.QueueItem__textContent__heading--subtitle {
+  font-size: 13px;
+  color: $subtitleColor;
+}
+
+.QueueItem__removeButton {
+  position: absolute;
+  right: 0px;
+  top: 2px;
+  bottom: 2px;
+  width: 40px;
+  border-radius: 0px;
+  border: none;
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  i {
+    color: $buttonColor;
+  }
+}
+.QueueItem__removeButton:hover i {
+  color: $buttonDarkColor;
+}
