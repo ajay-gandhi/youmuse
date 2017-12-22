@@ -14,6 +14,7 @@
   * Fade items from playlist
 * Slider for playback currentTime
 * Audio title on mobile?
+* Landing page
 * Dark theme
 * Keyboard controls
 * About notice
