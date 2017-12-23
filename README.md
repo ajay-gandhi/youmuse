@@ -2,7 +2,6 @@
 
 ## Todo
 
-* Add playlist button for remove
 * Slider for playback currentTime
 * Landing page
 * Add animations
