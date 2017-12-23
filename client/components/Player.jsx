@@ -40,6 +40,9 @@ class AudioElement extends React.Component {
       this.setState({ currentTime: nextProps.currentTime });
       this.audioElement.currentTime = nextProps.currentTime;
     }
+    if (nextProps.volume !== this.props.volume) {
+      this.audioElement.volume = nextProps.volume;
+    }
   }
 
   handleListen = (e) => {
@@ -125,6 +128,15 @@ class Player extends React.Component {
       <div className={ `Player ${this.state.collapsed ? "Player--collapsed" : ""}` }>
         <div className="Player__controls">
           <input
+            className="Player__controls__timeControl"
+            type="range"
+            min="0"
+            max={ this.props.currentSong.audio.duration }
+            step="1"
+            value={ this.props.currentTime }
+            onChange={ this.handleTimeChange }
+          />
+          <input
             className="Player__controls__volumeControl"
             type="range"
             min="0"
@@ -178,14 +190,6 @@ class Player extends React.Component {
         { maximizeButton }
       </div>
     );
-    // <input
-    // type="range"
-    // min="0"
-    // max={ this.props.currentSong.audio.duration }
-    // step="1"
-    // value={ this.props.currentTime }
-    // onChange={ this.handleTimeChange }
-        // />
   }
 }
 
