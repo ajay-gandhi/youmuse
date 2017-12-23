@@ -1,13 +1,13 @@
-import "./scss/PlaylistTab.scss";
+import "components/scss/PlaylistTab.scss";
 
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { actions } from "./store/Store";
+import { actions } from "components/store/Store";
 
 import { Button } from "react-bootstrap";
-import Icon from "./Icon";
-import Spinner from "./Spinner";
+import Icon from "components/Icon";
+import Spinner from "components/Spinner";
 
 class PlaylistItem extends React.PureComponent {
   static propTypes = {

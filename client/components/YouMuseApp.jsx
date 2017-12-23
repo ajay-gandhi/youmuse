@@ -4,10 +4,10 @@ import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import { store } from "./store/Store";
+import { store } from "components/store/Store";
 
-import IndexPage from "./IndexPage";
-import PlayerPage from "./PlayerPage";
+import IndexPage from "components/IndexPage";
+import PlayerPage from "components/PlayerPage";
 
 export default class YouMuseApp extends React.Component {
   state = {

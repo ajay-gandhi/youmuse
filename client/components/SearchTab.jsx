@@ -1,13 +1,13 @@
-import "./scss/SearchTab.scss";
+import "components/scss/SearchTab.scss";
 
 import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { connect } from "react-redux";
-import { actions } from "./store/Store";
+import { actions } from "components/store/Store";
 import { withRouter } from "react-router-dom";
 
-import Spinner from "./Spinner";
+import Spinner from "components/Spinner";
 
 class SearchItem extends React.PureComponent {
   static propTypes = {

@@ -1,17 +1,17 @@
-import "./scss/PlayerPage.scss";
+import "components/scss/PlayerPage.scss";
 
 import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { connect } from "react-redux";
-import { actions } from "./store/Store";
+import { actions } from "components/store/Store";
 import { withRouter } from "react-router-dom";
 
-import SearchTab from "./SearchTab";
-import PlaylistTab from "./PlaylistTab";
-import SearchBar from "./SearchBar";
-import Queue from "./Queue";
-import Player from "./Player";
+import SearchTab from "components/SearchTab";
+import PlaylistTab from "components/PlaylistTab";
+import SearchBar from "components/SearchBar";
+import Queue from "components/Queue";
+import Player from "components/Player";
 import { Tabs, Tab } from "react-bootstrap";
 
 class PlayerPage extends React.Component {

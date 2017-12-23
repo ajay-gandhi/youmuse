@@ -1,14 +1,14 @@
-import "./scss/Player.scss";
+import "components/scss/Player.scss";
 
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { actions } from "./store/Store";
-import { REPEAT_STATE } from "./store/Constants";
+import { actions } from "components/store/Store";
+import { REPEAT_STATE } from "components/store/Constants";
 
 import ReactAudioPlayer from "react-audio-player";
-import Icon from "./Icon";
-import Chevron from "./Chevron";
+import Icon from "components/Icon";
+import Chevron from "components/Chevron";
 import { Button } from "react-bootstrap";
 
 class AudioElement extends React.Component {

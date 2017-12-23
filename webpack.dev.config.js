@@ -1,20 +1,26 @@
-/* global require, module */
+/* global require, module, __dirname */
+
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: "./client/index.html",
+  template: "./index.html",
   filename: "index.html",
   inject: "body",
 });
 
 module.exports = {
-  entry: "./client/index.js",
+  context: path.resolve(__dirname, "client"),
+  entry: "./index.js",
   output: {
     path: path.resolve("public"),
     filename: "bundle.js",
     publicPath: "/",
   },
   resolve: {
+    modules: [
+      path.resolve(__dirname, "client"),
+      "node_modules"
+    ],
     extensions: [".js", ".jsx"],
   },
   devServer: {

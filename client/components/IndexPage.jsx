@@ -1,7 +1,7 @@
-import "./scss/IndexPage.scss";
+import "components/scss/IndexPage.scss";
 
 import React from "react";
-import SearchBar from "./SearchBar";
+import SearchBar from "components/SearchBar";
 
 const IndexPage = () => (
   <div className="IndexPage">

@@ -1,14 +1,14 @@
-import "./scss/SearchBar.scss";
+import "components/scss/SearchBar.scss";
 
 import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { actions } from "./store/Store";
+import { actions } from "components/store/Store";
 
 import { Button } from "react-bootstrap";
-import Icon from "./Icon";
+import Icon from "components/Icon";
 
 class SearchBar extends React.PureComponent {
   static propTypes = {

@@ -1,7 +1,8 @@
-import "./scss/Chevron.scss";
+import "components/scss/Chevron.scss";
+
 import React from "react";
 import PropTypes from "prop-types";
-import Icon from "./Icon";
+import Icon from "components/Icon";
 
 const Chevron = props => (
   <div className={ `Chevron ${props.className || ""}` }>
