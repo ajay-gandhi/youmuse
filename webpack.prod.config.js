@@ -5,9 +5,10 @@ const MinifyPlugin = require("babel-minify-webpack-plugin");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: "./client/index.html",
-  filename: "index.html",
-  inject: "body",
+  // template: "./client/index.html",
+  // filename: "index.html",
+  // inject: "body",
+  title: "Production - HWP",
 });
 
 module.exports = {
