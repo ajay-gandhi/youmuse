@@ -78,7 +78,6 @@ const buildQueueItems = (playlist, numQueueItems, currentSong, shuffle, repeat) 
             };
           }
         }, result);
-        if (result.queue.length <= numQueueItems) result.playlist.round++;
       }
       return result;
     }
@@ -199,4 +198,4 @@ export const removeFromQueueByIndex = (playlist, queue, index) => {
 };
 
 // Removes items with the given ID from the queue
-export const removeFromQueueById = (queue, id) => copyArray(queue).filter(item => item.id === id);
+export const removeFromQueueById = (queue, id) => copyArray(queue).filter(item => item.id !== id);

@@ -66,7 +66,7 @@ class Queue extends React.Component {
 
     const queue = this.props.queue.map((item, index) => (
       <QueueItem
-        key={ item.id }
+        key={ `${item.id}-${index}` }
         item={ item }
         index={ index }
       />

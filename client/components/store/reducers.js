@@ -174,21 +174,24 @@ const reducer = (state = INITIAL_STATE, action) => {
       const newPlaylistItems = copyArray(state.playlist.items);
       const removedItem = newPlaylistItems.splice(action.index, 1)[0];
 
-      const round = Math.min(...newPlaylistItems.map(item => item.playCount));
+      const playCounts = newPlaylistItems.map(item => item.playCount);
+      const playCountsWithLower = playCounts.concat(Math.max(...playCounts) - 1);
+      const round = Math.min(...playCountsWithLower);
+
       const playlist = {
         isFetching: state.playlist.isFetching,
         round,
-        items: state.playlist.items.slice(),
+        items: newPlaylistItems,
       };
       const currentSong = currentSong && currentSong.id !== removedItem.id && currentSong;
 
       if (state.currentSong) {
-        const modified = removeFromQueueById(playlist, state.queue, removedItem.id);
+        const modifiedQueue = removeFromQueueById(state.queue, removedItem.id);
         if (state.currentSong.id === removedItem.id) {
-          const nextSong = modified.queue[0];
-          if (modified.queue[0]) {
-            const queue = copyArray(modified.queue).slice(1);
-            const refilledQueue = refillQueue(modified.playlist, queue, nextSong, state.shuffle, state.repeat);
+          const nextSong = modifiedQueue.queue[0];
+          if (modifiedQueue.queue[0]) {
+            const queue = copyArray(modifiedQueue).slice(1);
+            const refilledQueue = refillQueue(playlist, queue, nextSong, state.shuffle, state.repeat);
             return {
               ...state,
               ...refilledQueue,
@@ -203,7 +206,7 @@ const reducer = (state = INITIAL_STATE, action) => {
             };
           }
         } else {
-          const refilledQueue = refillQueue(modified.playlist, modified.queue, state.currentSong, state.shuffle, state.repeat);
+          const refilledQueue = refillQueue(playlist, modifiedQueue, state.currentSong, state.shuffle, state.repeat);
           return {
             ...state,
             ...refilledQueue,
