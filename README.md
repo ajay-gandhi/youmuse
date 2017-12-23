@@ -2,7 +2,6 @@
 
 ## Todo
 
-* Landing page
 * Add animations
   * Slide items from search results, blink Playlist tab
   * Fade items from playlist
