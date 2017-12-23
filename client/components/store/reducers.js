@@ -135,7 +135,7 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         playlist: {
-          isFetching: true,
+          isFetching: state.playlist.isFetching + 1,
           round: state.playlist.round,
           items: state.playlist.items,
         },
@@ -145,7 +145,7 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         playlist: {
-          isFetching: false,
+          isFetching: state.playlist.isFetching - 1,
           round: state.playlist.round,
           items: state.playlist.items,
         },

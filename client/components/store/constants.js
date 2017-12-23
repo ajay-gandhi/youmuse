@@ -32,7 +32,7 @@ export const INITIAL_STATE = Object.freeze({
   queue: [],
   playHistory: [],
   playlist: {
-    isFetching: false,
+    isFetching: 0,
     round: 0,
     items: [],
   },

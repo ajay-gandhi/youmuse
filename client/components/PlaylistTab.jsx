@@ -72,7 +72,7 @@ class PlaylistTab extends React.Component {
 const mapStateToProps = (state) => {
   return {
     playlist: state.playlist.items,
-    isFetchingPlaylist: state.playlist.isFetching,
+    isFetchingPlaylist: state.playlist.isFetching > 0,
   };
 };
 const mapDispatchToProps = (dispatch) => {
