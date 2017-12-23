@@ -51,6 +51,9 @@ class PlayerPage extends React.Component {
     }
   }
   componentWillReceiveProps = (nextProps) => {
+    if (nextProps.match.params.searchQuery && this.state.currentPage !== "search") {
+      this.setState({ currentPage: "search" });
+    }
     if (nextProps.playlist.length !== this.props.playlist.length && this.state.currentPage === "playlist") {
       this.props.history.push(`/playlist/${this.encodePlaylist(nextProps.playlist)}`);
     }

@@ -8,9 +8,9 @@ const app = express();
 app.set("port", (process.env.PORT || 8000));
 app.use(express.static("public"));
 
-app.get("/getAudioUrl", (req, res) => {
+app.get("/getAudioUrl/:videoId", (req, res) => {
 
-  const url = `https://www.youtube.com/watch?v=${req.query.videoId}`;
+  const url = `https://www.youtube.com/watch?v=${req.params.videoId}`;
 
   // Download video information so that we can choose a format and get URL
   ytdl.getInfo(url, (err, info) => {

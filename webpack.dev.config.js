@@ -25,6 +25,12 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
+    proxy: {
+      "/getAudioUrl/**": {
+        target: "http://localhost:8000/",
+        secure: false,
+      },
+    },
   },
   module: {
     rules: [
