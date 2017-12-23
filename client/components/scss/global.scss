@@ -15,6 +15,11 @@ $subtitleColor: #555;
 * {
   outline: none !important;
 }
+
+#root {
+  height: 100vh;
+}
+
 .BorderlessButton {
   border-radius: 0px;
   border: none;
