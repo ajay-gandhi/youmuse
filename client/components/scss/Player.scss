@@ -50,6 +50,7 @@
   justify-content: center;
   align-items: center;
   padding: 0px;
+  border: 2px solid $buttonBorderColor;
 
   i {
     color: $buttonColor;
@@ -92,6 +93,7 @@
   width: 28px;
   height: 28px;
   border-radius: 2px;
+  border: 2px solid $buttonBorderColor;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -112,11 +114,9 @@
 input.Player__controls__timeControl {
   -webkit-appearance: none;
   margin-right: -20px;
-  background-color: $backgroundColor;
+  background-color: $buttonColor;
   border: none;
-  border-top: 2px solid $buttonBorderColor;
-  border-bottom: 1px solid $buttonBorderColor;
-  height: 1px;
+  height: 3px;
   width: 100%;
   position: absolute;
   top: -1px;
@@ -124,8 +124,7 @@ input.Player__controls__timeControl {
   padding: 0px;
 
   &:hover {
-    border-color: $buttonDarkBorderColor;
-    background-color: $buttonHoverBackgroundColor;
+    background-color: $buttonDarkColor;
   }
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
