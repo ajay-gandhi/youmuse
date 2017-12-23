@@ -1,5 +1,8 @@
 /* global require, module */
 const path = require("path");
+const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
+const MinifyPlugin = require("babel-minify-webpack-plugin");
+
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: "./client/index.html",
@@ -10,22 +13,18 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 module.exports = {
   entry: "./client/index.js",
   output: {
-    path: path.resolve("dist"),
+    path: path.resolve("public"),
     filename: "bundle.js",
     publicPath: "/",
   },
   resolve: {
     extensions: [".js", ".jsx"],
   },
-  devServer: {
-    historyApiFallback: true,
-  },
   module: {
     rules: [
       { test: /\.jsx?$/, use: "babel-loader", exclude: /node_modules/ },
-      // { test: /\.jsx$/, use: "babel-loader", exclude: /node_modules/ },
       { test: /\.s?css$/, use: ["style-loader", "css-loader", "sass-loader"] },
     ],
   },
-  plugins: [HtmlWebpackPluginConfig],
+  plugins: [HtmlWebpackPluginConfig, new UglifyJSPlugin(), new MinifyPlugin()],
 };
