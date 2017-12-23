@@ -9,10 +9,10 @@ import { withRouter } from "react-router-dom";
 
 import SearchTab from "./SearchTab";
 import PlaylistTab from "./PlaylistTab";
+import SearchBar from "./SearchBar";
 import Queue from "./Queue";
 import Player from "./Player";
-import Icon from "./Icon";
-import { Button, Tabs, Tab } from "react-bootstrap";
+import { Tabs, Tab } from "react-bootstrap";
 
 class PlayerPage extends React.Component {
   static propTypes = {
@@ -65,15 +65,6 @@ class PlayerPage extends React.Component {
     }
   }
 
-  handleSearchChange = e => this.props.updateSearchQuery(e.target.value)
-  handleKeyPress = (e) => {
-    if (e.key === "Enter") this.handleSearchClick();
-  }
-  handleSearchClick = () => {
-    this.props.history.push(`/search/${this.props.searchQuery}`);
-    this.props.fetchSearchResults();
-    this.setState({ currentPage: "search" });
-  }
   handleTabClick = (tab) => {
     const request = tab === "search" ? this.props.searchQuery : this.encodePlaylist();
     const route = `/${tab}/${request}`;
@@ -87,25 +78,14 @@ class PlayerPage extends React.Component {
         <h1 className="PlayerPage__title">YouMuse</h1>
         <div className="PlayerPage__content">
           <div className="PlayerPage__content__LeftSection">
-            <div className="LeftSection__SearchContainer">
-              <input
-                className="SearchContainer__input"
-                placeholder="Search YouTube..."
-                value={ this.props.searchQuery }
-                onChange={ this.handleSearchChange }
-                onKeyPress={ this.handleKeyPress }
-              />
-              <Button className="SearchContainer__button BorderlessButton" onClick={ this.handleSearchClick }>
-                <Icon glyph="search" />
-              </Button>
-            </div>
+            <SearchBar />
             <Tabs
               activeKey={ this.state.currentPage }
               onSelect={ this.handleTabClick }
               id="PlayerNavigation"
               className="LeftSection__TabContainer"
             >
-              <Tab eventKey="spacer" title=" "></Tab>
+              <Tab eventKey="spacer" title=" " disabled></Tab>
               <Tab eventKey="search" title="Search">
                 <SearchTab className="TabContainer__TabContent" />
               </Tab>
