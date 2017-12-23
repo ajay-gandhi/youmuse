@@ -2,7 +2,6 @@
 
 ## Todo
 
-* Slider for playback currentTime
 * Landing page
 * Add animations
   * Slide items from search results, blink Playlist tab
