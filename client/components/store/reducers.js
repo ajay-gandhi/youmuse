@@ -1,4 +1,4 @@
-import { ACTION_TYPES, INITIAL_STATE, REPEAT_STATE } from "./Constants";
+import { ACTION_TYPES, INITIAL_STATE, REPEAT_STATE } from "./constants";
 import {
   MAX_QUEUE_SIZE,
   createQueue,

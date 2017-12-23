@@ -4,7 +4,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { actions } from "components/store/Store";
-import { REPEAT_STATE } from "components/store/Constants";
+import { REPEAT_STATE } from "components/store/constants";
 
 import ReactAudioPlayer from "react-audio-player";
 import Icon from "components/Icon";

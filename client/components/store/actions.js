@@ -1,6 +1,6 @@
 /* global gapi */
 import fetch from "cross-fetch";
-import { ACTION_TYPES } from "./Constants";
+import { ACTION_TYPES } from "./constants";
 
 /** Sync actions **/
 const setSearchQuery = (searchQuery) => {
