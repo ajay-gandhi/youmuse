@@ -7,7 +7,6 @@
   align-items: center;
   width: 100%;
   margin: 0 auto;
-  padding: 0px 10px 20px 10px;
 }
 .PlayerPage--withSong {
   padding-bottom: 130px;
@@ -17,7 +16,10 @@
   font-size: 28px;
   width: 100%;
   text-align: center;
-  margin-bottom: 15px;
+  padding: 20px 0px 15px 0px;
+  margin: 0px;
+  background-color: $primaryFontColor;
+  color: $backgroundColor;
 }
 .PlayerPage__content {
   display: flex;
@@ -25,6 +27,8 @@
   justify-content: center;
   align-items: start;
   width: 100%;
+  margin-top: 20px;
+  padding: 0px 10px 20px 10px;
 }
 
 .PlayerPage__content__LeftSection {
