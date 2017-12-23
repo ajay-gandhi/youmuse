@@ -1,4 +1,4 @@
-/* global require, module */
+/* global require, module, __dirname */
 const path = require("path");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
@@ -12,7 +12,7 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 
 module.exports = {
   entry: "./client/index.js",
-  context: "./client",
+  context: path.resolve(__dirname,"./client"),
   output: {
     path: path.resolve("public"),
     filename: "bundle.js",
