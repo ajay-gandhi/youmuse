@@ -41,6 +41,7 @@
     "recompose": "^0.26.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
+    "uglifyjs-webpack-plugin": "^1.1.4",
     "webpack": "^3.9.1",
     "webpack-dev-server": "^2.9.5",
     "ytdl-core": "^0.18.4"
@@ -62,7 +63,6 @@
     "lint-staged": "^6.0.0",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.6",
-    "style-loader": "^0.19.1",
-    "uglifyjs-webpack-plugin": "^1.1.4"
+    "style-loader": "^0.19.1"
   }
 }
