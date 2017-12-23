@@ -10,7 +10,7 @@
     "start": "node server.js",
     "dev-start": "webpack-dev-server",
     "precommit": "lint-staged",
-    "heroku-postbuild": "webpack -p --display-error-details --config ./webpack.prod.config.js --progress"
+    "heroku-postbuild": "webpack -p --display-error-details --config ./webpack.dev.config.js --progress"
   },
   "engine": {
     "node": "9.2.0"
