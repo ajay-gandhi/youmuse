@@ -35,9 +35,7 @@ class SearchItem extends React.PureComponent {
 class SearchTab extends React.Component {
   static propTypes = {
     className: PropTypes.string,
-    searchQuery: PropTypes.string,
     searchResults: PropTypes.arrayOf(PropTypes.object),
-    fetchSearchResults: PropTypes.func,
     addItemToPlayList: PropTypes.func,
   };
 
@@ -63,13 +61,11 @@ class SearchTab extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    searchQuery: state.searchQuery,
     searchResults: state.searchResults.results,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchSearchResults: () => dispatch(actions.fetchSearchResults()),
     addItemToPlayList: (index) => dispatch(actions.moveItemToPlaylist(index)),
   };
 };
