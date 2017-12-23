@@ -48,22 +48,26 @@ class PlaylistTab extends React.Component {
   };
 
   render = () => {
-    const playlistItems = this.props.playlist.map((item, index) => (
-      <div key={ item.id } className="PlaylistTab__PlaylistItemContainer">
-        { index !== 0 && <hr className="PlaylistItemContainer__delimiter" /> }
-        <PlaylistItem
-          key={ `${item.id}-${index}` }
-          item={ item }
-          index={ index }
-          removeItemFromPlaylist={ this.props.removeItemFromPlaylist }
-        />
-      </div>
-    ));
+    let content;
+    if (this.props.playlist.length) {
+      content = this.props.playlist.map((item, index) => (
+        <div key={ item.id } className="PlaylistTab__PlaylistItemContainer">
+          { index !== 0 && <hr className="PlaylistItemContainer__delimiter" /> }
+          <PlaylistItem
+            key={ `${item.id}-${index}` }
+            item={ item }
+            index={ index }
+            removeItemFromPlaylist={ this.props.removeItemFromPlaylist }
+          />
+        </div>
+      ));
+    } else {
+      content = <div className="PlaylistTab__emptyNote">Playlist empty.</div>;
+    }
 
     return (
       <div className={ `PlaylistTab ${this.props.className}` }>
-        { playlistItems }
-        { this.props.isFetchingPlaylist && <Spinner className="PlaylistTab__spinner" /> }
+        { this.props.isFetchingPlaylist ? <Spinner /> : content }
       </div>
     );
   }

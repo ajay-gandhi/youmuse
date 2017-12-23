@@ -2,8 +2,12 @@ import "./scss/SearchTab.scss";
 
 import React from "react";
 import PropTypes from "prop-types";
+import { compose } from "recompose";
 import { connect } from "react-redux";
 import { actions } from "./store/Store";
+import { withRouter } from "react-router-dom";
+
+import Spinner from "./Spinner";
 
 class SearchItem extends React.PureComponent {
   static propTypes = {
@@ -35,25 +39,35 @@ class SearchItem extends React.PureComponent {
 class SearchTab extends React.Component {
   static propTypes = {
     className: PropTypes.string,
+    searchQuery: PropTypes.string,
     searchResults: PropTypes.arrayOf(PropTypes.object),
+    isFetchingSearchResults: PropTypes.bool,
+    match: PropTypes.object,
     addItemToPlayList: PropTypes.func,
   };
 
   render = () => {
-    const searchResults = this.props.searchResults.map((result, index) => (
-      <div key={ result.id } className="SearchTab__SearchItemContainer">
-        { index !== 0 && <hr className="SearchItemContainer__delimiter" /> }
-        <SearchItem
-          index={ index }
-          searchResult={ result }
-          addToPlayList={ this.props.addItemToPlayList }
-        />
-      </div>
-    ));
+    let content;
+    if (this.props.searchResults.length) {
+      content = this.props.searchResults.map((result, index) => (
+        <div key={ result.id } className="SearchTab__SearchItemContainer">
+          { index !== 0 && <hr className="SearchItemContainer__delimiter" /> }
+          <SearchItem
+            index={ index }
+            searchResult={ result }
+            addToPlayList={ this.props.addItemToPlayList }
+          />
+        </div>
+      ));
+    } else if (this.props.searchQuery && this.props.searchQuery === this.props.match.params.searchQuery) {
+      content = <div className="SearchTab__emptyNote">No results</div>;
+    } else {
+      content = <div className="SearchTab__emptyNote">Enter search keywords above.</div>;
+    }
 
     return (
       <div className={ `SearchTab ${this.props.className}` }>
-        { searchResults }
+        { this.props.isFetchingSearchResults ? <Spinner /> : content }
       </div>
     );
   }
@@ -61,7 +75,9 @@ class SearchTab extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    searchQuery: state.searchQuery,
     searchResults: state.searchResults.results,
+    isFetchingSearchResults: state.searchResults.isFetching,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -70,4 +86,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchTab);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(SearchTab);
