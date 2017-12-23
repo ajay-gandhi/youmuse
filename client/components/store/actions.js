@@ -131,7 +131,7 @@ const fetchPlaylist = (videoIds) => {
     }).then((response) => {
       // Get audio URLs for items
       return Promise.all(response.result.items.map((item) => {
-        return fetch(`http://localhost:8000/getAudioUrl?videoId=${item.id}`).then(
+        return fetch(`/getAudioUrl?videoId=${item.id}`).then(
           response => response.json(),
           error => console.log("Error fetching audio", error)
         ).then((audio) => {
@@ -164,7 +164,7 @@ const moveItemToPlaylist = (index) => {
     newSearchResults.splice(index, 1);
     dispatch(updateSearchResults(newSearchResults));
 
-    return fetch(`http://localhost:8000/getAudioUrl?videoId=${newItem.id}`).then(
+    return fetch(`/getAudioUrl?videoId=${newItem.id}`).then(
       response => response.json(),
       error => console.log("Error fetching audio", error)
     ).then((json) => {
