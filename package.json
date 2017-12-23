@@ -7,7 +7,8 @@
   "license": "MIT",
   "private": null,
   "scripts": {
-    "start": "webpack-dev-server",
+    "start": "node server.js",
+    "dev-start": "webpack-dev-server",
     "precommit": "lint-staged",
     "heroku-postbuild": "webpack -p --config ./webpack.prod.config.js --progress"
   },
