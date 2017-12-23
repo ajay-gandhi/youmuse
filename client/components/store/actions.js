@@ -27,12 +27,6 @@ const updateCurrentTime = (currentTime) => {
     currentTime,
   };
 };
-const removeItemFromPlaylist = (index) => {
-  return {
-    type: ACTION_TYPES.removeItemFromPlaylist,
-    index,
-  };
-};
 
 const setIsPlaying = (isPlaying) => {
   return {
@@ -81,10 +75,22 @@ const requestPlaylist = () => {
     type: ACTION_TYPES.requestPlaylist,
   };
 };
-const updatePlaylist = (items) => {
+const doneRequestingPlaylist = () => {
   return {
-    type: ACTION_TYPES.updatePlaylist,
-    items,
+    type: ACTION_TYPES.doneRequestingPlaylist,
+  };
+};
+const addToPlaylist = (item, index) => {
+  return {
+    type: ACTION_TYPES.addToPlaylist,
+    item,
+    index,
+  };
+};
+const removeFromPlaylist = (index) => {
+  return {
+    type: ACTION_TYPES.removeFromPlaylist,
+    index,
   };
 };
 
@@ -142,7 +148,9 @@ const fetchPlaylist = (videoIds) => {
     }, (error) => {
       console.log(error);
     }).then((items) => {
-      dispatch(updatePlaylist(items));
+      // dispatch(updatePlaylist(items));
+      console.log(items);
+      dispatch(doneRequestingPlaylist());
     });
   };
 };
@@ -168,7 +176,8 @@ const moveItemToPlaylist = (index) => {
           duration: parseInt(json.duration),
         },
       };
-      dispatch(updatePlaylist(state.playlist.items.concat(playlistItem)));
+      dispatch(addToPlaylist(playlistItem, state.playlist.items.length));
+      dispatch(doneRequestingPlaylist());
     });
   };
 };
@@ -181,7 +190,7 @@ const actions = {
   updateVolume,
   updateCurrentTime,
   mergeState,
-  removeItemFromPlaylist,
+  removeFromPlaylist,
 
   // Player
   setIsPlaying,

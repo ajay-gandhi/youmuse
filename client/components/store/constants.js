@@ -17,8 +17,9 @@ export const ACTION_TYPES = Object.freeze({
   nextSong: "NEXT_SONG",
 
   requestPlaylist: "REQUEST_PLAYLIST",
-  updatePlaylist: "UPDATE_PLAYLIST",
-  removeItemFromPlaylist: "REMOVE_ITEM_FROM_PLAYLIST",
+  doneRequestingPlaylist: "DONE_REQUESTING_PLAYLIST",
+  addToPlaylist: "ADD_TO_PLAYLIST",
+  removeFromPlaylist: "REMOVE_FROM_PLAYLIST",
 });
 
 export const INITIAL_STATE = Object.freeze({

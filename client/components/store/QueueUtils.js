@@ -3,8 +3,7 @@ import { REPEAT_STATE } from "./Constants";
 // Queue utilities
 export const MAX_QUEUE_SIZE = 20;
 export const copyArray = arr => arr.map(item => ({ ...item }));
-const shuffleArray = (arr) => {
-  // Assumes array contains objects
+const shuffleArray = (arr) => { // Assumes array contains objects
   const newArr = copyArray(arr);
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -135,7 +134,11 @@ const buildQueueItems = (playlist, numQueueItems, currentSong, shuffle, repeat) 
     }
   }
 };
-export const createQueue = (playlist, currentSong, shuffle, repeat, currentQueue) => {
+
+// Builds a new queue, updating round and play counts as the queue is filled.
+// If a currentQueue is given, resets the round and play counts according to
+// items in currentQueue.
+export const createQueue = (playlist, currentSong, shuffle, repeat, currentQueue = []) => {
   let round = playlist.round;
   const playlistItems = copyArray(playlist.items);
   if (currentQueue.length > 0) {
@@ -157,6 +160,9 @@ export const createQueue = (playlist, currentSong, shuffle, repeat, currentQueue
   };
   return buildQueueItems(newPlaylist, MAX_QUEUE_SIZE, currentSong, shuffle, repeat);
 };
+
+// Refills the given queue with the given playlist and options. Updates round
+// and play counts in the playlist
 export const refillQueue = (playlist, queue, currentSong, shuffle, repeat) => {
   const result = buildQueueItems(playlist, MAX_QUEUE_SIZE - queue.length, currentSong, shuffle, repeat);
   return {
@@ -165,7 +171,10 @@ export const refillQueue = (playlist, queue, currentSong, shuffle, repeat) => {
     currentSong: result.currentSong,
   };
 };
-export const removeFromQueue = (playlist, queue, index) => {
+
+// Removes the item at the given index from the queue and updates round and
+// play counts
+export const removeFromQueueByIndex = (playlist, queue, index) => {
   let round = playlist.round;
   const playlistItems = copyArray(playlist.items);
   const newQueue = copyArray(queue);
@@ -179,7 +188,6 @@ export const removeFromQueue = (playlist, queue, index) => {
       break;
     }
   }
-
   return {
     playlist: {
       isFetching: playlist.isFetching,
@@ -189,3 +197,6 @@ export const removeFromQueue = (playlist, queue, index) => {
     newQueue,
   };
 };
+
+// Removes items with the given ID from the queue
+export const removeFromQueueById = (queue, id) => copyArray(queue).filter(item => item.id === id);

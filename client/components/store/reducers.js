@@ -3,7 +3,8 @@ import {
   MAX_QUEUE_SIZE,
   createQueue,
   refillQueue,
-  removeFromQueue,
+  removeFromQueueByIndex,
+  removeFromQueueById,
   copyArray
 } from "./QueueUtils";
 
@@ -68,7 +69,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         if (state.currentSong) {
           queue.unshift(state.currentSong);
           if (queue.length > MAX_QUEUE_SIZE) {
-            ({ playlist, queue } = removeFromQueue(playlist, queue, queue.length - 1));
+            ({ playlist, queue } = removeFromQueueByIndex(playlist, queue, queue.length - 1));
           }
         }
         const currentSong = { ...previousSong };
@@ -85,7 +86,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         let queue = copyArray(state.playHistory);
         queue.unshift(state.currentSong);
         if (queue.length > MAX_QUEUE_SIZE) {
-          ({ playlist, queue } = removeFromQueue(playlist, queue, queue.length - 1));
+          ({ playlist, queue } = removeFromQueueByIndex(playlist, queue, queue.length - 1));
         }
         const currentSong = null;
 
@@ -130,19 +131,6 @@ const reducer = (state = INITIAL_STATE, action) => {
       }
     }
 
-    case ACTION_TYPES.removeItemFromPlaylist: {
-      // Deep copy
-      const items = copyArray(state.playlist.items);
-      const removed = items.splice(action.index, 1)[0];
-      const queue = state.queue.filter(item => item.id === removed.id);
-      const refilled = refillQueue(items, queue, state.currentSong, state.shuffle, state.repeat);
-
-      return {
-        ...state,
-        ...refilled,
-      };
-    }
-
     case ACTION_TYPES.requestPlaylist:
       return {
         ...state,
@@ -153,9 +141,81 @@ const reducer = (state = INITIAL_STATE, action) => {
         },
       };
 
+    case ACTION_TYPES.doneRequestingPlaylist:
+      return {
+        ...state,
+        playlist: {
+          isFetching: false,
+          round: state.playlist.round,
+          items: state.playlist.items,
+        },
+      };
+
+    case ACTION_TYPES.addToPlaylist: {
+      const playlistItems = copyArray(state.playlist.items);
+      playlistItems[action.index || playlistItems.length] = { ...action.item, playCount: state.playlist.round };
+      const playlist = {
+        ...state.playlist,
+        items: playlistItems,
+      };
+      const refilled = refillQueue(playlist, state.queue, state.currentSong, state.shuffle, state.repeat);
+
+      return {
+        ...state,
+        ...refilled,
+      };
+    }
+
+    case ACTION_TYPES.removeFromPlaylist: {
+      const newPlaylistItems = copyArray(state.playlist.items);
+      const removedItem = newPlaylistItems.splice(action.index, 1)[0];
+
+      const round = Math.min(...newPlaylistItems.map(item => item.playCount));
+      const playlist = {
+        isFetching: state.playlist.isFetching,
+        round,
+        items: state.playlist.items.slice(),
+      };
+      const currentSong = currentSong && currentSong.id !== removedItem.id && currentSong;
+
+      if (state.currentSong) {
+        const modified = removeFromQueueById(playlist, state.queue, removedItem.id);
+        if (state.currentSong.id === removedItem.id) {
+          const nextSong = modified.queue[0];
+          if (modified.queue[0]) {
+            const queue = copyArray(modified.queue).slice(1);
+            const refilledQueue = refillQueue(modified.playlist, queue, nextSong, state.shuffle, state.repeat);
+            return {
+              ...state,
+              ...refilledQueue,
+            };
+          } else {
+            return {
+              ...state,
+              playlist,
+              queue: [],
+              isPlaying: false,
+              currentSong: null,
+            };
+          }
+        } else {
+          const refilledQueue = refillQueue(modified.playlist, modified.queue, state.currentSong, state.shuffle, state.repeat);
+          return {
+            ...state,
+            ...refilledQueue,
+          };
+        }
+      } else {
+        // Nothing playing, so assume queue is empty
+        return {
+          ...state,
+          playlist,
+        };
+      }
+    }
+
     case ACTION_TYPES.updatePlaylist: {
       const playlist = {
-        isFetching: false,
         round: state.playlist.round,
         items: action.items,
       };
