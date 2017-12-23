@@ -50,7 +50,7 @@ class AudioElement extends React.Component {
     this.props.updateCurrentTime(e);
   }
 
-  setAudioElement = (ref) => { this.audioElement = ref.audioEl; }
+  setAudioElement = ref => { this.audioElement = ref && ref.audioEl; }
 
   render = () => {
     return (

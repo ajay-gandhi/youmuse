@@ -173,6 +173,7 @@ const reducer = (state = INITIAL_STATE, action) => {
     case ACTION_TYPES.removeFromPlaylist: {
       const newPlaylistItems = copyArray(state.playlist.items);
       const removedItem = newPlaylistItems.splice(action.index, 1)[0];
+      const playHistory = state.playHistory.filter(item => item.id !== removedItem.id);
 
       const playCounts = newPlaylistItems.map(item => item.playCount);
       const playCountsWithLower = playCounts.concat(Math.max(...playCounts) - 1);
@@ -188,18 +189,20 @@ const reducer = (state = INITIAL_STATE, action) => {
       if (state.currentSong) {
         const modifiedQueue = removeFromQueueById(state.queue, removedItem.id);
         if (state.currentSong.id === removedItem.id) {
-          const nextSong = modifiedQueue.queue[0];
-          if (modifiedQueue.queue[0]) {
+          const nextSong = modifiedQueue[0];
+          if (nextSong) {
             const queue = copyArray(modifiedQueue).slice(1);
             const refilledQueue = refillQueue(playlist, queue, nextSong, state.shuffle, state.repeat);
             return {
               ...state,
+              playHistory,
               ...refilledQueue,
             };
           } else {
             return {
               ...state,
               playlist,
+              playHistory,
               queue: [],
               isPlaying: false,
               currentSong: null,
@@ -209,6 +212,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           const refilledQueue = refillQueue(playlist, modifiedQueue, state.currentSong, state.shuffle, state.repeat);
           return {
             ...state,
+            playHistory,
             ...refilledQueue,
           };
         }
@@ -216,6 +220,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         // Nothing playing, so assume queue is empty
         return {
           ...state,
+          playHistory,
           playlist,
         };
       }
