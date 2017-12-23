@@ -1,5 +1,6 @@
-/* global require, process */
+/* global require, process, __dirname */
 
+const path = require("path");
 const express = require("express");
 const ytdl = require("ytdl-core");
 
@@ -38,5 +39,7 @@ app.get("/getAudioUrl", (req, res) => {
     });
   });
 });
+
+app.get("*", (req, res) => res.sendFile(path.resolve(__dirname, "public/index.html")));
 
 app.listen(app.get("port"), () => console.log("Server running"));
