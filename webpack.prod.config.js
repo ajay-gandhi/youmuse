@@ -1,31 +1,30 @@
-/* global require, module */
+/* global require, module, __dirname */
 const path = require("path");
-const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
-const MinifyPlugin = require("babel-minify-webpack-plugin");
-
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-  // template: "./client/index.html",
-  // filename: "index.html",
-  // inject: "body",
-  title: "Production - HWP",
-});
+const webpack = require("webpack");
 
 module.exports = {
-  entry: "./client/index.js",
+  devtool: "source-map",
+  entry: ["./client/index.html"],
   output: {
-    path: path.resolve("public"),
+    path: path.join(__dirname, "public"),
     filename: "bundle.js",
-    publicPath: "/",
+    public: "/public/",
   },
-  resolve: {
-    extensions: [".js", ".jsx"],
-  },
+  plugins: [
+    // new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      minimize: true,
+      compress: { warnings: false },
+    }),
+    new webpack.DefinePlugin({
+      "process.env": { "NODE_ENV": JSON.stringify("production") },
+    }),
+  ],
   module: {
     rules: [
       { test: /\.jsx?$/, use: "babel-loader", exclude: /node_modules/ },
       { test: /\.s?css$/, use: ["style-loader", "css-loader", "sass-loader"] },
     ],
   },
-  plugins: [HtmlWebpackPluginConfig, new UglifyJSPlugin(), new MinifyPlugin()],
+  // plugins: [HtmlWebpackPluginConfig, new UglifyJSPlugin(), new MinifyPlugin()],
 };
