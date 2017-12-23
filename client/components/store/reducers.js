@@ -153,7 +153,11 @@ const reducer = (state = INITIAL_STATE, action) => {
 
     case ACTION_TYPES.addToPlaylist: {
       const playlistItems = copyArray(state.playlist.items);
-      playlistItems[action.index || playlistItems.length] = { ...action.item, playCount: state.playlist.round };
+
+      // Insert at first index for which there is no element
+      let index = action.index || playlistItems.length;
+      while (playlistItems[index]) index++;
+      playlistItems[index] = { ...action.item, playCount: state.playlist.round };
       const playlist = {
         ...state.playlist,
         items: playlistItems,

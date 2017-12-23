@@ -148,8 +148,8 @@ const fetchPlaylist = (videoIds) => {
     }, (error) => {
       console.log(error);
     }).then((items) => {
-      // dispatch(updatePlaylist(items));
-      console.log(items);
+      // Add to playlist in order
+      items.forEach((item, i) => dispatch(addToPlaylist(item, i)));
       dispatch(doneRequestingPlaylist());
     });
   };

@@ -1,8 +1,3 @@
-/* Global styles */
-* {
-  outline: none !important;
-}
-
 /* Variables */
 $backgroundColor: #ffffff;
 $borderColor: #dddddd;
@@ -15,3 +10,23 @@ $buttonHoverBackgroundColor: #e6e6e6;
 
 $primaryFontColor: #222;
 $subtitleColor: #555;
+
+/* Global styles */
+* {
+  outline: none !important;
+}
+.BorderlessButton {
+  border-radius: 0px;
+  border: none;
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  i {
+    color: $buttonColor;
+  }
+}
+.BorderlessButton:hover i {
+  color: $buttonDarkColor;
+}

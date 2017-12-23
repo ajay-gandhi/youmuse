@@ -48,7 +48,7 @@ class QueueItem extends React.PureComponent {
           <h4 className="QueueItem__textContent__heading">{ this.props.item.snippet.title }</h4>
           <h5 className="QueueItem__textContent__heading QueueItem__textContent__heading--subtitle">{ formatAudio(this.props.item.audio.duration) } - { this.props.item.snippet.title }</h5>
         </div>
-        <Button className="QueueItem__removeButton" onClick={ this.handleRemoveClick }>
+        <Button className="QueueItem__removeButton BorderlessButton" onClick={ this.handleRemoveClick }>
           <Icon glyph="remove_circle" />
         </Button>
       </div>

@@ -1,0 +1,61 @@
+@import "./global.scss";
+
+.PlaylistTab {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: left;
+}
+
+.PlaylistTab__PlaylistItemContainer {
+  width: 100%;
+}
+.PlaylistTab__spinner {
+  padding: 30px 0;
+}
+.PlaylistItemContainer__delimiter {
+  margin: 0 20px;
+}
+
+.PlaylistItem {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.PlaylistItem__imageContainer {
+  flex: 0 1 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 15px 0px 10px 10px;
+  margin: 0px;
+}
+.PlaylistItem__imageContainer__image {
+  height: 100%;
+  width: auto;
+}
+
+.PlaylistItem__textContent {
+  flex: 1 1 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: left;
+  margin-left: 10px;
+  overflow-x: auto;
+  margin-right: 10px;
+}
+.PlaylistItem__textContent__heading {
+  white-space: nowrap;
+  width: 100%;
+  margin: 0px;
+}
+.PlaylistItem__textContent__heading--channel {
+  font-weight: normal;
+  margin: 10px 0px 20px;
+  color: $subtitleColor;
+}
+
+.PlaylistItem__removeButton {
+  width: 60px;
+}

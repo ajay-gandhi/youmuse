@@ -95,7 +95,7 @@ class PlayerPage extends React.Component {
                 onChange={ this.handleSearchChange }
                 onKeyPress={ this.handleKeyPress }
               />
-              <Button className="SearchContainer__button" onClick={ this.handleSearchClick }>
+              <Button className="SearchContainer__button BorderlessButton" onClick={ this.handleSearchClick }>
                 <Icon glyph="search" />
               </Button>
             </div>
