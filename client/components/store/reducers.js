@@ -21,6 +21,7 @@ const reducer = (state = INITIAL_STATE, action) => {
       let repeat = state.repeat === REPEAT_STATE.off
         ? REPEAT_STATE.all
         : (state.repeat === REPEAT_STATE.all ? REPEAT_STATE.one : REPEAT_STATE.off);
+      console.log(repeat);
       return {
         ...state,
         repeat,

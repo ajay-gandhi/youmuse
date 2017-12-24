@@ -101,11 +101,15 @@
 
   i {
     font-size: 22px;
-    color: $buttonColor;
+    color: $buttonDisabledColor;
   }
 }
 .OrderControl__button--enabled {
   border-color: $buttonBorderColor;
+
+  i {
+    color: $buttonColor;
+  }
 }
 .OrderControl__button:hover {
   border-color: $buttonDarkBorderColor;

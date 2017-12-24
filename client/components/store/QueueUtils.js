@@ -78,6 +78,7 @@ const buildQueueItems = (playlist, numQueueItems, currentSong, shuffle, repeat) 
             };
           }
         }, result);
+        if (result.queue.length <= numQueueItems) result.playlist.round++;
       }
       return result;
     }
