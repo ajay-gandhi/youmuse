@@ -5,6 +5,12 @@
   flex-flow: column nowrap;
   padding: 4px 1%;
   border: 1px solid $borderColor;
+  max-width: 600px;
+  transition: max-width 200ms ease, padding 200ms ease;
+}
+.Queue--invisible {
+  padding: 0px;
+  max-width: 0px;
 }
 
 .QueueItem {

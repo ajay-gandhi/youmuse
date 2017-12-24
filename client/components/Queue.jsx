@@ -67,7 +67,7 @@ class Queue extends React.Component {
   };
 
   render = () => {
-    if (this.props.queue.length === 0) return null;
+    // if (this.props.queue.length === 0) return null;
 
     const queue = this.props.queue.map((item, index) => (
       <QueueItem
@@ -78,8 +78,9 @@ class Queue extends React.Component {
       />
     ));
 
+    const className = `Queue ${this.props.queue.length === 0 ? "Queue--invisible" : ""} ${this.props.className || ""}`;
     return (
-      <div className={ `Queue ${this.props.className}` }>
+      <div className={ className }>
         { queue }
       </div>
     );
