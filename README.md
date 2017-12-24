@@ -2,8 +2,6 @@
 
 ## Todo
 
-* Ensure playlist uniqueness
-* Audio title on mobile?
+* Queue, playlist dragging
 * Dark theme?
 * About, keyboard controls notice
-* Queue, playlist dragging
