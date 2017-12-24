@@ -89,6 +89,7 @@ class Player extends React.Component {
     volume: PropTypes.number,
     currentSong: PropTypes.object,
     currentTime: PropTypes.number,
+    playlist: PropTypes.object,
 
     handleTogglePlay: PropTypes.func,
     handleNextClick: PropTypes.func,
@@ -113,7 +114,7 @@ class Player extends React.Component {
   }
 
   render = () => {
-    if (!this.props.currentSong) return null;
+    if (!this.props.playlist.items.length === 0) return null;
 
     let maximizeButton;
     if (this.state.collapsed) {
@@ -124,6 +125,10 @@ class Player extends React.Component {
       );
     }
 
+    const duration = this.props.currentSong ? this.props.currentSong.audio.duration : 0;
+    const songTitle = this.props.currentSong ? this.props.currentSong.snippet.title : "";
+    const channelTitle = this.props.currentSong ? `by ${this.props.currentSong.snippet.channelTitle}` : "";
+
     return (
       <div className={ `Player ${this.state.collapsed ? "Player--collapsed" : ""}` }>
         <div className="Player__controls">
@@ -131,7 +136,7 @@ class Player extends React.Component {
             className="Player__controls__timeControl"
             type="range"
             min="0"
-            max={ this.props.currentSong.audio.duration }
+            max={ duration }
             step="1"
             value={ this.props.currentTime }
             onChange={ this.handleTimeChange }
@@ -180,8 +185,8 @@ class Player extends React.Component {
           </div>
         </div>
         <div className="Player__metadata">
-          <span className="Player__metadata__songTitle">{ this.props.currentSong.snippet.title }</span>
-          <span className="Player__metadata__channelTitle">by { this.props.currentSong.snippet.channelTitle }</span>
+          <span className="Player__metadata__songTitle">{ songTitle }</span>
+          <span className="Player__metadata__channelTitle">{ channelTitle }</span>
         </div>
         <ConnectedAudioElement />
         <Button className="Player__togglePlayerButton Player__togglePlayerButton--minimize" onClick={ this.handleTogglePlayer }>
@@ -201,6 +206,7 @@ const mapStateToPlayerProps = (state) => {
     volume: state.volume,
     currentTime: state.currentTime,
     currentSong: state.currentSong,
+    playlist: state.playlist,
   };
 };
 const mapDispatchToPlayerProps = (dispatch) => {
