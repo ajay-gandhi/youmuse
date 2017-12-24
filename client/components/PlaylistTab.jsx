@@ -85,7 +85,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    removeItemFromPlaylist: index => dispatch(actions.removeFromPlaylist(index)),
+    removeItemFromPlaylist: index => dispatch(actions.removeFromPlaylistByIndex(index)),
   };
 };
 

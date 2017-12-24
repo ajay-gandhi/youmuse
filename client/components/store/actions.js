@@ -51,9 +51,9 @@ const removeFromSearchResults = (index) => {
     index,
   };
 };
-const removeFromQueue = (index) => {
+const removeFromQueueByIndex = (index) => {
   return {
-    type: ACTION_TYPES.removeFromQueue,
+    type: ACTION_TYPES.removeFromQueueByIndex,
     index,
   };
 };
@@ -100,9 +100,9 @@ const addToPlaylist = (item, index) => {
     index,
   };
 };
-const removeFromPlaylist = (index) => {
+const removeFromPlaylistByIndex = (index) => {
   return {
-    type: ACTION_TYPES.removeFromPlaylist,
+    type: ACTION_TYPES.removeFromPlaylistByIndex,
     index,
   };
 };
@@ -120,12 +120,10 @@ const fetchSearchResults = () => {
         "type": "video",
       },
     }).then((response) => {
-      const mapped = response.result.items.map((item) => {
-        return {
-          ...item,
-          id: item.id.videoId,
-        };
-      });
+      const mapped = response.result.items.map(item => ({
+        ...item,
+        id: item.id.videoId,
+      }));
       dispatch(updateSearchResults(mapped));
     }, (reason) => {
       console.log(reason);
@@ -150,7 +148,6 @@ const fetchPlaylist = (videoIds) => {
         ).then((audio) => {
           return {
             ...item,
-            playCount: 0,
             audio: {
               url: audio.url,
               duration: parseInt(audio.duration),
@@ -178,7 +175,6 @@ const addItemToPlaylist = (item) => {
     ).then((json) => {
       const playlistItem = {
         ...item,
-        playCount: 0,
         audio: {
           url: json.url,
           duration: parseInt(json.duration),
@@ -193,19 +189,19 @@ const addItemToPlaylist = (item) => {
 const actions = {
   // Sync
   setSearchQuery,
-  toggleRepeat,
-  toggleShuffle,
-  updateVolume,
-  updateCurrentTime,
   mergeState,
   removeFromSearchResults,
-  removeFromQueue,
-  removeFromPlaylist,
+  removeFromQueueByIndex,
+  removeFromPlaylistByIndex,
 
   // Player
   setIsPlaying,
   previousSong,
   nextSong,
+  toggleRepeat,
+  toggleShuffle,
+  updateVolume,
+  updateCurrentTime,
 
   // Async
   fetchSearchResults,

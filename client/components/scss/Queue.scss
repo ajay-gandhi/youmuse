@@ -13,6 +13,12 @@
   max-width: 0px;
 }
 
+.Queue__emptyNote {
+  font-size: 14px;
+  font-style: italic;
+  padding: 15px;
+}
+
 .QueueItem {
   display: flex;
   flex-flow: row nowrap;

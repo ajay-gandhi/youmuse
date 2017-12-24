@@ -4,6 +4,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { actions } from "components/store/Store";
+import { MAX_QUEUE_SIZE } from "components/store/constants";
 
 import Icon from "./Icon";
 import { Button } from "react-bootstrap";
@@ -31,7 +32,7 @@ class QueueItem extends React.PureComponent {
     className: PropTypes.string,
     index: PropTypes.number,
     item: PropTypes.object,
-    removeFromQueue: PropTypes.func,
+    removeFromQueueByIndex: PropTypes.func,
   };
   state = {
     clicked: false,
@@ -63,25 +64,30 @@ class QueueItem extends React.PureComponent {
 class Queue extends React.Component {
   static propTypes = {
     queue: PropTypes.arrayOf(PropTypes.object),
-    removeFromQueue: PropTypes.func,
+    playlist: PropTypes.arrayOf(PropTypes.object),
+    removeFromQueueByIndex: PropTypes.func,
   };
 
   render = () => {
-    // if (this.props.queue.length === 0) return null;
+    let queueContent;
+    if (this.props.queue.length > 0) {
+      queueContent = this.props.queue.map((item, index) => (
+        <QueueItem
+          key={ `${item.id}-${index}` }
+          item={ item }
+          index={ index }
+          removeFromQueueByIndex={ this.props.removeFromQueueByIndex }
+        />
+      ));
+    } else {
+      queueContent = <div className="Queue__emptyNote">Queue empty.</div>;
+    }
 
-    const queue = this.props.queue.map((item, index) => (
-      <QueueItem
-        key={ `${item.id}-${index}` }
-        item={ item }
-        index={ index }
-        removeFromQueue={ this.props.removeFromQueue }
-      />
-    ));
-
-    const className = `Queue ${this.props.queue.length === 0 ? "Queue--invisible" : ""} ${this.props.className || ""}`;
+    const hideQueue = this.props.playlist.length === 0;
+    const className = `Queue ${hideQueue? "Queue--invisible" : ""} ${this.props.className || ""}`;
     return (
       <div className={ className }>
-        { queue }
+        { queueContent }
       </div>
     );
   }
@@ -89,12 +95,13 @@ class Queue extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    queue: state.queue,
+    queue: state.queue.slice(0, MAX_QUEUE_SIZE),
+    playlist: state.playlist.items,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    removeFromQueue: index => dispatch(actions.removeFromQueue(index)),
+    removeFromQueueByIndex: index => dispatch(actions.removeFromQueueByIndex(index)),
   };
 };
 
