@@ -22,8 +22,8 @@ class SearchItem extends React.PureComponent {
 
   handleClick = () => {
     this.setState({ clicked: true });
-    this.props.removeFromSearchResults(this.props.index);
-    setTimeout(() => this.props.addItemToPlaylist(this.props.searchResult), 300);
+    this.props.addItemToPlaylist(this.props.searchResult);
+    setTimeout(() => this.props.removeFromSearchResults(this.props.index), 300);
   }
 
   render = () => {

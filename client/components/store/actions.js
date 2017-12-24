@@ -51,6 +51,12 @@ const removeFromSearchResults = (index) => {
     index,
   };
 };
+const removeFromQueue = (index) => {
+  return {
+    type: ACTION_TYPES.removeFromQueue,
+    index,
+  };
+};
 
 const mergeState = (newState) => {
   return {
@@ -193,6 +199,7 @@ const actions = {
   updateCurrentTime,
   mergeState,
   removeFromSearchResults,
+  removeFromQueue,
   removeFromPlaylist,
 
   // Player

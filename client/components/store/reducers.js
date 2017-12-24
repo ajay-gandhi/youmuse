@@ -21,7 +21,6 @@ const reducer = (state = INITIAL_STATE, action) => {
       let repeat = state.repeat === REPEAT_STATE.off
         ? REPEAT_STATE.all
         : (state.repeat === REPEAT_STATE.all ? REPEAT_STATE.one : REPEAT_STATE.off);
-      console.log(repeat);
       return {
         ...state,
         repeat,
@@ -132,6 +131,27 @@ const reducer = (state = INITIAL_STATE, action) => {
       } else {
         return state;
       }
+    }
+
+    case ACTION_TYPES.removeFromSearchResults: {
+      const results = state.searchResults.results.slice();
+      results.splice(action.index, 1);
+      return {
+        ...state,
+        searchResults: {
+          isFetching: state.searchResults.isFetching,
+          results,
+        },
+      };
+    }
+
+    case ACTION_TYPES.removeFromQueue: {
+      const queue = state.queue.slice();
+      queue.splice(action.index, 1);
+      return {
+        ...state,
+        queue,
+      };
     }
 
     case ACTION_TYPES.requestPlaylist:

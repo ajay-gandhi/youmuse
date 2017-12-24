@@ -33,14 +33,18 @@ class QueueItem extends React.PureComponent {
     item: PropTypes.object,
     removeFromQueue: PropTypes.func,
   };
+  state = {
+    clicked: false,
+  };
 
   handleRemoveClick = () => {
-    this.props.removeFromQueue(this.props.index);
+    this.setState({ clicked: true });
+    setTimeout(() => this.props.removeFromQueue(this.props.index), 200);
   }
 
   render = () => {
     return (
-      <div className="QueueItem">
+      <div className={ `QueueItem ${this.state.clicked ? "QueueItem--clicked" : ""}` }>
         <div className="QueueItem__imageContainer">
           <img className="QueueItem__image" src={ this.props.item.snippet.thumbnails.default.url } />
         </div>
@@ -59,6 +63,7 @@ class QueueItem extends React.PureComponent {
 class Queue extends React.Component {
   static propTypes = {
     queue: PropTypes.arrayOf(PropTypes.object),
+    removeFromQueue: PropTypes.func,
   };
 
   render = () => {
@@ -69,6 +74,7 @@ class Queue extends React.Component {
         key={ `${item.id}-${index}` }
         item={ item }
         index={ index }
+        removeFromQueue={ this.props.removeFromQueue }
       />
     ));
 
@@ -87,7 +93,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    addItemToPlayList: (index) => dispatch(actions.moveItemToPlaylist(index)),
+    removeFromQueue: index => dispatch(actions.removeFromQueue(index)),
   };
 };
 
