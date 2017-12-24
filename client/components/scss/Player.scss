@@ -93,7 +93,7 @@
   width: 28px;
   height: 28px;
   border-radius: 2px;
-  border: 2px solid $buttonBorderColor;
+  border: 2px solid $buttonDisabledBorderColor;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -103,6 +103,9 @@
     font-size: 22px;
     color: $buttonColor;
   }
+}
+.OrderControl__button--enabled {
+  border-color: $buttonBorderColor;
 }
 .OrderControl__button:hover {
   border-color: $buttonDarkBorderColor;

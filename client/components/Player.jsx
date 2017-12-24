@@ -166,13 +166,13 @@ class Player extends React.Component {
           </div>
           <div className="Player__controls__OrderControl">
             <Button
-              className="OrderControl__button"
+              className={ `OrderControl__button ${this.props.shuffle ? "OrderControl__button--enabled" : ""}` }
               onClick={ this.props.toggleShuffle }
             >
               <Icon glyph="shuffle" />
             </Button>
             <Button
-              className="OrderControl__button"
+              className={ `OrderControl__button ${this.props.repeat === REPEAT_STATE.off ? "" : "OrderControl__button--enabled"}` }
               onClick={ this.props.toggleRepeat }
             >
               <Icon glyph={ this.props.repeat === REPEAT_STATE.one ? "repeat_one" : "repeat" } />
