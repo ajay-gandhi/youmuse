@@ -22,6 +22,11 @@
 .PlaylistItem {
   display: flex;
   flex-flow: row nowrap;
+  height: 115px;
+  transition: height 200ms ease;
+}
+.PlaylistItem--clicked {
+  height: 0px;
 }
 
 .PlaylistItem__imageContainer {

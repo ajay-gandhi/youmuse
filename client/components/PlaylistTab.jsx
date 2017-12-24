@@ -15,15 +15,19 @@ class PlaylistItem extends React.PureComponent {
     index: PropTypes.number,
     removeItemFromPlaylist: PropTypes.func,
   };
+  state = {
+    clicked: false,
+  };
 
   removeItem = () => {
-    this.props.removeItemFromPlaylist(this.props.index);
+    this.setState({ clicked: true });
+    setTimeout(() => this.props.removeItemFromPlaylist(this.props.index), 200);
   }
 
   render = () => {
     const item = this.props.item.snippet;
     return (
-      <div className="PlaylistItem">
+      <div className={ `PlaylistItem ${this.state.clicked ? "PlaylistItem--clicked" : ""}` }>
         <div className="PlaylistItem__imageContainer">
           <img className="PlaylistItem__imageContainer__image" src={ item.thumbnails.default.url } />
         </div>
