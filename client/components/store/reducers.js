@@ -172,6 +172,8 @@ const reducer = (state = INITIAL_STATE, action) => {
       };
 
     case ACTION_TYPES.addToPlaylist: {
+      // No duplicates in playlist
+      if (state.playlist.items.map(item => item.id).includes(action.item.id)) return state;
       const playlistItems = copyArray(state.playlist.items);
 
       // Find first index for which no element exists

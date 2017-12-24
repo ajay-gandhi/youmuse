@@ -25,7 +25,7 @@ class KeyboardControls extends React.Component {
   performKeyAction = (e) => {
     if (e.target.tagName.toLowerCase() === "input" && e.target.type === "text") return;
     const mapped = [" ", "arrowright", "arrowleft", "arrowup", "arrowdown", "r", "s", "m"];
-    if (mapped.indexOf(e.key.toLowerCase()) < 0) return;
+    if (mapped.includes(e.key.toLowerCase())) return;
 
     e.preventDefault();
     switch (e.key.toLowerCase()) {
