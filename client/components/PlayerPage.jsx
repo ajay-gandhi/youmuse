@@ -12,6 +12,7 @@ import PlaylistTab from "components/PlaylistTab";
 import SearchBar from "components/SearchBar";
 import Queue from "components/Queue";
 import Player from "components/Player";
+import KeyboardControls from "components/KeyboardControls";
 import { Tabs, Tab } from "react-bootstrap";
 
 class PlayerPage extends React.Component {
@@ -78,6 +79,7 @@ class PlayerPage extends React.Component {
   render = () => {
     return (
       <div className={ `PlayerPage ${this.props.currentSong ? "PlayerPage--withSong" : ""}` }>
+        <KeyboardControls />
         <h1 className="PlayerPage__title">YouMuse</h1>
         <div className="PlayerPage__content">
           <div className="PlayerPage__content__LeftSection">

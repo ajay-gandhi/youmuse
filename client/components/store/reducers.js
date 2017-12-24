@@ -47,11 +47,13 @@ const reducer = (state = INITIAL_STATE, action) => {
         currentTime: action.currentTime,
       };
 
-    case ACTION_TYPES.setIsPlaying:
+    case ACTION_TYPES.setIsPlaying: {
+      const isPlaying = typeof action.isPlaying === "undefined" ? !state.isPlaying : action.isPlaying;
       return {
         ...state,
-        isPlaying: typeof action.isPlaying === "undefined" ? !state.isPlaying : action.isPlaying,
+        isPlaying: state.currentSong ? isPlaying : false,
       };
+    }
 
     case ACTION_TYPES.previousSong: {
       if (state.currentTime > 3) {

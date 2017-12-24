@@ -7,6 +7,5 @@
   * Fade items from playlist
 * Audio title on mobile?
 * Dark theme?
-* Keyboard controls
 * About notice
 * Queue dragging
