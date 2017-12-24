@@ -23,6 +23,14 @@
   display: flex;
   flex-flow: row nowrap;
   cursor: pointer;
+  overflow: hidden;
+  margin-left: 0%;
+  height: 115px;
+  transition: margin-left 200ms ease, height 200ms ease 100ms;
+}
+.SearchItem--clicked {
+  margin-left: 100%;
+  height: 0px;
 }
 .SearchItem:hover {
   background-color: #f6f6f6;

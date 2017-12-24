@@ -13,17 +13,23 @@ class SearchItem extends React.PureComponent {
   static propTypes = {
     index: PropTypes.number,
     searchResult: PropTypes.object,
-    addToPlayList: PropTypes.func,
+    addItemToPlaylist: PropTypes.func,
+    removeFromSearchResults: PropTypes.func,
+  };
+  state = {
+    clicked: false,
   };
 
   handleClick = () => {
-    this.props.addToPlayList(this.props.index);
+    this.setState({ clicked: true });
+    this.props.removeFromSearchResults(this.props.index);
+    setTimeout(() => this.props.addItemToPlaylist(this.props.searchResult), 300);
   }
 
   render = () => {
     const item = this.props.searchResult.snippet;
     return (
-      <div className="SearchItem" onClick={ this.handleClick }>
+      <div className={ `SearchItem ${this.state.clicked ? "SearchItem--clicked" : ""}` } onClick={ this.handleClick }>
         <div className="SearchItem__imageContainer">
           <img className="SearchItem__imageContainer__image" src={ item.thumbnails.default.url } />
         </div>
@@ -43,7 +49,8 @@ class SearchTab extends React.Component {
     searchResults: PropTypes.arrayOf(PropTypes.object),
     isFetchingSearchResults: PropTypes.bool,
     match: PropTypes.object,
-    addItemToPlayList: PropTypes.func,
+    removeFromSearchResults: PropTypes.func,
+    addItemToPlaylist: PropTypes.func,
   };
 
   render = () => {
@@ -55,7 +62,8 @@ class SearchTab extends React.Component {
           <SearchItem
             index={ index }
             searchResult={ result }
-            addToPlayList={ this.props.addItemToPlayList }
+            addItemToPlaylist={ this.props.addItemToPlaylist }
+            removeFromSearchResults={ this.props.removeFromSearchResults }
           />
         </div>
       ));
@@ -82,7 +90,8 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    addItemToPlayList: (index) => dispatch(actions.moveItemToPlaylist(index)),
+    removeFromSearchResults: index => dispatch(actions.removeFromSearchResults(index)),
+    addItemToPlaylist: item => dispatch(actions.addItemToPlaylist(item)),
   };
 };
 

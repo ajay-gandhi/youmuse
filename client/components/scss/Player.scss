@@ -13,6 +13,7 @@
   align-items: center;
   border-top: 1px solid $borderColor;
   background-color: $backgroundColor;
+  transition: 0.2s ease;
 }
 .Player--collapsed {
   bottom: -150px;

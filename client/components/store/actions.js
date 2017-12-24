@@ -45,6 +45,13 @@ const nextSong = () => {
   };
 };
 
+const removeFromSearchResults = (index) => {
+  return {
+    type: ACTION_TYPES.removeFromSearchResults,
+    index,
+  };
+};
+
 const mergeState = (newState) => {
   return {
     type: ACTION_TYPES.mergeState,
@@ -154,22 +161,17 @@ const fetchPlaylist = (videoIds) => {
     });
   };
 };
-const moveItemToPlaylist = (index) => {
+const addItemToPlaylist = (item) => {
   return (dispatch, getState) => {
     const state = getState();
     dispatch(requestPlaylist());
 
-    const newItem = state.searchResults.results[index];
-    const newSearchResults = state.searchResults.results.slice();
-    newSearchResults.splice(index, 1);
-    dispatch(updateSearchResults(newSearchResults));
-
-    return fetch(`/getAudioUrl/${newItem.id}`).then(
+    return fetch(`/getAudioUrl/${item.id}`).then(
       response => response.json(),
       error => console.log("Error fetching audio", error)
     ).then((json) => {
       const playlistItem = {
-        ...newItem,
+        ...item,
         playCount: 0,
         audio: {
           url: json.url,
@@ -190,6 +192,7 @@ const actions = {
   updateVolume,
   updateCurrentTime,
   mergeState,
+  removeFromSearchResults,
   removeFromPlaylist,
 
   // Player
@@ -200,6 +203,6 @@ const actions = {
   // Async
   fetchSearchResults,
   fetchPlaylist,
-  moveItemToPlaylist,
+  addItemToPlaylist,
 };
 export default actions;

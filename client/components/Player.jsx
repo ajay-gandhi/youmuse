@@ -114,7 +114,7 @@ class Player extends React.Component {
   }
 
   render = () => {
-    if (!this.props.playlist.items.length === 0) return null;
+    if (this.props.playlist.items.length === 0) return null;
 
     let maximizeButton;
     if (this.state.collapsed) {
