@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { actions } from "components/store/Store";
 
+import { Draggable, Droppable } from "react-beautiful-dnd";
+
 import { Button } from "react-bootstrap";
 import Icon from "components/Icon";
 import Spinner from "components/Spinner";
@@ -27,18 +29,25 @@ class PlaylistItem extends React.PureComponent {
   render = () => {
     const item = this.props.item.snippet;
     return (
-      <div className={ `PlaylistItem ${this.state.clicked ? "PlaylistItem--clicked" : ""}` }>
-        <div className="PlaylistItem__imageContainer">
-          <img className="PlaylistItem__imageContainer__image" src={ item.thumbnails.default.url } />
-        </div>
-        <div className="PlaylistItem__textContent">
-          <h3 className="PlaylistItem__textContent__heading">{ item.title }</h3>
-          <h4 className="PlaylistItem__textContent__heading PlaylistItem__textContent__heading--channel">{ item.channelTitle }</h4>
-        </div>
-        <Button className="PlaylistItem__removeButton BorderlessButton" onClick={ this.removeItem }>
-          <Icon glyph="remove_circle" />
-        </Button>
-      </div>
+      <Draggable draggableId={ `draggable-${this.props.item.id}` } type="PLAYLIST_ITEM">
+        {(provided, snapshot) => (
+          <div>
+            <div ref={ provided.innerRef } { ...provided.dragHandleProps } style={ provided.draggableStyle } className={ `PlaylistItem ${this.state.clicked ? "PlaylistItem--clicked" : ""}` }>
+              <div className="PlaylistItem__imageContainer">
+                <img className="PlaylistItem__imageContainer__image" src={ item.thumbnails.default.url } />
+              </div>
+              <div className="PlaylistItem__textContent">
+                <h3 className="PlaylistItem__textContent__heading">{ item.title }</h3>
+                <h4 className="PlaylistItem__textContent__heading PlaylistItem__textContent__heading--channel">{ item.channelTitle }</h4>
+              </div>
+              <Button className="PlaylistItem__removeButton BorderlessButton" onClick={ this.removeItem }>
+                <Icon glyph="remove_circle" />
+              </Button>
+            </div>
+            { provided.placeholder }
+          </div>
+        )}
+      </Draggable>
     );
   }
 }
@@ -70,9 +79,14 @@ class PlaylistTab extends React.Component {
     }
 
     return (
-      <div className={ `PlaylistTab ${this.props.className}` }>
-        { this.props.isFetchingPlaylist ? <Spinner /> : content }
-      </div>
+      <Droppable droppableId="droppable-playlist" type="PLAYLIST_ITEM">
+        {(provided, snapshot) => (
+          <div ref={ provided.innerRef } className={ `PlaylistTab ${this.props.className}` } style={ { border: snapshot.isDraggingOver ? "blue" : "gray" } }>
+            { this.props.isFetchingPlaylist ? <Spinner /> : content }
+            { provided.placeholder }
+          </div>
+        )}
+      </Droppable>
     );
   }
 }
