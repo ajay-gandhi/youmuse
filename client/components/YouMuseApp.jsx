@@ -1,16 +1,21 @@
 /* global gapi */
 
 import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { store } from "components/store/Store";
+import { actions, store } from "components/store/Store";
 
 import { DragDropContext } from "react-beautiful-dnd";
 
 import IndexPage from "components/IndexPage";
 import PlayerPage from "components/PlayerPage";
 
-export default class YouMuseApp extends React.Component {
+class YouMuseApp extends React.Component {
+  static propTypes = {
+    movePlaylistItem: PropTypes.func,
+  };
   state = {
     gapiLoaded: false,
   };
@@ -29,25 +34,38 @@ export default class YouMuseApp extends React.Component {
     document.body.appendChild(script);
   }
 
-  onDragStart = () => console.log("started");
+  onDragStart = () => {}
   onDragEnd = (result) => {
-    console.log("dragend", result);
+    if (!result.destination) return;
+    switch (result.type) {
+      case "PLAYLIST_ITEM": this.props.movePlaylistItem(result.source.index, result.destination.index);
+    }
   }
 
   render = () => {
     if (!this.state.gapiLoaded) return <div />;
     return (
       <DragDropContext onDragStart={ this.onDragStart } onDragEnd={ this.onDragEnd }>
-        <Provider store={ store }>
-          <BrowserRouter>
-            <Switch>
-              <Route path="/" exact component={ IndexPage } />
-              <Route path="/search/:searchQuery?" exact component={ PlayerPage } />
-              <Route path="/playlist/:encodedPlaylist?" exact component={ PlayerPage } />
-            </Switch>
-          </BrowserRouter>
-        </Provider>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/" exact component={ IndexPage } />
+            <Route path="/search/:searchQuery?" exact component={ PlayerPage } />
+            <Route path="/playlist/:encodedPlaylist?" exact component={ PlayerPage } />
+          </Switch>
+        </BrowserRouter>
       </DragDropContext>
     );
   }
 }
+
+const mapStateToProps = () => ({});
+const mapDispatchToProps = (dispatch) => {
+  return {
+    movePlaylistItem: (source, dest) => dispatch(actions.movePlaylistItem(source, dest)),
+  };
+};
+
+const ConnectedYouMuseApp = connect(mapStateToProps, mapDispatchToProps)(YouMuseApp);
+
+const YouMuseAppContainer = () => <Provider store={ store }><ConnectedYouMuseApp /></Provider>;
+export default YouMuseAppContainer;

@@ -15,6 +15,18 @@ import Player from "components/Player";
 import KeyboardControls from "components/KeyboardControls";
 import { Tabs, Tab } from "react-bootstrap";
 
+const playlistsEqual = (pl1, pl2) => {
+  if (pl1.length !== pl2.length) return false;
+
+  const ids1 = pl1.map(item => item.id);
+  const ids2 = pl2.map(item => item.id);
+  for (let i = 0; i < pl1.length; i++) {
+    if (ids1[i] !== ids2[i]) return false;
+  }
+
+  return true;
+};
+
 class PlayerPage extends React.Component {
   static propTypes = {
     playlist: PropTypes.arrayOf(PropTypes.object),
@@ -55,7 +67,7 @@ class PlayerPage extends React.Component {
     if (nextProps.match.params.searchQuery && this.state.currentPage !== "search") {
       this.setState({ currentPage: "search" });
     }
-    if (nextProps.playlist.length !== this.props.playlist.length && this.state.currentPage === "playlist") {
+    if (!playlistsEqual(nextProps.playlist, this.props.playlist) && this.state.currentPage === "playlist") {
       this.props.history.push(`/playlist/${this.encodePlaylist(nextProps.playlist)}`);
     }
   }

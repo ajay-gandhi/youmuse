@@ -151,12 +151,23 @@ const reducer = (state = INITIAL_STATE, action) => {
       };
     }
 
+    case ACTION_TYPES.movePlaylistItem: {
+      const playlistItems = copyArray(state.playlist.items);
+      playlistItems.splice(action.dest, 0, playlistItems.splice(action.source, 1)[0]);
+      return {
+        ...state,
+        playlist: {
+          isFetching: state.playlist.isFetching,
+          items: playlistItems,
+        },
+      };
+    }
+
     case ACTION_TYPES.requestPlaylist:
       return {
         ...state,
         playlist: {
           isFetching: state.playlist.isFetching + 1,
-          round: state.playlist.round,
           items: state.playlist.items,
         },
       };
@@ -166,7 +177,6 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         playlist: {
           isFetching: state.playlist.isFetching - 1,
-          round: state.playlist.round,
           items: state.playlist.items,
         },
       };

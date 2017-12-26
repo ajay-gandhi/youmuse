@@ -57,6 +57,13 @@ const removeFromQueueByIndex = (index) => {
     index,
   };
 };
+const movePlaylistItem = (source, dest) => {
+  return {
+    type: ACTION_TYPES.movePlaylistItem,
+    source,
+    dest,
+  };
+};
 
 const mergeState = (newState) => {
   return {
@@ -193,6 +200,7 @@ const actions = {
   removeFromSearchResults,
   removeFromQueueByIndex,
   removeFromPlaylistByIndex,
+  movePlaylistItem,
 
   // Player
   setIsPlaying,

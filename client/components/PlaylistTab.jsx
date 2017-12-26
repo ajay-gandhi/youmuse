@@ -81,7 +81,7 @@ class PlaylistTab extends React.Component {
     return (
       <Droppable droppableId="droppable-playlist" type="PLAYLIST_ITEM">
         {(provided, snapshot) => (
-          <div ref={ provided.innerRef } className={ `PlaylistTab ${this.props.className}` } style={ { border: snapshot.isDraggingOver ? "blue" : "gray" } }>
+          <div ref={ provided.innerRef } className={ `PlaylistTab ${this.props.className}` } style={ { borderColor: snapshot.isDraggingOver ? "blue" : "gray" } }>
             { this.props.isFetchingPlaylist ? <Spinner /> : content }
             { provided.placeholder }
           </div>
