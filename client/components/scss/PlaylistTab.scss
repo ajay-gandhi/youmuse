@@ -23,6 +23,7 @@
   display: flex;
   flex-flow: row nowrap;
   height: 115px;
+  background-color: $backgroundColor;
   transition: height 200ms ease;
 }
 .PlaylistItem--clicked {

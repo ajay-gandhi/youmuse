@@ -2,6 +2,8 @@
 $backgroundColor: #ffffff;
 $borderColor: #dddddd;
 
+$draggingColor: #eeeeee;
+
 $buttonColor: #494949;
 $buttonDarkColor: #111;
 $buttonDisabledBorderColor: #cccccc;
@@ -20,6 +22,13 @@ $subtitleColor: #555555;
 
 #root {
   height: 100vh;
+}
+
+.isDraggingOver {
+  background-color: $draggingColor;
+}
+.isDragging {
+  opacity: 0.7;
 }
 
 .BorderlessButton {

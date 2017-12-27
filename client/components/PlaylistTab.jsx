@@ -28,11 +28,17 @@ class PlaylistItem extends React.PureComponent {
 
   render = () => {
     const item = this.props.item.snippet;
+    const clickedClassname = this.state.clicked ? "PlaylistItem--clicked" : "";
     return (
       <Draggable draggableId={ `draggable-${this.props.item.id}` } type="PLAYLIST_ITEM">
         {(provided, snapshot) => (
           <div>
-            <div ref={ provided.innerRef } { ...provided.dragHandleProps } style={ provided.draggableStyle } className={ `PlaylistItem ${this.state.clicked ? "PlaylistItem--clicked" : ""}` }>
+            <div
+              ref={ provided.innerRef }
+              className={ `PlaylistItem ${clickedClassname} ${snapshot.isDragging ? "isDragging" : ""}` }
+              style={ provided.draggableStyle }
+              { ...provided.dragHandleProps }
+            >
               <div className="PlaylistItem__imageContainer">
                 <img className="PlaylistItem__imageContainer__image" src={ item.thumbnails.default.url } />
               </div>
@@ -81,7 +87,10 @@ class PlaylistTab extends React.Component {
     return (
       <Droppable droppableId="droppable-playlist" type="PLAYLIST_ITEM">
         {(provided, snapshot) => (
-          <div ref={ provided.innerRef } className={ `PlaylistTab ${this.props.className}` } style={ { borderColor: snapshot.isDraggingOver ? "blue" : "gray" } }>
+          <div
+            ref={ provided.innerRef }
+            className={ `PlaylistTab ${this.props.className || ""} ${snapshot.isDraggingOver ? "isDraggingOver" : ""}` }
+          >
             { this.props.isFetchingPlaylist ? <Spinner /> : content }
             { provided.placeholder }
           </div>

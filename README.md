@@ -2,7 +2,6 @@
 
 ## Todo
 
-* Style playlist dragging
 * Queue dragging
 * Reorder queue when playlist changes
 * Playlist to queue dragging
