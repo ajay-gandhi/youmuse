@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import { actions } from "components/store/Store";
 import { MAX_QUEUE_SIZE } from "components/store/constants";
 
+import { Draggable, Droppable } from "react-beautiful-dnd";
+
 import Icon from "./Icon";
 import { Button } from "react-bootstrap";
 
@@ -44,19 +46,32 @@ class QueueItem extends React.PureComponent {
   }
 
   render = () => {
+    const clickedClassName = this.state.clicked ? "QueueItem--clicked" : "";
     return (
-      <div className={ `QueueItem ${this.state.clicked ? "QueueItem--clicked" : ""}` }>
-        <div className="QueueItem__imageContainer">
-          <img className="QueueItem__image" src={ this.props.item.snippet.thumbnails.default.url } />
-        </div>
-        <div className="QueueItem__textContent">
-          <h4 className="QueueItem__textContent__heading">{ this.props.item.snippet.title }</h4>
-          <h5 className="QueueItem__textContent__heading QueueItem__textContent__heading--subtitle">{ formatAudio(this.props.item.audio.duration) } - { this.props.item.snippet.title }</h5>
-        </div>
-        <Button className="QueueItem__removeButton BorderlessButton" onClick={ this.handleRemoveClick }>
-          <Icon glyph="remove_circle" />
-        </Button>
-      </div>
+      <Draggable draggableId={ `draggable-queueItem-${this.props.item.id}` } type="QUEUE_ITEM">
+        {(provided, snapshot) => (
+          <div>
+            <div
+              ref={ provided.innerRef }
+              className={ `QueueItem ${clickedClassName} ${snapshot.isDragging ? "isDragging" : ""}` }
+              style={ provided.draggableStyle }
+              { ...provided.dragHandleProps }
+            >
+              <div className="QueueItem__imageContainer">
+                <img className="QueueItem__image" src={ this.props.item.snippet.thumbnails.default.url } />
+              </div>
+              <div className="QueueItem__textContent">
+                <h4 className="QueueItem__textContent__heading">{ this.props.item.snippet.title }</h4>
+                <h5 className="QueueItem__textContent__heading QueueItem__textContent__heading--subtitle">{ formatAudio(this.props.item.audio.duration) } - { this.props.item.snippet.title }</h5>
+              </div>
+              <Button className="QueueItem__removeButton BorderlessButton" onClick={ this.handleRemoveClick }>
+                <Icon glyph="remove_circle" />
+              </Button>
+            </div>
+            { provided.placeholder }
+          </div>
+        )}
+      </Draggable>
     );
   }
 }
@@ -83,12 +98,19 @@ class Queue extends React.Component {
       queueContent = <div className="Queue__emptyNote">Queue empty.</div>;
     }
 
-    const hideQueue = this.props.playlist.length === 0;
-    const className = `Queue ${hideQueue? "Queue--invisible" : ""} ${this.props.className || ""}`;
+    const hiddenClassName = this.props.playlist.length === 0 ? "Queue-invisible" : "";
     return (
-      <div className={ className }>
-        { queueContent }
-      </div>
+      <Droppable droppableId="droppable-queue" type="QUEUE_ITEM">
+        {(provided, snapshot) => (
+          <div
+            ref={ provided.innerRef }
+            className={ `Queue ${this.props.className || ""} ${hiddenClassName} ${snapshot.isDraggingOver ? "isDraggingOver" : ""}` }
+          >
+            { queueContent }
+            { provided.placeholder }
+          </div>
+        )}
+      </Droppable>
     );
   }
 }

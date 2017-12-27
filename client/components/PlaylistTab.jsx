@@ -28,14 +28,14 @@ class PlaylistItem extends React.PureComponent {
 
   render = () => {
     const item = this.props.item.snippet;
-    const clickedClassname = this.state.clicked ? "PlaylistItem--clicked" : "";
+    const clickedClassName = this.state.clicked ? "PlaylistItem--clicked" : "";
     return (
-      <Draggable draggableId={ `draggable-${this.props.item.id}` } type="PLAYLIST_ITEM">
+      <Draggable draggableId={ `draggable-playlistItem-${this.props.item.id}` } type="PLAYLIST_ITEM">
         {(provided, snapshot) => (
           <div>
             <div
               ref={ provided.innerRef }
-              className={ `PlaylistItem ${clickedClassname} ${snapshot.isDragging ? "isDragging" : ""}` }
+              className={ `PlaylistItem ${clickedClassName} ${snapshot.isDragging ? "isDragging" : ""}` }
               style={ provided.draggableStyle }
               { ...provided.dragHandleProps }
             >

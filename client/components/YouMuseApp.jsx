@@ -15,6 +15,7 @@ import PlayerPage from "components/PlayerPage";
 class YouMuseApp extends React.Component {
   static propTypes = {
     movePlaylistItem: PropTypes.func,
+    moveQueueItem: PropTypes.func,
   };
   state = {
     gapiLoaded: false,
@@ -38,7 +39,8 @@ class YouMuseApp extends React.Component {
   onDragEnd = (result) => {
     if (!result.destination) return;
     switch (result.type) {
-      case "PLAYLIST_ITEM": this.props.movePlaylistItem(result.source.index, result.destination.index);
+      case "PLAYLIST_ITEM": return this.props.movePlaylistItem(result.source.index, result.destination.index);
+      case "QUEUE_ITEM": return this.props.moveQueueItem(result.source.index, result.destination.index);
     }
   }
 
@@ -62,6 +64,7 @@ const mapStateToProps = () => ({});
 const mapDispatchToProps = (dispatch) => {
   return {
     movePlaylistItem: (source, dest) => dispatch(actions.movePlaylistItem(source, dest)),
+    moveQueueItem: (source, dest) => dispatch(actions.moveQueueItem(source, dest)),
   };
 };
 

@@ -3,13 +3,11 @@
 .Queue {
   display: flex;
   flex-flow: column nowrap;
-  padding: 4px 1%;
   border: 1px solid $borderColor;
   max-width: 600px;
   transition: max-width 200ms ease, padding 200ms ease;
 }
 .Queue--invisible {
-  padding: 0px;
   max-width: 0px;
 }
 
@@ -24,7 +22,8 @@
   flex-flow: row nowrap;
   align-items: center;
   position: relative;
-  margin: 5px 0px;
+  background-color: $backgroundColor;
+  padding: 5px 3%;
   overflow: hidden;
   max-height: 120px;
   transition: max-height 200ms ease;
@@ -54,7 +53,7 @@
   justify-content: center;
   align-items: left;
   overflow-x: auto;
-  margin: 0px 45px 0px 10px;
+  margin: 0px 30px 0px 10px;
 }
 .QueueItem__textContent__heading {
   width: 100%;
@@ -70,7 +69,7 @@
 .QueueItem__removeButton {
   position: absolute;
   right: 0px;
-  top: 2px;
-  bottom: 2px;
+  top: 0px;
+  bottom: 0px;
   width: 40px;
 }

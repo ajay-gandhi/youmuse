@@ -64,6 +64,13 @@ const movePlaylistItem = (source, dest) => {
     dest,
   };
 };
+const moveQueueItem = (source, dest) => {
+  return {
+    type: ACTION_TYPES.moveQueueItem,
+    source,
+    dest,
+  };
+};
 
 const mergeState = (newState) => {
   return {
@@ -201,6 +208,7 @@ const actions = {
   removeFromQueueByIndex,
   removeFromPlaylistByIndex,
   movePlaylistItem,
+  moveQueueItem,
 
   // Player
   setIsPlaying,

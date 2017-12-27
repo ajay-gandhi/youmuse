@@ -2,7 +2,9 @@
 
 ## Todo
 
-* Queue dragging
+* Fix queue resizing
+* Fix queue item dragged left margin
+* Disable dragging when fetching
 * Reorder queue when playlist changes
 * Playlist to queue dragging
 * Dark theme?

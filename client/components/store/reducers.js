@@ -163,6 +163,15 @@ const reducer = (state = INITIAL_STATE, action) => {
       };
     }
 
+    case ACTION_TYPES.moveQueueItem: {
+      const queue = copyArray(state.queue);
+      queue.splice(action.dest, 0, queue.splice(action.source, 1)[0]);
+      return {
+        ...state,
+        queue,
+      };
+    }
+
     case ACTION_TYPES.requestPlaylist:
       return {
         ...state,
