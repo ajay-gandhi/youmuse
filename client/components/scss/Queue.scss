@@ -17,6 +17,7 @@
   font-weight: bold;
   margin: 0px;
   padding: 5px 15px;
+  background-color: $backgroundColor;
 }
 .Queue__emptyNote {
   font-size: 14px;
@@ -30,7 +31,7 @@
   align-items: center;
   position: relative;
   background-color: $backgroundColor;
-  padding: 5px 3%;
+  padding: 5px 10px;
   overflow: hidden;
   max-height: 120px;
   transition: max-height 200ms ease;
@@ -60,7 +61,7 @@
   justify-content: center;
   align-items: left;
   overflow-x: auto;
-  margin: 0px 30px 0px 10px;
+  margin: 0px 35px 0px 10px;
 }
 .QueueItem__textContent__heading {
   width: 100%;
