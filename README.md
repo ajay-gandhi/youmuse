@@ -2,7 +2,6 @@
 
 ## Todo
 
-* Disable dragging when fetching
 * Reorder queue when playlist changes
 * Playlist to queue dragging
 * Dark theme?
