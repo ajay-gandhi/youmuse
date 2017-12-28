@@ -9,7 +9,7 @@
   margin: 0 auto;
 }
 .PlayerPage--withSong {
-  padding-bottom: 130px;
+  padding-bottom: 110px;
 }
 
 .PlayerPage__title {
@@ -37,7 +37,7 @@
   flex-flow: column nowrap;
   align-items: center;
   min-width: 0;
-  padding-right: 20px;
+  margin-bottom: 20px;
 }
 .LeftSection__SearchContainer {
   display: flex;
@@ -76,5 +76,4 @@
 
 .PlayerPage__content__Queue {
   flex: 2 1 250px;
-  max-width: 40%;
 }
