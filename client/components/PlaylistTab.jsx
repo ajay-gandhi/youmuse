@@ -15,6 +15,7 @@ class PlaylistItem extends React.PureComponent {
   static propTypes = {
     item: PropTypes.object,
     index: PropTypes.number,
+    isFetching: PropTypes.bool,
     removeItemFromPlaylist: PropTypes.func,
   };
   state = {
@@ -29,13 +30,18 @@ class PlaylistItem extends React.PureComponent {
   render = () => {
     const item = this.props.item.snippet;
     const clickedClassName = this.state.clicked ? "PlaylistItem--clicked" : "";
+    const draggableClassName = this.props.isFetching ? "" : "isDraggable";
     return (
-      <Draggable draggableId={ `draggable-playlistItem-${this.props.item.id}` } type="PLAYLIST_ITEM">
+      <Draggable
+        draggableId={ `draggable-playlistItem-${this.props.item.id}` }
+        type="PLAYLIST_ITEM"
+        isDragDisabled={ this.props.isFetching }
+      >
         {(provided, snapshot) => (
           <div>
             <div
               ref={ provided.innerRef }
-              className={ `PlaylistItem ${clickedClassName} ${snapshot.isDragging ? "isDragging" : ""}` }
+              className={ `PlaylistItem ${clickedClassName} ${draggableClassName} ${snapshot.isDragging ? "isDragging" : ""}` }
               style={ provided.draggableStyle }
               { ...provided.dragHandleProps }
             >
@@ -58,7 +64,11 @@ class PlaylistItem extends React.PureComponent {
   }
 }
 
-const mapStateToPlaylistItemProps = () => ({});
+const mapStateToPlaylistItemProps = (state) => {
+  return {
+    isFetching: state.searchResults.isFetching || state.playlist.isFetching > 0,
+  };
+};
 const mapDispatchToPlaylistItemProps = (dispatch) => {
   return {
     removeItemFromPlaylist: index => dispatch(actions.removeFromPlaylistByIndex(index)),

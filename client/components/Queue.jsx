@@ -34,6 +34,7 @@ class QueueItem extends React.PureComponent {
     className: PropTypes.string,
     index: PropTypes.number,
     item: PropTypes.object,
+    isFetching: PropTypes.bool,
     removeFromQueueByIndex: PropTypes.func,
   };
   state = {
@@ -47,13 +48,18 @@ class QueueItem extends React.PureComponent {
 
   render = () => {
     const clickedClassName = this.state.clicked ? "QueueItem--clicked" : "";
+    const draggableClassName = this.props.isFetching ? "" : "isDraggable";
     return (
-      <Draggable draggableId={ `draggable-queueItem-${this.props.item.id}` } type="QUEUE_ITEM">
+      <Draggable
+        draggableId={ `draggable-queueItem-${this.props.item.id}` }
+        type="QUEUE_ITEM"
+        isDragDisabled={ this.props.isFetching }
+      >
         {(provided, snapshot) => (
           <div>
             <div
               ref={ provided.innerRef }
-              className={ `QueueItem ${clickedClassName} ${snapshot.isDragging ? "isDragging" : ""}` }
+              className={ `QueueItem ${clickedClassName} ${draggableClassName} ${snapshot.isDragging ? "isDragging" : ""}` }
               style={ provided.draggableStyle }
               { ...provided.dragHandleProps }
             >
@@ -76,7 +82,11 @@ class QueueItem extends React.PureComponent {
   }
 }
 
-const mapStateToQueueItemProps = () => ({});
+const mapStateToQueueItemProps = (state) => {
+  return {
+    isFetching: state.searchResults.isFetching || state.playlist.isFetching > 0,
+  };
+};
 const mapDispatchToQueueItemProps = (dispatch) => {
   return {
     removeFromQueueByIndex: index => dispatch(actions.removeFromQueueByIndex(index)),
