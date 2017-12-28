@@ -58,12 +58,19 @@ class PlaylistItem extends React.PureComponent {
   }
 }
 
+const mapStateToPlaylistItemProps = () => ({});
+const mapDispatchToPlaylistItemProps = (dispatch) => {
+  return {
+    removeItemFromPlaylist: index => dispatch(actions.removeFromPlaylistByIndex(index)),
+  };
+};
+const ConnectedPlaylistItem = connect(mapStateToPlaylistItemProps, mapDispatchToPlaylistItemProps)(PlaylistItem);
+
 class PlaylistTab extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     playlist: PropTypes.arrayOf(PropTypes.object),
     isFetchingPlaylist: PropTypes.bool,
-    removeItemFromPlaylist: PropTypes.func,
   };
 
   render = () => {
@@ -72,11 +79,9 @@ class PlaylistTab extends React.Component {
       content = this.props.playlist.map((item, index) => (
         <div key={ item.id } className="PlaylistTab__PlaylistItemContainer">
           { index !== 0 && <hr className="PlaylistItemContainer__delimiter" /> }
-          <PlaylistItem
-            key={ `${item.id}-${index}` }
+          <ConnectedPlaylistItem
             item={ item }
             index={ index }
-            removeItemFromPlaylist={ this.props.removeItemFromPlaylist }
           />
         </div>
       ));
@@ -106,10 +111,5 @@ const mapStateToProps = (state) => {
     isFetchingPlaylist: state.playlist.isFetching > 0,
   };
 };
-const mapDispatchToProps = (dispatch) => {
-  return {
-    removeItemFromPlaylist: index => dispatch(actions.removeFromPlaylistByIndex(index)),
-  };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(PlaylistTab);
+export default connect(mapStateToProps)(PlaylistTab);

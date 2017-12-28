@@ -76,22 +76,28 @@ class QueueItem extends React.PureComponent {
   }
 }
 
+const mapStateToQueueItemProps = () => ({});
+const mapDispatchToQueueItemProps = (dispatch) => {
+  return {
+    removeFromQueueByIndex: index => dispatch(actions.removeFromQueueByIndex(index)),
+  };
+};
+const ConnectedQueueItem = connect(mapStateToQueueItemProps, mapDispatchToQueueItemProps)(QueueItem);
+
 class Queue extends React.Component {
   static propTypes = {
     queue: PropTypes.arrayOf(PropTypes.object),
     playlist: PropTypes.arrayOf(PropTypes.object),
-    removeFromQueueByIndex: PropTypes.func,
   };
 
   render = () => {
     let queueContent;
     if (this.props.queue.length > 0) {
       queueContent = this.props.queue.map((item, index) => (
-        <QueueItem
+        <ConnectedQueueItem
           key={ `${item.id}-${index}` }
           item={ item }
           index={ index }
-          removeFromQueueByIndex={ this.props.removeFromQueueByIndex }
         />
       ));
     } else {
@@ -122,10 +128,5 @@ const mapStateToProps = (state) => {
     playlist: state.playlist.items,
   };
 };
-const mapDispatchToProps = (dispatch) => {
-  return {
-    removeFromQueueByIndex: index => dispatch(actions.removeFromQueueByIndex(index)),
-  };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Queue);
+export default connect(mapStateToProps)(Queue);

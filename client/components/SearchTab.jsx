@@ -42,6 +42,15 @@ class SearchItem extends React.PureComponent {
   }
 }
 
+const mapStateToSearchItemProps = () => ({});
+const mapDispatchToSearchItemProps = (dispatch) => {
+  return {
+    removeFromSearchResults: index => dispatch(actions.removeFromSearchResults(index)),
+    addItemToPlaylist: item => dispatch(actions.addItemToPlaylist(item)),
+  };
+};
+const ConnectedSearchItem = connect(mapStateToSearchItemProps, mapDispatchToSearchItemProps)(SearchItem);
+
 class SearchTab extends React.Component {
   static propTypes = {
     className: PropTypes.string,
@@ -49,8 +58,6 @@ class SearchTab extends React.Component {
     searchResults: PropTypes.arrayOf(PropTypes.object),
     isFetchingSearchResults: PropTypes.bool,
     match: PropTypes.object,
-    removeFromSearchResults: PropTypes.func,
-    addItemToPlaylist: PropTypes.func,
   };
 
   render = () => {
@@ -59,11 +66,9 @@ class SearchTab extends React.Component {
       content = this.props.searchResults.map((result, index) => (
         <div key={ result.id } className="SearchTab__SearchItemContainer">
           { index !== 0 && <hr className="SearchItemContainer__delimiter" /> }
-          <SearchItem
+          <ConnectedSearchItem
             index={ index }
             searchResult={ result }
-            addItemToPlaylist={ this.props.addItemToPlaylist }
-            removeFromSearchResults={ this.props.removeFromSearchResults }
           />
         </div>
       ));
@@ -88,14 +93,8 @@ const mapStateToProps = (state) => {
     isFetchingSearchResults: state.searchResults.isFetching,
   };
 };
-const mapDispatchToProps = (dispatch) => {
-  return {
-    removeFromSearchResults: index => dispatch(actions.removeFromSearchResults(index)),
-    addItemToPlaylist: item => dispatch(actions.addItemToPlaylist(item)),
-  };
-};
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps)
 )(SearchTab);
