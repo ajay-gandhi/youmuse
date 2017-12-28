@@ -106,6 +106,7 @@ class Queue extends React.Component {
             ref={ provided.innerRef }
             className={ `Queue ${this.props.className || ""} ${hiddenClassName} ${snapshot.isDraggingOver ? "isDraggingOver" : ""}` }
           >
+            <h2 className="Queue__heading">queue</h2>
             { queueContent }
             { provided.placeholder }
           </div>

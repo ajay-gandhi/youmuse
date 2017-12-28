@@ -9,3 +9,4 @@
 * Playlist to queue dragging
 * Dark theme?
 * About, keyboard controls notice
+* Favicon
