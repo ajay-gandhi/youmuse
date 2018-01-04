@@ -43,7 +43,7 @@ class QueueItem extends React.PureComponent {
 
   handleRemoveClick = () => {
     this.setState({ clicked: true });
-    setTimeout(() => this.props.removeFromQueue(this.props.index), 200);
+    setTimeout(() => this.props.removeFromQueueByIndex(this.props.index), 200);
   }
 
   render = () => {

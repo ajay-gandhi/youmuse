@@ -34,10 +34,12 @@
   padding: 5px 10px;
   overflow: hidden;
   max-height: 120px;
-  transition: max-height 200ms ease;
+  transition: max-height 200ms ease, padding 200ms ease;
 }
 .QueueItem--clicked {
   max-height: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 .QueueItem__imageContainer {
