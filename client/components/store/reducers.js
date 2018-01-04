@@ -200,7 +200,12 @@ const reducer = (state = INITIAL_STATE, action) => {
         items: playlistItems,
       };
 
-      const queue = generateQueue(playlistItems, state.shuffle, state.repeat);
+      let queue;
+      if (state.repeat === REPEAT_STATE.all) {
+        queue = generateQueue(playlistItems, state.shuffle, state.repeat);
+      } else if (state.repeat === REPEAT_STATE.off) {
+        queue = copyArray(state.queue).concat({ ...action.item });
+      }
 
       if (state.currentSong) {
         return {
