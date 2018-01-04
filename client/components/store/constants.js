@@ -42,7 +42,6 @@ export const INITIAL_STATE = Object.freeze({
   playHistory: [],
   playlist: {
     isFetching: 0,
-    round: 0,
     items: [],
   },
   searchResults: {

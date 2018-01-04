@@ -67,7 +67,7 @@ class QueueItem extends React.PureComponent {
               </div>
               <div className="QueueItem__textContent">
                 <h4 className="QueueItem__textContent__heading">{ this.props.item.snippet.title }</h4>
-                <h5 className="QueueItem__textContent__heading QueueItem__textContent__heading--subtitle">{ formatAudio(this.props.item.audio.duration) } - { this.props.item.snippet.title }</h5>
+                <h5 className="QueueItem__textContent__heading QueueItem__textContent__heading--subtitle">{ formatAudio(this.props.item.audio.duration) } - { this.props.item.snippet.channelTitle }</h5>
               </div>
               <Button className="QueueItem__removeButton BorderlessButton" onClick={ this.handleRemoveClick }>
                 <Icon glyph="remove_circle" />
@@ -114,7 +114,7 @@ class Queue extends React.Component {
       queueContent = <div className="Queue__emptyNote">Queue empty.</div>;
     }
 
-    const hiddenClassName = this.props.playlist.length === 0 ? "Queue-invisible" : "";
+    const hiddenClassName = this.props.playlist.length === 0 ? "Queue--invisible" : "";
     return (
       <Droppable droppableId="droppable-queue">
         {(provided, snapshot) => (
