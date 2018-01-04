@@ -16,6 +16,8 @@ class YouMuseApp extends React.Component {
   static propTypes = {
     movePlaylistItem: PropTypes.func,
     moveQueueItem: PropTypes.func,
+    movePlaylistItemToQueue: PropTypes.func,
+    updateDraggingType: PropTypes.func,
   };
   state = {
     gapiLoaded: false,
@@ -35,12 +37,18 @@ class YouMuseApp extends React.Component {
     document.body.appendChild(script);
   }
 
-  onDragStart = () => {}
+  onDragStart = initial => { this.props.updateDraggingType(initial.source.droppableId); }
   onDragEnd = (result) => {
     if (!result.destination) return;
-    switch (result.type) {
-      case "PLAYLIST_ITEM": return this.props.movePlaylistItem(result.source.index, result.destination.index);
-      case "QUEUE_ITEM": return this.props.moveQueueItem(result.source.index, result.destination.index);
+    switch (result.source.droppableId) {
+      case "droppable-playlist": {
+        if (result.destination.droppableId === "droppable-playlist") {
+          return this.props.movePlaylistItem(result.source.index, result.destination.index);
+        } else {
+          return this.props.movePlaylistItemToQueue(result.source.index, result.destination.index);
+        }
+      }
+      case "droppable-queue": return this.props.moveQueueItem(result.source.index, result.destination.index);
     }
   }
 
@@ -65,6 +73,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     movePlaylistItem: (source, dest) => dispatch(actions.movePlaylistItem(source, dest)),
     moveQueueItem: (source, dest) => dispatch(actions.moveQueueItem(source, dest)),
+    movePlaylistItemToQueue: (source, dest) => dispatch(actions.movePlaylistItemToQueue(source, dest)),
+    updateDraggingType: draggingType => dispatch(actions.updateDraggingType(draggingType)),
   };
 };
 

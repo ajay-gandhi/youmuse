@@ -57,6 +57,13 @@ const removeFromQueueByIndex = (index) => {
     index,
   };
 };
+
+const updateDraggingType = (draggingType) => {
+  return {
+    type: ACTION_TYPES.updateDraggingType,
+    draggingType,
+  };
+};
 const movePlaylistItem = (source, dest) => {
   return {
     type: ACTION_TYPES.movePlaylistItem,
@@ -67,6 +74,13 @@ const movePlaylistItem = (source, dest) => {
 const moveQueueItem = (source, dest) => {
   return {
     type: ACTION_TYPES.moveQueueItem,
+    source,
+    dest,
+  };
+};
+const movePlaylistItemToQueue = (source, dest) => {
+  return {
+    type: ACTION_TYPES.movePlaylistItemToQueue,
     source,
     dest,
   };
@@ -207,8 +221,10 @@ const actions = {
   removeFromSearchResults,
   removeFromQueueByIndex,
   removeFromPlaylistByIndex,
+  updateDraggingType,
   movePlaylistItem,
   moveQueueItem,
+  movePlaylistItemToQueue,
 
   // Player
   setIsPlaying,

@@ -51,8 +51,7 @@ class QueueItem extends React.PureComponent {
     const draggableClassName = this.props.isFetching ? "" : "isDraggable";
     return (
       <Draggable
-        draggableId={ `draggable-queueItem-${this.props.item.id}` }
-        type="QUEUE_ITEM"
+        draggableId={ `draggable-queueItem-${this.props.item.id}#${this.props.index}` }
         isDragDisabled={ this.props.isFetching }
       >
         {(provided, snapshot) => (
@@ -98,6 +97,7 @@ class Queue extends React.Component {
   static propTypes = {
     queue: PropTypes.arrayOf(PropTypes.object),
     playlist: PropTypes.arrayOf(PropTypes.object),
+    draggingType: PropTypes.string,
   };
 
   render = () => {
@@ -116,7 +116,7 @@ class Queue extends React.Component {
 
     const hiddenClassName = this.props.playlist.length === 0 ? "Queue-invisible" : "";
     return (
-      <Droppable droppableId="droppable-queue" type="QUEUE_ITEM">
+      <Droppable droppableId="droppable-queue">
         {(provided, snapshot) => (
           <div
             ref={ provided.innerRef }
@@ -136,6 +136,7 @@ const mapStateToProps = (state) => {
   return {
     queue: state.queue.slice(0, MAX_QUEUE_SIZE),
     playlist: state.playlist.items,
+    draggingType: state.draggingType,
   };
 };
 

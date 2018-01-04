@@ -34,7 +34,6 @@ class PlaylistItem extends React.PureComponent {
     return (
       <Draggable
         draggableId={ `draggable-playlistItem-${this.props.item.id}` }
-        type="PLAYLIST_ITEM"
         isDragDisabled={ this.props.isFetching }
       >
         {(provided, snapshot) => (
@@ -81,6 +80,7 @@ class PlaylistTab extends React.Component {
     className: PropTypes.string,
     playlist: PropTypes.arrayOf(PropTypes.object),
     isFetchingPlaylist: PropTypes.bool,
+    draggingType: PropTypes.string,
   };
 
   render = () => {
@@ -100,7 +100,10 @@ class PlaylistTab extends React.Component {
     }
 
     return (
-      <Droppable droppableId="droppable-playlist" type="PLAYLIST_ITEM">
+      <Droppable
+        droppableId="droppable-playlist"
+        isDropDisabled={ this.props.draggingType !== "droppable-playlist" }
+      >
         {(provided, snapshot) => (
           <div
             ref={ provided.innerRef }
@@ -119,6 +122,7 @@ const mapStateToProps = (state) => {
   return {
     playlist: state.playlist.items,
     isFetchingPlaylist: state.playlist.isFetching > 0,
+    draggingType: state.draggingType,
   };
 };
 
