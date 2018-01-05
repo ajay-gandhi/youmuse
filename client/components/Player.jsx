@@ -35,6 +35,9 @@ class AudioElement extends React.Component {
         () => this.props.setIsPlaying(false)
       );
     }
+    if (nextProps.volume !== this.props.volume) {
+      this.audioElement.volume = nextProps.volume;
+    }
 
     if (nextProps.currentTime !== this.state.currentTime) {
       this.setState({ currentTime: nextProps.currentTime });
@@ -62,8 +65,8 @@ class AudioElement extends React.Component {
       <ReactAudioPlayer
         listenInterval={ 900 }
         onListen={ this.handleListen }
-        ref={ this.setAudioElement }
         onEnded={ this.props.nextSong }
+        ref={ this.setAudioElement }
         src={ this.props.src || "" }
       />
     );
