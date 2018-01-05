@@ -91,7 +91,7 @@ const reducer = (state = INITIAL_STATE, action) => {
       if (nextSong) {
         const playHistory = copyArray(state.queue).concat({ ...state.currentSong });
         const modifiedQueue = removeFromQueueByIndex(state.queue, 0);
-        const newQueue = refillQueue(modifiedQueue, state.playlist, state.shuffle, state.repeat);
+        const newQueue = refillQueue(modifiedQueue, state.playlist.items, state.shuffle, state.repeat);
         return {
           ...state,
           playHistory,
