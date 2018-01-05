@@ -28,7 +28,6 @@ class AudioElement extends React.Component {
   componentWillReceiveProps = (nextProps) => {
     if (this.props.isPlaying && !nextProps.isPlaying) {
       this.audioElement.pause();
-      this.props.setIsPlaying(false);
     } else if (!this.props.isPlaying && nextProps.isPlaying) {
       this.audioElement.play().then(
         () => this.props.setIsPlaying(true),
@@ -44,8 +43,8 @@ class AudioElement extends React.Component {
       this.audioElement.currentTime = nextProps.currentTime;
     }
   }
-  componentDidUpdate = (prevProps) => {
-    if (prevProps.src !== this.props.src && this.props.isPlaying) {
+  componentDidUpdate = () => {
+    if (this.props.isPlaying) {
       this.audioElement.play().then(
         () => this.props.setIsPlaying(true),
         () => this.props.setIsPlaying(false)
