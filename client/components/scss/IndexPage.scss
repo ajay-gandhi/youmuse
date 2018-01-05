@@ -41,4 +41,16 @@
 .IndexPage__content__subtitle {
   margin-top: 60px;
   font-size: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.IndexPage__content__subtitle__about {
+  font-size: 18px;
+  color: $subtitleColor;
+  padding: 0px 2px;
+  text-decoration: none;
+}
+.IndexPage__content__subtitle__about:hover {
+  text-decoration: none;
 }

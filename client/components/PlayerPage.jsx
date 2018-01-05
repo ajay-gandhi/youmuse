@@ -92,7 +92,7 @@ class PlayerPage extends React.Component {
     return (
       <div className={ `PlayerPage ${this.props.currentSong ? "PlayerPage--withSong" : ""}` }>
         <KeyboardControls />
-        <h1 className="PlayerPage__title">YouMuse</h1>
+        <h1 className="PlayerPage__heading">YouMuse</h1>
         <div className="PlayerPage__content">
           <div className="PlayerPage__content__LeftSection">
             <SearchBar />

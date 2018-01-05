@@ -1,0 +1,57 @@
+@import "./global.scss";
+
+.AboutPage {
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  overflow: auto;
+}
+.AboutPage__heading {
+  height: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin: 0px;
+  padding: 0px 0px calc(2% + 30px) 0px;
+  min-height: 300px;
+  background-color: $primaryFontColor;
+  color: $backgroundColor;
+  font-size: 48px;
+}
+.AboutPage__content {
+  height: 60%;
+  min-height: 250px;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 60px 10px 0;
+  font-size: 18px;
+}
+
+.AboutPage__content__features {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: left;
+  padding-top: 10px;
+
+  dt {
+    width: 140px;
+    text-align: right;
+    padding-right: 10px;
+  }
+  dt::after {
+    content: ": ";
+  }
+
+  dd {
+    flex: 1 1 70%;
+  }
+}
+
+.AboutPage__content__index {
+  width: 100%;
+  font-size: 16px;
+}
+.AboutPage__content__index:hover {
+  border-color: $buttonDarkBorderColor;
+}

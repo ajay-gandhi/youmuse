@@ -10,6 +10,7 @@ import { actions, store } from "components/store/Store";
 import { DragDropContext } from "react-beautiful-dnd";
 
 import IndexPage from "components/IndexPage";
+import AboutPage from "components/AboutPage";
 import PlayerPage from "components/PlayerPage";
 
 class YouMuseApp extends React.Component {
@@ -59,6 +60,7 @@ class YouMuseApp extends React.Component {
         <BrowserRouter>
           <Switch>
             <Route path="/" exact component={ IndexPage } />
+            <Route path="/about" exact component={ AboutPage } />
             <Route path="/search/:searchQuery?" exact component={ PlayerPage } />
             <Route path="/playlist/:encodedPlaylist?" exact component={ PlayerPage } />
           </Switch>
