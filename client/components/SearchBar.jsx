@@ -12,6 +12,7 @@ import Icon from "components/Icon";
 
 class SearchBar extends React.PureComponent {
   static propTypes = {
+    autoFocus: PropTypes.bool,
     history: PropTypes.object,
     className: PropTypes.string,
     searchQuery: PropTypes.string,
@@ -36,7 +37,7 @@ class SearchBar extends React.PureComponent {
           value={ this.props.searchQuery }
           onChange={ this.handleSearchChange }
           onKeyPress={ this.handleKeyPress }
-          autoFocus
+          autoFocus={ !!this.props.autoFocus }
         />
         <Button className="SearchBar__button BorderlessButton" onClick={ this.handleSearchClick }>
           <Icon glyph="search" />

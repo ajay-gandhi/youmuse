@@ -70,6 +70,11 @@ class PlayerPage extends React.Component {
     if (!playlistsEqual(nextProps.playlist, this.props.playlist) && this.state.currentPage === "playlist") {
       this.props.history.push(`/playlist/${this.encodePlaylist(nextProps.playlist)}`);
     }
+
+    // Change title based on current song
+    if (nextProps.currentSong !== this.props.currentSong) {
+      document.title = nextProps.currentSong ? `YouMuse | ${nextProps.currentSong.snippet.title}` : "YouMuse";
+    }
   }
 
   encodePlaylist = (playlist = this.props.playlist) => {
