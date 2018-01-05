@@ -71,6 +71,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           ...state,
           playHistory,
           queue,
+          currentTime: 0,
           currentSong: { ...previousSong },
         };
       } else if (state.currentSong) {
@@ -79,6 +80,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           ...state,
           isPlaying: false,
           queue,
+          currentTime: 0,
           currentSong: null,
         };
       } else {
@@ -96,6 +98,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           ...state,
           playHistory,
           queue: newQueue,
+          currentTime: 0,
           currentSong: { ...nextSong },
         };
       } else if (state.currentSong) {
@@ -104,6 +107,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           ...state,
           isPlaying: false,
           playHistory,
+          currentTime: 0,
           currentSong: null,
         };
       } else {
