@@ -36,6 +36,7 @@ class SearchBar extends React.PureComponent {
           value={ this.props.searchQuery }
           onChange={ this.handleSearchChange }
           onKeyPress={ this.handleKeyPress }
+          autoFocus
         />
         <Button className="SearchBar__button BorderlessButton" onClick={ this.handleSearchClick }>
           <Icon glyph="search" />
