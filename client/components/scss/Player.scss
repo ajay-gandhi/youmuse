@@ -130,6 +130,7 @@ input.Player__controls__timeControl {
   top: -1px;
   cursor: pointer;
   padding: 0px;
+  z-index: 8;
 
   &:hover {
     background-color: $buttonDarkColor;
@@ -203,4 +204,5 @@ input.Player__controls__volumeControl {
   position: absolute;
   top: 5px;
   right: 5px;
+  z-index: 7;
 }
