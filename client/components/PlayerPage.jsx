@@ -67,7 +67,7 @@ class PlayerPage extends React.Component {
     if (nextProps.match.params.searchQuery && this.state.currentPage !== "search") {
       this.setState({ currentPage: "search" });
     }
-    if (!playlistsEqual(nextProps.playlist, this.props.playlist) && this.state.currentPage === "playlist") {
+    if (this.playlistChanged(nextProps, this.props) && this.state.currentPage === "playlist") {
       this.props.history.push(`/playlist/${this.encodePlaylist(nextProps.playlist)}`);
     }
 
@@ -77,6 +77,11 @@ class PlayerPage extends React.Component {
     }
   }
 
+  playlistChanged = (a, b) => {
+    return !playlistsEqual(a.playlist, b.playlist)
+      || a.repeat !== b.repeat
+      || a.shuffle !== b.shuffle;
+  }
   encodePlaylist = (playlist = this.props.playlist) => {
     if (playlist.length > 0) {
       const videoIds = playlist.map(video => video.id);
