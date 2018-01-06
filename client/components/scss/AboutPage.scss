@@ -28,7 +28,7 @@
   font-size: 18px;
 }
 
-.AboutPage__content__features {
+.AboutPage__content__list {
   display: flex;
   flex-flow: row wrap;
   justify-content: left;
@@ -54,4 +54,21 @@
 }
 .AboutPage__content__index:hover {
   border-color: $buttonDarkBorderColor;
+}
+
+.AboutPage__content__keyboardControlsHeading {
+  margin-top: 40px;
+  font-weight: normal;
+}
+.AboutPage__content__list--keyboardControls {
+  dt {
+    width: 160px;
+    font-weight: normal;
+    text-align: center;
+    font-family: Courier;
+    font-size: 17px;
+  }
+  dt::after {
+    content: "";
+  }
 }

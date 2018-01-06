@@ -18,7 +18,7 @@ class AboutPage extends React.PureComponent {
       <h1 className="AboutPage__heading">About YouMuse</h1>
       <div className="AboutPage__content">
         YouMuse is a music player that streams audio directly from YouTube.
-        <dl className="AboutPage__content__features">
+        <dl className="AboutPage__content__list">
           <dt>Free</dt>
           <dd>No ads</dd>
           <dt>Fast</dt>
@@ -31,6 +31,25 @@ class AboutPage extends React.PureComponent {
           <dd>Complete audio playback control</dd>
         </dl>
         <Button className="AboutPage__content__index" onClick={ this.goToIndex }>Cool!</Button>
+        <h3 className="AboutPage__content__keyboardControlsHeading">Keyboard Controls</h3>
+        <dl className="AboutPage__content__list AboutPage__content__list--keyboardControls">
+          <dt>spacebar</dt>
+          <dd>Play/pause</dd>
+          <dt>right arrow</dt>
+          <dd>Next song</dd>
+          <dt>left arrow</dt>
+          <dd>previous song</dd>
+          <dt>up</dt>
+          <dd>Increase volume</dd>
+          <dt>down</dt>
+          <dd>Decrease volume</dd>
+          <dt>s</dt>
+          <dd>Toggle shuffle</dd>
+          <dt>r</dt>
+          <dd>Toggle repeat</dd>
+          <dt>m</dt>
+          <dd>Mute/unmute</dd>
+        </dl>
       </div>
     </div>
   );
