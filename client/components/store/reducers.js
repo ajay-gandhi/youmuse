@@ -91,7 +91,7 @@ const reducer = (state = INITIAL_STATE, action) => {
     case ACTION_TYPES.nextSong: {
       const nextSong = state.queue[0];
       if (nextSong) {
-        const playHistory = copyArray(state.queue).concat({ ...state.currentSong });
+        const playHistory = copyArray(state.playHistory).concat({ ...state.currentSong });
         const modifiedQueue = removeFromQueueByIndex(state.queue, 0);
         const newQueue = refillQueue(modifiedQueue, state.playlist.items, state.shuffle, state.repeat);
         return {
@@ -102,7 +102,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           currentSong: { ...nextSong },
         };
       } else if (state.currentSong) {
-        const playHistory = copyArray(state.queue).concat({ ...state.currentSong });
+        const playHistory = copyArray(state.playHistory).concat({ ...state.currentSong });
         return {
           ...state,
           isPlaying: false,
