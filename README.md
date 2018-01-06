@@ -2,7 +2,7 @@
 
 ## Todo
 
-* Fix repeat playhistory bug
+* Fix repeat playhistory bug, occurs on nextSong
 * Fix about page
   * Add information about keyboard controls
 * Redo theme using tertiary color scheme

@@ -30,7 +30,7 @@ class AudioElement extends React.Component {
       this.audioElement.pause();
     } else if (!this.props.isPlaying && nextProps.isPlaying) {
       this.audioElement.play().then(
-        () => this.props.setIsPlaying(true),
+        () => {},
         () => this.props.setIsPlaying(false)
       );
     }
@@ -43,18 +43,18 @@ class AudioElement extends React.Component {
       this.audioElement.currentTime = nextProps.currentTime;
     }
   }
-  componentDidUpdate = () => {
-    if (this.props.isPlaying) {
-      this.audioElement.play().then(
-        () => this.props.setIsPlaying(true),
-        () => this.props.setIsPlaying(false)
-      );
-    }
-  }
 
   handleListen = (e) => {
     this.setState({ currentTime: e });
     this.props.updateCurrentTime(e);
+  }
+  handleCanPlay = () => {
+    if (this.props.isPlaying) {
+      this.audioElement.play().then(
+        () => {},
+        () => this.props.setIsPlaying(false)
+      );
+    }
   }
 
   setAudioElement = ref => { this.audioElement = ref && ref.audioEl; }
@@ -65,6 +65,7 @@ class AudioElement extends React.Component {
         listenInterval={ 900 }
         onListen={ this.handleListen }
         onEnded={ this.props.nextSong }
+        onCanPlay={ this.handleCanPlay }
         ref={ this.setAudioElement }
         src={ this.props.src || "" }
       />
