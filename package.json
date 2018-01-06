@@ -1,7 +1,7 @@
 {
-  "name": "hello-world-react",
+  "name": "YouMuse",
   "version": "0.0.1",
-  "description": "Trying out the setup",
+  "description": "Listen to YouTube, ad free",
   "main": "index.js",
   "author": "Ajay Gandhi",
   "license": "MIT",
