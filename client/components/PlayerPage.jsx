@@ -57,7 +57,7 @@ class PlayerPage extends React.Component {
       const playlistState = {
         shuffle: parts[1] === "1",
         repeat: Number(parts[2]),
-        volume: Math.min(Math.max(Number(parts[3]), 0), 1),
+        volume: Math.min(Math.max(Number(parts[3]) || 1, 0), 1),
       };
       this.props.mergeState(playlistState);
       if (parts[0]) this.props.fetchPlaylist(parts[0].split(","));
@@ -81,8 +81,9 @@ class PlayerPage extends React.Component {
 
   playlistChanged = (a, b) => {
     return !playlistsEqual(a.playlist, b.playlist)
+      || a.shuffle !== b.shuffle
       || a.repeat !== b.repeat
-      || a.shuffle !== b.shuffle;
+      || a.volume !== b.volume;
   }
   encodePlaylist = (props = this.props) => {
     if (props.playlist.length > 0) {

@@ -41,13 +41,16 @@ class KeyboardControls extends React.Component {
     }
   }
 
+  updateVolume = (volume) => {
+    this.props.updateVolume(Math.round(volume * 100) / 100);
+  }
   increaseVolume = () => {
     const newVolume = this.props.volume + 0.05;
-    this.props.updateVolume(newVolume > 1 ? 1 : newVolume);
+    this.updateVolume(newVolume > 1 ? 1 : newVolume);
   }
   decreaseVolume = () => {
     const newVolume = this.props.volume - 0.05;
-    this.props.updateVolume(newVolume < 0 ? 0 : newVolume);
+    this.updateVolume(newVolume < 0 ? 0 : newVolume);
   }
   handleMute = () => {
     // Store for unmute
