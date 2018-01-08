@@ -54,7 +54,7 @@ class PlayerPage extends React.Component {
       this.setState({ currentPage: "playlist" });
       const parts = this.props.match.params.encodedPlaylist.split("&");
       const playlistState = {
-        shuffle: parts[1] === 1,
+        shuffle: parts[1] === "1",
         repeat: Number(parts[2]),
       };
       this.props.mergeState(playlistState);
@@ -68,7 +68,7 @@ class PlayerPage extends React.Component {
       this.setState({ currentPage: "search" });
     }
     if (this.playlistChanged(nextProps, this.props) && this.state.currentPage === "playlist") {
-      this.props.history.push(`/playlist/${this.encodePlaylist(nextProps.playlist)}`);
+      this.props.history.push(`/playlist/${this.encodePlaylist(nextProps)}`);
     }
 
     // Change title based on current song
@@ -82,10 +82,10 @@ class PlayerPage extends React.Component {
       || a.repeat !== b.repeat
       || a.shuffle !== b.shuffle;
   }
-  encodePlaylist = (playlist = this.props.playlist) => {
-    if (playlist.length > 0) {
-      const videoIds = playlist.map(video => video.id);
-      return `${videoIds.join(",")}&${Number(this.props.shuffle)}&${this.props.repeat}`;
+  encodePlaylist = (props = this.props) => {
+    if (props.playlist.length > 0) {
+      const videoIds = props.playlist.map(video => video.id);
+      return `${videoIds.join(",")}&${Number(props.shuffle)}&${props.repeat}`;
     } else {
       return "";
     }
