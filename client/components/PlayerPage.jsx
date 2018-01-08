@@ -33,6 +33,7 @@ class PlayerPage extends React.Component {
     searchQuery: PropTypes.string,
     shuffle: PropTypes.bool,
     repeat: PropTypes.number,
+    volume: PropTypes.number,
     currentSong: PropTypes.object,
     updateSearchQuery: PropTypes.func,
     mergeState: PropTypes.func,
@@ -56,6 +57,7 @@ class PlayerPage extends React.Component {
       const playlistState = {
         shuffle: parts[1] === "1",
         repeat: Number(parts[2]),
+        volume: Math.min(Math.max(Number(parts[3]), 0), 1),
       };
       this.props.mergeState(playlistState);
       if (parts[0]) this.props.fetchPlaylist(parts[0].split(","));
@@ -85,7 +87,7 @@ class PlayerPage extends React.Component {
   encodePlaylist = (props = this.props) => {
     if (props.playlist.length > 0) {
       const videoIds = props.playlist.map(video => video.id);
-      return `${videoIds.join(",")}&${Number(props.shuffle)}&${props.repeat}`;
+      return `${videoIds.join(",")}&${Number(props.shuffle)}&${props.repeat}&${props.volume}`;
     } else {
       return "";
     }
@@ -135,6 +137,7 @@ const mapStateToProps = (state) => {
     searchQuery: state.searchQuery || "",
     shuffle: state.shuffle,
     repeat: state.repeat,
+    volume: state.volume,
     currentSong: state.currentSong,
   };
 };
