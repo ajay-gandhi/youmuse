@@ -28,7 +28,7 @@ export const refillQueue = (queue, playlist, shuffle, repeat) => {
   while (repeat === REPEAT_STATE.all && newQueue.length < MAX_QUEUE_SIZE) {
     newQueue = newQueue.concat(playlistToQueue(playlist, shuffle));
   }
-  return queue;
+  return newQueue;
 };
 
 export const removeFromQueueById = (queue, id) => copyArray(queue).filter(o => o.id !== id);
