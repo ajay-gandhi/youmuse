@@ -34,9 +34,6 @@ class AudioElement extends React.Component {
         () => this.props.setIsPlaying(false)
       );
     }
-    if (nextProps.volume !== this.props.volume) {
-      this.audioElement.volume = nextProps.volume;
-    }
 
     if (nextProps.currentTime !== this.state.currentTime) {
       this.setState({ currentTime: nextProps.currentTime });
@@ -68,6 +65,7 @@ class AudioElement extends React.Component {
         onCanPlay={ this.handleCanPlay }
         ref={ this.setAudioElement }
         src={ this.props.src || "" }
+        volume={ this.props.volume }
       />
     );
   }
