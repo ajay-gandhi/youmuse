@@ -11,7 +11,7 @@ import Icon from "components/Icon";
 import Chevron from "components/Chevron";
 import { Button } from "react-bootstrap";
 
-class AudioElement extends React.Component {
+class AudioElement extends React.PureComponent {
   static propTypes = {
     src: PropTypes.string,
     isPlaying: PropTypes.bool,
@@ -87,7 +87,7 @@ const mapDispatchToAudioElementProps = (dispatch) => {
 };
 const ConnectedAudioElement = connect(mapStateToAudioElementProps, mapDispatchToAudioElementProps)(AudioElement);
 
-class Player extends React.Component {
+class Player extends React.PureComponent {
   static propTypes = {
     isPlaying: PropTypes.bool,
     shuffle: PropTypes.bool,

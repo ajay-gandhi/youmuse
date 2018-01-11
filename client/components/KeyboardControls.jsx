@@ -3,10 +3,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { actions } from "components/store/Store";
 
-class KeyboardControls extends React.Component {
+class KeyboardControls extends React.PureComponent {
   static propTypes = {
     volume: PropTypes.number,
-
     togglePlayback: PropTypes.func,
     nextSong: PropTypes.func,
     previousSong: PropTypes.func,
@@ -53,10 +52,10 @@ class KeyboardControls extends React.Component {
     this.updateVolume(newVolume < 0 ? 0 : newVolume);
   }
   handleMute = () => {
-    // Store for unmute
     if (this.props.volume === 0) {
       this.props.updateVolume((this.state && this.state.volume) || 1);
     } else {
+      // Store for unmute
       this.setState({ prevVolume: this.props.volume });
       this.props.updateVolume(0);
     }
