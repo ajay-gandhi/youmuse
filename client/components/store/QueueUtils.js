@@ -12,8 +12,8 @@ const shuffleArray = (arr) => {
 };
 
 const playlistToQueue = (playlist, shuffle) => shuffle ? shuffleArray(playlist) : copyArray(playlist);
-export const generateQueue = (playlist, shuffle, repeat) => {
-  if (repeat === REPEAT_STATE.one) return Array(MAX_QUEUE_SIZE).fill({ ...playlist[0] });
+export const generateQueue = (playlist, shuffle, repeat, currentSong) => {
+  if (repeat === REPEAT_STATE.one) return Array(MAX_QUEUE_SIZE).fill({ ...(currentSong || playlist[0]) });
 
   let queue = playlistToQueue(playlist, shuffle);
   while (repeat === REPEAT_STATE.all && queue.length < MAX_QUEUE_SIZE) {

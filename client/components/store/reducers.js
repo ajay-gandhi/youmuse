@@ -23,7 +23,7 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         repeat,
-        queue: generateQueue(state.playlist.items, state.shuffle, repeat),
+        queue: generateQueue(state.playlist.items, state.shuffle, repeat, state.currentSong),
       };
     }
 
