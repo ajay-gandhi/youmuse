@@ -205,10 +205,10 @@ const reducer = (state = INITIAL_STATE, action) => {
       };
 
       let queue;
-      if (state.repeat === REPEAT_STATE.all) {
-        queue = generateQueue(playlistItems, state.shuffle, state.repeat);
-      } else if (state.repeat === REPEAT_STATE.off) {
+      if (state.repeat === REPEAT_STATE.off) {
         queue = copyArray(state.queue).concat({ ...action.item });
+      } else {
+        queue = generateQueue(playlistItems, state.shuffle, state.repeat, state.currentSong);
       }
 
       if (state.currentSong) {
