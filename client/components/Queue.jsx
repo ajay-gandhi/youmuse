@@ -105,7 +105,7 @@ class Queue extends React.Component {
     if (this.props.queue.length > 0) {
       queueContent = this.props.queue.map((item, index) => (
         <ConnectedQueueItem
-          key={ `${item.id}-${index}` }
+          key={ item.uniqueId }
           item={ item }
           index={ index }
         />

@@ -3,6 +3,7 @@ import {
   copyArray,
   generateQueue,
   refillQueue,
+  addToQueueAtIndex,
   removeFromQueueByIndex,
   removeFromQueueById
 } from "./QueueUtils";
@@ -154,8 +155,8 @@ const reducer = (state = INITIAL_STATE, action) => {
     }
 
     case ACTION_TYPES.moveQueueItem: {
-      const queue = copyArray(state.queue);
-      queue.splice(action.dest, 0, queue.splice(action.source, 1)[0]);
+      const item = { ...state.queue[action.source] };
+      const queue = addToQueueAtIndex(removeFromQueueByIndex(state.queue, action.source), item, action.dest);
       return {
         ...state,
         queue,
@@ -164,8 +165,7 @@ const reducer = (state = INITIAL_STATE, action) => {
 
     case ACTION_TYPES.movePlaylistItemToQueue: {
       const itemToAdd = { ...state.playlist.items[action.source] };
-      const queue = copyArray(state.queue);
-      queue.splice(action.dest, 0, itemToAdd);
+      const queue = addToQueueAtIndex(state.queue, itemToAdd, action.dest);
       return {
         ...state,
         queue,

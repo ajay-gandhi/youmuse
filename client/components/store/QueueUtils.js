@@ -11,9 +11,17 @@ const shuffleArray = (arr) => {
   return newArr;
 };
 
-const playlistToQueue = (playlist, shuffle) => shuffle ? shuffleArray(playlist) : copyArray(playlist);
+const createQueueItem = item => ({
+  ...item,
+  uniqueId: `${item.id}_${Math.random().toString(36).substr(2, 9)}`,
+});
+const playlistToQueue = (playlist, shuffle) => {
+  const newPlaylist = shuffle ? shuffleArray(playlist) : copyArray(playlist);
+  return newPlaylist.map(createQueueItem);
+};
+
 export const generateQueue = (playlist, shuffle, repeat, currentSong) => {
-  if (repeat === REPEAT_STATE.one) return Array(MAX_QUEUE_SIZE).fill({ ...(currentSong || playlist[0]) });
+  if (repeat === REPEAT_STATE.one) return Array(MAX_QUEUE_SIZE).fill(currentSong || playlist[0]).map(createQueueItem);
 
   let queue = playlistToQueue(playlist, shuffle);
   while (repeat === REPEAT_STATE.all && queue.length < MAX_QUEUE_SIZE) {
@@ -22,12 +30,17 @@ export const generateQueue = (playlist, shuffle, repeat, currentSong) => {
   return queue;
 };
 export const refillQueue = (queue, playlist, shuffle, repeat) => {
-  if (repeat === REPEAT_STATE.one) return Array(MAX_QUEUE_SIZE).fill({ ...queue[0] });
+  if (repeat === REPEAT_STATE.one) return Array(MAX_QUEUE_SIZE).fill(queue[0]).map(createQueueItem);
 
   let newQueue = copyArray(queue);
   while (repeat === REPEAT_STATE.all && newQueue.length < MAX_QUEUE_SIZE) {
     newQueue = newQueue.concat(playlistToQueue(playlist, shuffle));
   }
+  return newQueue;
+};
+export const addToQueueAtIndex = (queue, item, index) => {
+  const newQueue = copyArray(queue);
+  newQueue.splice(index, 0, createQueueItem(item));
   return newQueue;
 };
 
