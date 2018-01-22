@@ -49,6 +49,8 @@ class AboutPage extends React.PureComponent {
           <dd>Toggle repeat</dd>
           <dt>m</dt>
           <dd>Mute/unmute</dd>
+          <dt>h</dt>
+          <dd>Hide/show images</dd>
         </dl>
       </div>
     </div>

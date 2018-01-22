@@ -5,8 +5,7 @@ import { actions } from "components/store/Store";
 
 class KeyboardControls extends React.PureComponent {
   static propTypes = {
-    volume: PropTypes.number,
-    togglePlayback: PropTypes.func,
+    volume: PropTypes.number, togglePlayback: PropTypes.func,
     nextSong: PropTypes.func,
     previousSong: PropTypes.func,
     toggleShuffle: PropTypes.func,
@@ -23,7 +22,7 @@ class KeyboardControls extends React.PureComponent {
 
   performKeyAction = (e) => {
     if (e.target.tagName.toLowerCase() === "input" && e.target.type === "text") return;
-    const mapped = [" ", "arrowright", "arrowleft", "arrowup", "arrowdown", "r", "s", "m"];
+    const mapped = [" ", "arrowright", "arrowleft", "arrowup", "arrowdown", "r", "s", "m", "h"];
     if (!mapped.includes(e.key.toLowerCase())) return;
     if (e.altKey || e.metaKey || e.ctrlKey || e.shiftKey) return;
 
@@ -37,6 +36,7 @@ class KeyboardControls extends React.PureComponent {
       case "r":          return this.props.toggleRepeat();
       case "s":          return this.props.toggleShuffle();
       case "m":          return this.handleMute();
+      case "h":          return this.handleHideImages();
     }
   }
 
@@ -59,6 +59,10 @@ class KeyboardControls extends React.PureComponent {
       this.setState({ prevVolume: this.props.volume });
       this.props.updateVolume(0);
     }
+  }
+  handleHideImages = () => {
+    const root = document.getElementById("root");
+    root.classList[root.classList.contains("imagesHidden") ? "remove" : "add"]("imagesHidden");
   }
 
   render = () => {

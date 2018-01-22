@@ -23,6 +23,9 @@ $subtitleColor: #555555;
 #root {
   height: 100vh;
 }
+.imagesHidden img {
+  display: none;
+}
 
 .isDraggingOver {
   background-color: $draggingColor;
