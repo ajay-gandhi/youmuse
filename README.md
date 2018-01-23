@@ -9,6 +9,7 @@ audio (and straight from YouTube servers) so it's fast and efficient.
 
 ## Todo
 
+* Drag from search results to queue for single play
 * Add link to go to video
 * Redo theme using ternary color scheme
 * Animate index page to player page
