@@ -12,6 +12,9 @@ class KeyboardControls extends React.PureComponent {
     toggleRepeat: PropTypes.func,
     updateVolume: PropTypes.func,
   };
+  state = {
+    prevVolume: 1.0,
+  };
 
   componentWillMount = () => {
     window.addEventListener("keydown", this.performKeyAction);
@@ -53,7 +56,7 @@ class KeyboardControls extends React.PureComponent {
   }
   handleMute = () => {
     if (this.props.volume === 0) {
-      this.props.updateVolume((this.state && this.state.volume) || 1);
+      this.props.updateVolume(this.state.prevVolume);
     } else {
       // Store for unmute
       this.setState({ prevVolume: this.props.volume });
