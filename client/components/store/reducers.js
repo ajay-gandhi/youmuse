@@ -241,7 +241,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           ...state,
           playlist,
           currentSong: queue[0],
-          queue: removeFromQueueByIndex(queue, 0),
+          queue: refillQueue(removeFromQueueByIndex(queue, 0), playlistItems, state.shuffle, state.repeat),
         };
       } else {
         return {
