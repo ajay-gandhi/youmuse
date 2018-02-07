@@ -55,7 +55,7 @@
     "uglifyjs-webpack-plugin": "^1.1.4",
     "webpack": "^3.9.1",
     "webpack-dev-server": "^2.9.5",
-    "ytdl-core": "^0.18.7"
+    "ytdl-core": "^0.20.1"
   },
   "devDependencies": {
     "babel-eslint": "7",
