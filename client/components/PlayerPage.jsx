@@ -30,6 +30,7 @@ const playlistsEqual = (pl1, pl2) => {
 class PlayerPage extends React.Component {
   static propTypes = {
     playlist: PropTypes.arrayOf(PropTypes.object),
+    isFetchingPlaylist: PropTypes.bool,
     searchQuery: PropTypes.string,
     shuffle: PropTypes.bool,
     repeat: PropTypes.number,
@@ -69,7 +70,7 @@ class PlayerPage extends React.Component {
     if (nextProps.match.params.searchQuery && this.state.currentPage !== "search") {
       this.setState({ currentPage: "search" });
     }
-    if (this.playlistChanged(nextProps, this.props) && this.state.currentPage === "playlist") {
+    if (!nextProps.isFetchingPlaylist && this.playlistChanged(nextProps, this.props) && this.state.currentPage === "playlist") {
       this.props.history.push(`/playlist/${this.encodePlaylist(nextProps)}`);
     }
 
@@ -135,6 +136,7 @@ class PlayerPage extends React.Component {
 const mapStateToProps = (state) => {
   return {
     playlist: state.playlist.items,
+    isFetchingPlaylist: state.playlist.isFetching > 0,
     searchQuery: state.searchQuery || "",
     shuffle: state.shuffle,
     repeat: state.repeat,
