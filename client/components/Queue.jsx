@@ -12,11 +12,14 @@ import Icon from "./Icon";
 import { Button } from "react-bootstrap";
 
 const formatAudio = (seconds) => {
-  let result = seconds % 60;
+  let result = parseInt(seconds % 60);
   if (seconds >= 60) {
     const m = Math.floor(seconds / 60) % 60;
-    result = `${m < 10 ? `0${m}` : m}:${result}`;
+    result = `${m < 10 ? `0${m}` : m}:${result < 10 ? `0${result}` : result}`;
+  } else {
+    return `0:${result < 10 ? `0${result}` : result}`;
   }
+
   if (seconds >= 3600) {
     const h = Math.floor(seconds / 3600) % 24;
     result = `${h < 10 ? `0${h}` : h}:${result}`;
