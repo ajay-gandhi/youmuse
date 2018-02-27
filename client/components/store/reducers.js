@@ -132,7 +132,7 @@ const reducer = (state = INITIAL_STATE, action) => {
       const queue = removeFromQueueByIndex(state.queue, action.index);
       return {
         ...state,
-        queue: refillQueue(queue, state.playlist, state.shuffle, state.repeat),
+        queue: refillQueue(queue, state.playlist.items, state.shuffle, state.repeat),
       };
     }
 
