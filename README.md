@@ -9,6 +9,7 @@ audio (and straight from YouTube servers) so it's fast and efficient.
 
 ## Todo
 
+* Display song duration/currentTime in player
 * Drag from search results to queue for single play
 * Add link to go to video
 * Redo theme using ternary color scheme
