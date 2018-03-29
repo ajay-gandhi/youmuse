@@ -12,7 +12,8 @@ audio (and straight from YouTube servers) so it's fast and efficient.
 * Display song duration/currentTime in player
 * Drag from search results to queue for single play
 * Add link to go to video
+* Add tab to queue interface for play history
+* Add functionality for loading data into localStorage for offline play
 * Redo theme using ternary color scheme
 * Animate index page to player page
 * Favicon
-* Ensure all pure components extend PureComponent
