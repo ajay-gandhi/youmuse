@@ -3,10 +3,13 @@
 const path = require("path");
 const express = require("express");
 const ytdl = require("ytdl-core");
+const Logger = require("../util/logger");
+
+const LOG = new Logger("youmuse");
 
 const app = express();
-app.set("port", (process.env.PORT || 8000));
-app.use(express.static("public"));
+const PORT = process.argv[2] || 8001;
+app.use(express.static(__dirname + "/public"));
 
 app.get("/getAudioUrl/:videoId", (req, res) => {
 
@@ -14,7 +17,7 @@ app.get("/getAudioUrl/:videoId", (req, res) => {
 
   // Download video information so that we can choose a format and get URL
   ytdl.getInfo(url, (err, info) => {
-    if (err) return console.log("Error getting video info:", err);
+    if (err) return LOG.log("Error getting video info:", err);
 
     const format = info.formats.reduce(function (acc, c) {
       // Isn"t an audio format
@@ -42,4 +45,4 @@ app.get("/getAudioUrl/:videoId", (req, res) => {
 
 app.get("*", (req, res) => res.sendFile(path.resolve(__dirname, "public/index.html")));
 
-app.listen(app.get("port"), () => console.log("Server running"));
+app.listen(PORT, () => LOG.log(`Server running on port ${PORT}`));

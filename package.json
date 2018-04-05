@@ -8,9 +8,9 @@
   "private": null,
   "scripts": {
     "start": "node server.js",
-    "dev-start": "webpack-dev-server --config webpack.dev.config.js",
+    "dev-webpack": "webpack-dev-server --config webpack.dev.config.js",
     "precommit": "lint-staged",
-    "heroku-postbuild": "webpack -p --display-error-details --config ./webpack.prod.config.js --progress"
+    "webpack-build": "webpack -p --display-error-details --config ./webpack.prod.config.js --progress"
   },
   "engine": {
     "node": "9.2.0"
