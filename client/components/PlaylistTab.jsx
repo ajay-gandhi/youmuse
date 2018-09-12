@@ -50,6 +50,12 @@ class PlaylistItem extends React.PureComponent {
               <div className="PlaylistItem__textContent">
                 <h3 className="PlaylistItem__textContent__heading">{ item.title }</h3>
                 <h4 className="PlaylistItem__textContent__heading PlaylistItem__textContent__heading--channel">{ item.channelTitle }</h4>
+                <a
+                  className="PlaylistItem__textContent__videoLink"
+                  href={ `http://youtube.com/watch?v=${this.props.item.id}` }
+                >
+                  Go to video
+                </a>
               </div>
               <Button className="PlaylistItem__removeButton BorderlessButton" onClick={ this.removeItem }>
                 <Icon glyph="remove_circle" />

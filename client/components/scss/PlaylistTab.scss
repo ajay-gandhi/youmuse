@@ -49,7 +49,7 @@
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
-  align-items: left;
+  align-items: start;
   margin-left: 10px;
   overflow-x: auto;
   margin-right: 10px;
@@ -61,7 +61,7 @@
 }
 .PlaylistItem__textContent__heading--channel {
   font-weight: normal;
-  margin: 10px 0px 20px;
+  margin: 10px 0px 12px;
   color: $subtitleColor;
 }
 
