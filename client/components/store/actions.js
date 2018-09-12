@@ -121,11 +121,16 @@ const doneRequestingPlaylist = () => {
     type: ACTION_TYPES.doneRequestingPlaylist,
   };
 };
-const addToPlaylist = (item, index) => {
+const addToPlaylist = (item) => {
   return {
     type: ACTION_TYPES.addToPlaylist,
     item,
-    index,
+  };
+};
+const setPlaylist = (items) => {
+  return {
+    type: ACTION_TYPES.setPlaylist,
+    items,
   };
 };
 const removeFromPlaylistByIndex = (index) => {
@@ -187,14 +192,13 @@ const fetchPlaylist = (videoIds) => {
       console.log(error);
     }).then((items) => {
       // Add to playlist in order
-      items.forEach((item, i) => dispatch(addToPlaylist(item, i)));
+      dispatch(setPlaylist(items));
       dispatch(doneRequestingPlaylist());
     });
   };
 };
 const addItemToPlaylist = (item) => {
-  return (dispatch, getState) => {
-    const state = getState();
+  return (dispatch) => {
     dispatch(requestPlaylist());
 
     return fetch(`/getAudioUrl/${item.id}`).then(
@@ -208,7 +212,7 @@ const addItemToPlaylist = (item) => {
           duration: parseInt(json.duration),
         },
       };
-      dispatch(addToPlaylist(playlistItem, state.playlist.items.length));
+      dispatch(addToPlaylist(playlistItem));
       dispatch(doneRequestingPlaylist());
     });
   };

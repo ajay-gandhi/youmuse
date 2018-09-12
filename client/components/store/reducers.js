@@ -192,13 +192,10 @@ const reducer = (state = INITIAL_STATE, action) => {
 
     case ACTION_TYPES.addToPlaylist: {
       // No duplicates in playlist
-      if (state.playlist.items.map(item => item.id).includes(action.item.id)) return state;
+      if (state.playlist.items.reduce((exists, item) => exists || action.item.id === item.id, false)) return state;
       const playlistItems = copyArray(state.playlist.items);
 
-      // Find first index for which no element exists
-      let index = action.index || playlistItems.length;
-      while (playlistItems[index]) index++;
-      playlistItems[index] = action.item;
+      playlistItems.push(action.item);
       const playlist = {
         isFetching: state.playlist.isFetching,
         items: playlistItems,
@@ -225,6 +222,21 @@ const reducer = (state = INITIAL_STATE, action) => {
           queue: removeFromQueueByIndex(queue, 0),
         };
       }
+    }
+
+    case ACTION_TYPES.setPlaylist: {
+      const playlist = {
+        isFetching: state.playlist.isFetching,
+        items: action.items,
+      };
+
+      let queue = generateQueue(action.items, state.shuffle, state.repeat);
+      return {
+        ...state,
+        playlist,
+        currentSong: queue[0],
+        queue: removeFromQueueByIndex(queue, 0),
+      };
     }
 
     case ACTION_TYPES.removeFromPlaylistByIndex: {

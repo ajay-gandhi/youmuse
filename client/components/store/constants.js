@@ -22,6 +22,7 @@ export const ACTION_TYPES = Object.freeze({
   requestPlaylist: "REQUEST_PLAYLIST",
   doneRequestingPlaylist: "DONE_REQUESTING_PLAYLIST",
   addToPlaylist: "ADD_TO_PLAYLIST",
+  setPlaylist: "SET_PLAYLIST",
   removeFromPlaylistByIndex: "REMOVE_FROM_PLAYLIST_BY_INDEX",
   removeFromQueueByIndex: "REMOVE_FROM_QUEUE_BY_INDEX",
 
