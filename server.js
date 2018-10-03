@@ -3,10 +3,9 @@
 const path = require("path");
 const express = require("express");
 const ytdl = require("ytdl-core");
-// const Logger = require("../util/logger");
+const Logger = require("../util/logger");
 
-// const LOG = new Logger("youmuse");
-const LOG = { log: console.log };
+const LOG = new Logger("youmuse");
 
 const app = express();
 const PORT = process.argv[2] || 8001;
