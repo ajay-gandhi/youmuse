@@ -21,7 +21,7 @@ app.get("/getAudioUrl/:videoId", (req, res) => {
 
     const format = info.formats.reduce(function (acc, c) {
       // Isn"t an audio format
-      if (!c.type || c.type.indexOf("audio") < 0) return acc;
+      if (!c.mimeType || c.mimeType.indexOf("audio") < 0) return acc;
 
       // mp4 best
       if (c.container === "mp4") {
