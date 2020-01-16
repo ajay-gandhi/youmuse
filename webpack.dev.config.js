@@ -27,7 +27,7 @@ module.exports = {
     historyApiFallback: true,
     proxy: {
       "/getAudioUrl/**": {
-        target: "http://localhost:8000/",
+        target: "http://localhost:8001/",
         secure: false,
       },
     },
